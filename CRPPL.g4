@@ -9,12 +9,15 @@ multiexpr: (validexpr+)? EOF;
 validexpr: generalquery
          | importdata
          | altercolumn
+         | ifstatement
          ;
 
 //PARSER RULES.
+
 generalquery: GET (OPERAND OF)? LITERAL (COMMA LITERAL)* (FOR LITERAL EQUALS LITERAL (COMMA LITERAL EQUALS LITERAL)*)?;
 importdata : DO IMPORTFILE '(' LITERAL COMMA LITERAL ')';
 altercolumn: (NEWCOLUMN | DELETECOLUMN) NAMEDCOLUMN FOR LITERAL;
+ifstatement: IF (CONDITION) THEN (validexpr)(validexpr)* (ELSE (validexpr))? END_IF;
 
 
 //LEXER RULES.
@@ -25,6 +28,7 @@ fragment D: ('D'|'d');
 fragment E: ('E'|'e');
 fragment F: ('F'|'f');
 fragment G: ('G'|'g');
+fragment H: ('H'|'h');
 fragment I: ('I'|'i');
 fragment L: ('L'|'l');
 fragment M: ('M'|'m');
@@ -54,11 +58,22 @@ fragment DELETE: D E L E T E;
 fragment COLUMN: C O L U M N;
 fragment NAMED: N A M E D;
 
+
+
 //general query lexers.
 GET: G E T;
 OPERAND: (SUM | DIFFERENCE | PRODUCT | QUOTIENT);
 OF: O F;
 FOR: F O R;
+
+// conditional lexers
+IF: I F ;
+ELSE: E L S E ;
+THEN: T H E N ;
+END_IF: E N D UNDERSCORE I F ;
+TRUE: T R U E ;
+FALSE:F A L S E ;
+
 
 //altercolumn lexers.
 NEWCOLUMN: NEW UNDERSCORE COLUMN;
@@ -83,7 +98,7 @@ LITERAL: (LOWERCASE | UPPERCASE | NUMBERS | UNDERSCORE)+;
 
 //COLUMNS: LITERAL (COMMA LITERAL)*;
 
-//CONDITION: LITERAL EQUALS LITERAL (COMMA LITERAL EQUALS LITERAL)*;
+CONDITION: LITERAL EQUALS LITERAL (COMMA LITERAL EQUALS LITERAL)*;
 
 WHITESPACE: ' ' -> skip;
 NEXTLINE: '\n' -> skip;

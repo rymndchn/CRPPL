@@ -1,5 +1,6 @@
 do import_file (testFileName,testDataSetName)
 get sum of revenue for year = 2021, month = 11
-get sum month
 new_column named isChristmas for testDataSetName
 delete_column named isHoliday for testDataSetName
+if year=11 then do import_file (testFileName,testDataSetName) end_if
+if year=11 then new_column named isChristmas for testDataSetName else new_column named isChristmas for testDataSetName end_if

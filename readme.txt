@@ -1,15 +1,8 @@
 Preconditions:
-1. Make sure antlr is successfully and properly installed.
-2. Python is installed.
-3. Python runtime is installed.
+1. Python is installed.
+2. Antlr python runtime is installed.
 
-To generate Parser and Lexer files:
-1. make sure the g4 file is peroperly defined.
-2. go to the directory of the g4 file and execute the following commands:
-	antlr4 -Dlanguage=<python version> <g4 file>
-	antlr4 -Dlanguage=Python3 CRPPL.g4
-3. Parser, Lexer and Listener files are generated
-
-To run the main tokenizer:
-1. run the main python file (main.py) with the crppl program (test.crppl)
-	python main.py test.crppl
+To run the tokenizer:
+1. Download the zip file from canvas, and extract it in your local machine.
+2. Write the source code in a file, for instance, 'test.crppl' (you may edit the 'test.crppl' in the zip file).
+2. In command line, run 'python main.py <source code file> (make sure that the source code file is in same directory as the main.py, else need to specify the absolute path of the source code file).
