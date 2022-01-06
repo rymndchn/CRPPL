@@ -11,30 +11,30 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25")
         buf.write("D\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\6\2\16\n")
         buf.write("\2\r\2\16\2\17\5\2\22\n\2\3\2\3\2\3\3\3\3\3\3\5\3\31\n")
         buf.write("\3\3\4\3\4\3\4\5\4\36\n\4\3\4\3\4\3\4\7\4#\n\4\f\4\16")
         buf.write("\4&\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4\60\n\4\f")
         buf.write("\4\16\4\63\13\4\5\4\65\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5")
-        buf.write("\3\5\3\6\3\6\3\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\3\3\2\t")
-        buf.write("\n\2F\2\21\3\2\2\2\4\30\3\2\2\2\6\32\3\2\2\2\b\66\3\2")
+        buf.write("\3\5\3\6\3\6\3\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\3\3\2\7")
+        buf.write("\b\2F\2\21\3\2\2\2\4\30\3\2\2\2\6\32\3\2\2\2\b\66\3\2")
         buf.write("\2\2\n>\3\2\2\2\f\16\5\4\3\2\r\f\3\2\2\2\16\17\3\2\2\2")
         buf.write("\17\r\3\2\2\2\17\20\3\2\2\2\20\22\3\2\2\2\21\r\3\2\2\2")
         buf.write("\21\22\3\2\2\2\22\23\3\2\2\2\23\24\7\2\2\3\24\3\3\2\2")
         buf.write("\2\25\31\5\6\4\2\26\31\5\b\5\2\27\31\5\n\6\2\30\25\3\2")
         buf.write("\2\2\30\26\3\2\2\2\30\27\3\2\2\2\31\5\3\2\2\2\32\35\7")
-        buf.write("\5\2\2\33\34\7\6\2\2\34\36\7\7\2\2\35\33\3\2\2\2\35\36")
-        buf.write("\3\2\2\2\36\37\3\2\2\2\37$\7\23\2\2 !\7\21\2\2!#\7\23")
+        buf.write("\3\2\2\33\34\7\4\2\2\34\36\7\5\2\2\35\33\3\2\2\2\35\36")
+        buf.write("\3\2\2\2\36\37\3\2\2\2\37$\7\22\2\2 !\7\17\2\2!#\7\22")
         buf.write("\2\2\" \3\2\2\2#&\3\2\2\2$\"\3\2\2\2$%\3\2\2\2%\64\3\2")
-        buf.write("\2\2&$\3\2\2\2\'(\7\b\2\2()\7\23\2\2)*\7\22\2\2*\61\7")
-        buf.write("\23\2\2+,\7\21\2\2,-\7\23\2\2-.\7\22\2\2.\60\7\23\2\2")
+        buf.write("\2\2&$\3\2\2\2\'(\7\6\2\2()\7\22\2\2)*\7\20\2\2*\61\7")
+        buf.write("\22\2\2+,\7\17\2\2,-\7\22\2\2-.\7\20\2\2.\60\7\22\2\2")
         buf.write("/+\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62")
         buf.write("\65\3\2\2\2\63\61\3\2\2\2\64\'\3\2\2\2\64\65\3\2\2\2\65")
-        buf.write("\7\3\2\2\2\66\67\7\f\2\2\678\7\r\2\289\7\3\2\29:\7\23")
-        buf.write("\2\2:;\7\21\2\2;<\7\23\2\2<=\7\4\2\2=\t\3\2\2\2>?\t\2")
-        buf.write("\2\2?@\7\13\2\2@A\7\b\2\2AB\7\23\2\2B\13\3\2\2\2\t\17")
-        buf.write("\21\30\35$\61\64")
+        buf.write("\7\3\2\2\2\66\67\7\n\2\2\678\7\13\2\289\7\21\2\29:\7\22")
+        buf.write("\2\2:;\7\17\2\2;<\7\22\2\2<=\7\21\2\2=\t\3\2\2\2>?\t\2")
+        buf.write("\2\2?@\7\t\2\2@A\7\6\2\2AB\7\22\2\2B\13\3\2\2\2\t\17\21")
+        buf.write("\30\35$\61\64")
         return buf.getvalue()
 
 
@@ -48,17 +48,17 @@ class CRPPLParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'('", "')'", "<INVALID>", "<INVALID>", 
+    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "','", "'='", "<INVALID>", 
+                     "<INVALID>", "','", "'='", "<INVALID>", "<INVALID>", 
                      "' '", "'\n'", "'\r'" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "GET", "OPERAND", 
-                      "OF", "FOR", "NEWCOLUMN", "DELETECOLUMN", "NAMEDCOLUMN", 
-                      "DO", "IMPORTFILE", "CREATEFUNCTION", "RETURN", "ENDFUNCTION", 
-                      "COMMA", "EQUALS", "LITERAL", "WHITESPACE", "NEXTLINE", 
-                      "CARRIAGERETURN" ]
+    symbolicNames = [ "<INVALID>", "GET", "OPERAND", "OF", "FOR", "NEWCOLUMN", 
+                      "DELETECOLUMN", "NAMEDCOLUMN", "DO", "IMPORTFILE", 
+                      "CREATEFUNCTION", "RETURN", "ENDFUNCTION", "COMMA", 
+                      "EQUALS", "GROUPINGSYMBOL", "LITERAL", "WHITESPACE", 
+                      "NEXTLINE", "CARRIAGERETURN" ]
 
     RULE_multiexpr = 0
     RULE_validexpr = 1
@@ -70,26 +70,25 @@ class CRPPLParser ( Parser ):
                    "altercolumn" ]
 
     EOF = Token.EOF
-    T__0=1
-    T__1=2
-    GET=3
-    OPERAND=4
-    OF=5
-    FOR=6
-    NEWCOLUMN=7
-    DELETECOLUMN=8
-    NAMEDCOLUMN=9
-    DO=10
-    IMPORTFILE=11
-    CREATEFUNCTION=12
-    RETURN=13
-    ENDFUNCTION=14
-    COMMA=15
-    EQUALS=16
-    LITERAL=17
-    WHITESPACE=18
-    NEXTLINE=19
-    CARRIAGERETURN=20
+    GET=1
+    OPERAND=2
+    OF=3
+    FOR=4
+    NEWCOLUMN=5
+    DELETECOLUMN=6
+    NAMEDCOLUMN=7
+    DO=8
+    IMPORTFILE=9
+    CREATEFUNCTION=10
+    RETURN=11
+    ENDFUNCTION=12
+    COMMA=13
+    EQUALS=14
+    GROUPINGSYMBOL=15
+    LITERAL=16
+    WHITESPACE=17
+    NEXTLINE=18
+    CARRIAGERETURN=19
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -367,6 +366,12 @@ class CRPPLParser ( Parser ):
         def IMPORTFILE(self):
             return self.getToken(CRPPLParser.IMPORTFILE, 0)
 
+        def GROUPINGSYMBOL(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.GROUPINGSYMBOL)
+            else:
+                return self.getToken(CRPPLParser.GROUPINGSYMBOL, i)
+
         def LITERAL(self, i:int=None):
             if i is None:
                 return self.getTokens(CRPPLParser.LITERAL)
@@ -401,7 +406,7 @@ class CRPPLParser ( Parser ):
             self.state = 53
             self.match(CRPPLParser.IMPORTFILE)
             self.state = 54
-            self.match(CRPPLParser.T__0)
+            self.match(CRPPLParser.GROUPINGSYMBOL)
             self.state = 55
             self.match(CRPPLParser.LITERAL)
             self.state = 56
@@ -409,7 +414,7 @@ class CRPPLParser ( Parser ):
             self.state = 57
             self.match(CRPPLParser.LITERAL)
             self.state = 58
-            self.match(CRPPLParser.T__1)
+            self.match(CRPPLParser.GROUPINGSYMBOL)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
