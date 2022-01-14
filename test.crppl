@@ -1,5 +1,5 @@
-do import_file (testFileName,testDataSetName)
-get sum of revenue for year = 2021, month = 11
-new_column named isChristmas for testDataSetName
-delete_column named isHoliday for testDataSetName
-asdasdasdasd
+ 
+IF (((s)&(a)&(a!=b)=b)&(a)) THEN 
+do import_file(t,g) 
+do import_file(t,g) 
+END_IF

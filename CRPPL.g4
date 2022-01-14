@@ -14,10 +14,12 @@ validexpr: generalquery
 
 //PARSER RULES.
 
-generalquery: GET (OPERAND OF)? LITERAL (COMMA LITERAL)* (FOR LITERAL EQUALS LITERAL (COMMA LITERAL EQUALS LITERAL)*)?;
+
+
+generalquery: GET (OPERAND OF)? LITERAL (COMMA LITERAL)* (FOR LITERAL EQUAL LITERAL (COMMA LITERAL EQUAL LITERAL)*)?;
 importdata : DO IMPORTFILE GROUPINGSYMBOL LITERAL COMMA LITERAL GROUPINGSYMBOL;
 altercolumn: (NEWCOLUMN | DELETECOLUMN) NAMEDCOLUMN FOR LITERAL;
-ifstatement: IF (CONDITION) THEN (validexpr)(validexpr)* (ELSE (validexpr))? END_IF;
+ifstatement: IF (condition) THEN (validexpr)(validexpr)* (ELSE_IF (condition|TRUE|FALSE) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
 
 
 //LEXER RULES.
@@ -70,6 +72,7 @@ FOR: F O R;
 IF: I F ;
 ELSE: E L S E ;
 THEN: T H E N ;
+ELSE_IF: E L S E UNDERSCORE I F;
 END_IF: E N D UNDERSCORE I F ;
 TRUE: T R U E ;
 FALSE:F A L S E ;
@@ -92,14 +95,31 @@ RETURN : R E T U R N;
 ENDFUNCTION : E N D UNDERSCORE F U N C T I O N;
 
 COMMA: ',';
-EQUALS: '=';
+EQUAL: '=';
+NOT_EQUAL: '!=';
+AND: '&';
+OR: '|';
+GT: '>';
+GTE: '>=';
+LT: '<';
+LTE: '<=';
+operator: AND|OR|GT|GTE|LT|LTE|EQUAL|NOT_EQUAL;
 GROUPINGSYMBOL: [()];
 
 LITERAL: (LOWERCASE | UPPERCASE | NUMBERS | UNDERSCORE)+;
 
 //COLUMNS: LITERAL (COMMA LITERAL)*;
 
-CONDITION: LITERAL EQUALS LITERAL (COMMA LITERAL EQUALS LITERAL)*;
+condition: 
+(
+  (GROUPINGSYMBOL (LITERAL|TRUE|FALSE|condition) GROUPINGSYMBOL) | 
+  
+  (GROUPINGSYMBOL  (LITERAL|TRUE|FALSE|condition) operator (LITERAL|TRUE|FALSE) GROUPINGSYMBOL) 
+
+  
+)
+(operator condition)*
+;
 
 WHITESPACE: ' ' -> skip;
 NEXTLINE: '\n' -> skip;
