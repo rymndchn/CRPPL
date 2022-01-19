@@ -35,12 +35,12 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CRPPLParser#importdata.
-    def enterImportdata(self, ctx:CRPPLParser.ImportdataContext):
+    # Enter a parse tree produced by CRPPLParser#importfile.
+    def enterImportfile(self, ctx:CRPPLParser.ImportfileContext):
         pass
 
-    # Exit a parse tree produced by CRPPLParser#importdata.
-    def exitImportdata(self, ctx:CRPPLParser.ImportdataContext):
+    # Exit a parse tree produced by CRPPLParser#importfile.
+    def exitImportfile(self, ctx:CRPPLParser.ImportfileContext):
         pass
 
 
@@ -50,6 +50,33 @@ class CRPPLListener(ParseTreeListener):
 
     # Exit a parse tree produced by CRPPLParser#altercolumn.
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#reportvisualization.
+    def enterReportvisualization(self, ctx:CRPPLParser.ReportvisualizationContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#reportvisualization.
+    def exitReportvisualization(self, ctx:CRPPLParser.ReportvisualizationContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#createfunction.
+    def enterCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#createfunction.
+    def exitCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#conditionalstatement.
+    def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#conditionalstatement.
+    def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
         pass
 
 

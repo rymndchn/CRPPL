@@ -3,28 +3,29 @@
 grammar CRPPL;
 
 //MULTI EXPRESSION.
-multiexpr: (validexpr+)? EOF;
+multiexpr: (validexpr+)? EOF?;
 
 //VALID EXPRESSION.
 validexpr: generalquery
-         | importdata
+         | importfile
          | altercolumn
-         | ifstatement
+         | reportvisualization
+         | createfunction
+         | conditionalstatement
          ;
 
 //PARSER RULES.
-
-
-
-generalquery: GET (OPERAND OF)? LITERAL (COMMA LITERAL)* (FOR LITERAL EQUAL LITERAL (COMMA LITERAL EQUAL LITERAL)*)?;
-importdata : DO IMPORTFILE GROUPINGSYMBOL LITERAL COMMA LITERAL GROUPINGSYMBOL;
-altercolumn: (NEWCOLUMN | DELETECOLUMN) NAMEDCOLUMN FOR LITERAL;
-ifstatement: IF (condition) THEN (validexpr)(validexpr)* (ELSE_IF (condition|TRUE|FALSE) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
+generalquery: RESERVEDWORD (OPERATOR RESERVEDWORD)? LITERAL (SEPARATOR LITERAL)* (RESERVEDWORD LITERAL OPERATOR LITERAL (SEPARATOR LITERAL OPERATOR LITERAL)*)?;
+importfile: RESERVEDWORD RESERVEDWORD SEPARATOR LITERAL SEPARATOR LITERAL SEPARATOR;
+altercolumn: RESERVEDWORD LITERAL RESERVEDWORD LITERAL;
+reportvisualization: RESERVEDWORD RESERVEDWORD SEPARATOR LITERAL SEPARATOR LITERAL RESERVEDWORD RESERVEDWORD SEPARATOR LITERAL RESERVEDWORD RESERVEDWORD SEPARATOR;
+createfunction: RESERVEDWORD IDENTIFIER SEPARATOR (IDENTIFIER (SEPARATOR IDENTIFIER)*)* SEPARATOR multiexpr? RESERVEDWORD;
+conditionalstatement: RESERVEDWORD IDENTIFIER OPERATOR LITERAL (OPERATOR IDENTIFIER OPERATOR LITERAL)* RESERVEDWORD multiexpr? (RESERVEDWORD multiexpr)? RESERVEDWORD;
 
 
 //LEXER RULES.
-//common lexers.
 fragment A: ('A'|'a');
+fragment B: ('B'|'b');
 fragment C: ('C'|'c');
 fragment D: ('D'|'d');
 fragment E: ('E'|'e');
@@ -32,6 +33,8 @@ fragment F: ('F'|'f');
 fragment G: ('G'|'g');
 fragment H: ('H'|'h');
 fragment I: ('I'|'i');
+fragment J: ('J'|'j');
+fragment K: ('K'|'k');
 fragment L: ('L'|'l');
 fragment M: ('M'|'m');
 fragment N: ('N'|'n');
@@ -42,7 +45,11 @@ fragment R: ('R'|'r');
 fragment S: ('S'|'s');
 fragment T: ('T'|'t');
 fragment U: ('U'|'u');
+fragment V: ('V'|'v');
 fragment W: ('W'|'w');
+fragment X: ('X'|'x');
+fragment Y: ('Y'|'y');
+fragment Z: ('Z'|'z');
 
 fragment LOWERCASE: [a-z];
 fragment UPPERCASE: [A-Z];
@@ -50,77 +57,73 @@ fragment NUMBERS: [0-9];
 fragment UNDERSCORE: '_';
 fragment ALPHANUMERIC: [a-zA-Z0-9]*;
 
+//GENERAL QUERY RESERVED WORD LEXEMES
+fragment GET: G E T;
+fragment OF: O F;
+fragment FOR: F O R;
+fragment CONSTANT: C O N S T A N T;
+
+//SUB-ROUTINE RESERVED WORD LEXEMES
+fragment CREATEFUNCTION: C R E A T E UNDERSCORE F U N C T I O N;
+fragment ENDFUNCTION: E N D UNDERSCORE F U N C T I O N;
+fragment RETURN: R E T U R N;
+fragment DO: D O;
+
+//CONDITIONAL STATEMENT RESERVED WORD LEXEMES
+fragment IF: I F;
+fragment THEN: T H E N;
+fragment ELSEIF: E L S E UNDERSCORE I F;
+fragment ELSE: E L S E;
+fragment TRUE: T R U E;
+fragment FALSE: F A L S E;
+fragment ENDIF: E N D UNDERSCORE I F;
+
+//DATASET COLUMN OPERATIONS RESERVED WORD LEXEMES
+fragment NEWCOLUMN: N E W UNDERSCORE C O L U M N;
+fragment ALTERCOLUMN: A L T E R UNDERSCORE C O L U M N;
+fragment DELETECOLUMN: D E L E T E UNDERSCORE C O L U M N;
+
+//FILE IMPORT RESERVED WORD LEXEMES
+fragment IMPORTFILE: I M P O R T UNDERSCORE F I L E;
+
+//REPORT VISUALIZATION RESERVED WORD LEXEMES
+fragment GRAPH: G R A P H;
+fragment IS: I S;
+fragment XAXIS: X UNDERSCORE A X I S;
+fragment YAXIS: Y UNDERSCORE A X I S;
+fragment LABEL: L A B E L;
+fragment VALUE: V A L U E;
+
+//OPERATOR LEXEMES
 fragment SUM: S U M;
-fragment DIFFERENCE: D I F F E R E N C E;
 fragment PRODUCT: P R O D U C T;
 fragment QUOTIENT: Q U O T I E N T;
-//fragment FOR: F O R;
-fragment NEW: N E W;
-fragment DELETE: D E L E T E;
-fragment COLUMN: C O L U M N;
-fragment NAMED: N A M E D;
+fragment DIFFERENCE: D I F F E R E N C E;
+fragment EQUALS: '=' | E Q U A L;
+fragment GREATERTHAN: G T;
+fragment GREATERTHANEQUAL: G T E;
+fragment LESSTHAN: L T;
+fragment LESSTHANEQUAL: L T E;
+fragment NOTEQUAL: N O T UNDERSCORE E Q U A L;
+fragment AND: A N D;
+fragment OR: O R;
 
+//SEPARATOR LEXEMES
+fragment COMMA: ',';
+fragment OPENPARENTHESIS: '(';
+fragment CLOSEPARENTHESIS: ')';
 
+RESERVEDWORD: (GET | OF | FOR | CONSTANT | CREATEFUNCTION | ENDFUNCTION | RETURN | DO | IF | THEN | ELSEIF | ELSE | TRUE | FALSE | ENDIF | NEWCOLUMN | ALTERCOLUMN | DELETECOLUMN | IMPORTFILE | GRAPH | IS | XAXIS | YAXIS | LABEL | VALUE);
 
-//general query lexers.
-GET: G E T;
-OPERAND: (SUM | DIFFERENCE | PRODUCT | QUOTIENT);
-OF: O F;
-FOR: F O R;
+OPERATOR: (SUM | PRODUCT | QUOTIENT | DIFFERENCE | EQUALS | GREATERTHAN | GREATERTHANEQUAL | LESSTHAN | LESSTHANEQUAL | NOTEQUAL | AND | OR);
 
-// conditional lexers
-IF: I F ;
-ELSE: E L S E ;
-THEN: T H E N ;
-ELSE_IF: E L S E UNDERSCORE I F;
-END_IF: E N D UNDERSCORE I F ;
-TRUE: T R U E ;
-FALSE:F A L S E ;
+SEPARATOR: (COMMA | OPENPARENTHESIS | CLOSEPARENTHESIS);
 
+LITERAL: '\'' (.*?) '\'';
 
-//altercolumn lexers.
-NEWCOLUMN: NEW UNDERSCORE COLUMN;
-DELETECOLUMN: DELETE UNDERSCORE COLUMN;
-//LITERAL: (LOWERCASE | UPPERCASE | NUMBERS | UNDERSCORE)+;
-NAMEDCOLUMN: (NAMED WHITESPACE LITERAL);
-//FORDATASET: (FOR WHITESPACE LITERAL);
-
-//io lexers.
-DO : D O;
-IMPORTFILE : I M P O R T UNDERSCORE F I L E;
-
-//sub routine lexers.
-CREATEFUNCTION : C R E A T E UNDERSCORE F U N C T I O N;
-RETURN : R E T U R N;
-ENDFUNCTION : E N D UNDERSCORE F U N C T I O N;
-
-COMMA: ',';
-EQUAL: '=';
-NOT_EQUAL: '!=';
-AND: '&';
-OR: '|';
-GT: '>';
-GTE: '>=';
-LT: '<';
-LTE: '<=';
-operator: AND|OR|GT|GTE|LT|LTE|EQUAL|NOT_EQUAL;
-GROUPINGSYMBOL: [()];
-
-LITERAL: (LOWERCASE | UPPERCASE | NUMBERS | UNDERSCORE)+;
-
-//COLUMNS: LITERAL (COMMA LITERAL)*;
-
-condition: 
-(
-  (GROUPINGSYMBOL (LITERAL|TRUE|FALSE|condition) GROUPINGSYMBOL) | 
-  
-  (GROUPINGSYMBOL  (LITERAL|TRUE|FALSE|condition) operator (LITERAL|TRUE|FALSE) GROUPINGSYMBOL) 
-
-  
-)
-(operator condition)*
-;
+IDENTIFIER: (LOWERCASE | UPPERCASE | NUMBERS | UNDERSCORE)+;
 
 WHITESPACE: ' ' -> skip;
 NEXTLINE: '\n' -> skip;
+TAB: '\t' -> skip;
 CARRIAGERETURN: '\r' -> skip;
