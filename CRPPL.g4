@@ -24,14 +24,10 @@ createfunction: RESERVEDWORD IDENTIFIER SEPARATOR (IDENTIFIER (SEPARATOR IDENTIF
 conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
 
 booleanstatement: (
-  (OPENPARENTHESIS (IDENTIFIER|TRUE|FALSE|booleanstatement) CLOSEPARENTHESIS) | 
+  OPENPARENTHESIS (IDENTIFIER|TRUE|FALSE) CLOSEPARENTHESIS | 
   
-  (OPENPARENTHESIS  (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement) OPERATOR (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement) CLOSEPARENTHESIS) 
-
-  
-)
-(OPERATOR booleanstatement)*
-;
+  OPENPARENTHESIS (LITERAL|IDENTIFIER|TRUE|FALSE| booleanstatement) (OPERATOR (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement))* CLOSEPARENTHESIS
+);
 
 
 

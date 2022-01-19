@@ -1,10 +1,6 @@
-if (date equal '25') then
-	if (month equal '12') then 
+if (date equal '25' and date equal '25' and date) then
+
 		do graph ('pie', 'foo' is x_axis, 'bar' is y_axis)
-	else_if (month equal '12') then 
-		do graph ('pie', 'foo' is x_axis, 'bar' is y_axis)
-	else
-		do graph ('pie', 'foo' is x_axis, 'bar' is y_axis)
-	end_if
+
 end_if 
 
