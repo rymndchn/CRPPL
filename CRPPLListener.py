@@ -1,4 +1,4 @@
-# Generated from CRPPL.g4 by ANTLR 4.9
+# Generated from CRPPL.g4 by ANTLR 4.7.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .CRPPLParser import CRPPLParser
@@ -80,5 +80,12 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#booleanstatement.
+    def enterBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+        pass
 
-del CRPPLParser
+    # Exit a parse tree produced by CRPPLParser#booleanstatement.
+    def exitBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+        pass
+
+
