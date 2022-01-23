@@ -17,4 +17,3 @@ if date equal '25' then
 		do import_file ('testFileName','testDataSetName')
 	end_if
 end_if 
-
