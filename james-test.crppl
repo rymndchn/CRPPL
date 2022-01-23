@@ -1,0 +1,5 @@
+if (date equal '25' and date equal '25' and date) then
+
+		do graph ('pie', 'foo' is x_axis, 'bar' is y_axis)
+
+end_if 
