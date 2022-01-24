@@ -9,7 +9,7 @@ multiexpr: (validexpr+)? EOF?;
 validexpr: generalquery
          | importfile
          | altercolumn
-         | reportvisualization
+         | graphquery
          | createfunction
          | conditionalstatement
          ;
@@ -18,7 +18,7 @@ validexpr: generalquery
 generalquery: RESERVEDWORD (OPERATOR RESERVEDWORD)? LITERAL (SEPARATOR LITERAL)* (RESERVEDWORD LITERAL OPERATOR LITERAL (SEPARATOR LITERAL OPERATOR LITERAL)*)?;
 importfile: RESERVEDWORD RESERVEDWORD SEPARATOR LITERAL SEPARATOR LITERAL SEPARATOR;
 altercolumn: RESERVEDWORD LITERAL RESERVEDWORD LITERAL;
-reportvisualization: DO GRAPH OPENPARENTHESIS LITERAL SEPARATOR LITERAL RESERVEDWORD RESERVEDWORD SEPARATOR LITERAL RESERVEDWORD RESERVEDWORD CLOSEPARENTHESIS;
+graphquery: DO GRAPH OPENPARENTHESIS (TYPE)? COMMA TABLECOLUMN IS LABELONE COMMA TABLECOLUMN IS LABELTWO CLOSEPARENTHESIS;
 createfunction: RESERVEDWORD IDENTIFIER SEPARATOR (IDENTIFIER (SEPARATOR IDENTIFIER)*)* SEPARATOR multiexpr? RESERVEDWORD;
 
 conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
@@ -95,13 +95,20 @@ fragment DELETECOLUMN: D E L E T E UNDERSCORE C O L U M N;
 //FILE IMPORT RESERVED WORD LEXEMES
 fragment IMPORTFILE: I M P O R T UNDERSCORE F I L E;
 
-//REPORT VISUALIZATION RESERVED WORD LEXEMES
-GRAPH: G R A P H;
-fragment IS: I S;
-fragment XAXIS: X UNDERSCORE A X I S;
-fragment YAXIS: Y UNDERSCORE A X I S;
-fragment LABEL: L A B E L;
-fragment VALUE: V A L U E;
+//GRAPH QUERY LEXERS
+DO: D O;
+GRAPH : G R A P H;
+TYPE: (PIE | BAR | LINE);
+IS: I S;
+LABELONE: (X_AXIS | LABEL);
+LABELTWO: (Y_AXIS | VALUE);
+COLUMN: (LOWERCASE | UPPERCASE | UNDERSCORE)+;
+
+fragment PIE: P I E;
+fragment BAR: B A R;
+fragment LINE: L I N E;
+fragment X_AXIS: X UNDERSCORE A X I S;
+fragment Y_AXIS: Y UNDERSCORE A X I S;
 
 //OPERATOR LEXEMES
 fragment SUM: S U M;
