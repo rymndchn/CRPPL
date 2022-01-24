@@ -28,30 +28,30 @@ def serializedATN():
         buf.write("\13\t\5\t\u009a\n\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3")
         buf.write("\n\3\n\3\n\5\n\u00a7\n\n\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u00af")
         buf.write("\n\n\7\n\u00b1\n\n\f\n\16\n\u00b4\13\n\3\n\5\n\u00b7\n")
-        buf.write("\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\4\3\2\17\21\4\2\f")
-        buf.write("\r\33\33\2\u00ce\2\31\3\2\2\2\4$\3\2\2\2\6&\3\2\2\2\b")
-        buf.write("G\3\2\2\2\nO\3\2\2\2\fT\3\2\2\2\16b\3\2\2\2\20x\3\2\2")
-        buf.write("\2\22\u00b6\3\2\2\2\24\26\5\4\3\2\25\24\3\2\2\2\26\27")
-        buf.write("\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30\32\3\2\2\2\31")
-        buf.write("\25\3\2\2\2\31\32\3\2\2\2\32\34\3\2\2\2\33\35\7\2\2\3")
-        buf.write("\34\33\3\2\2\2\34\35\3\2\2\2\35\3\3\2\2\2\36%\5\6\4\2")
-        buf.write("\37%\5\b\5\2 %\5\n\6\2!%\5\f\7\2\"%\5\16\b\2#%\5\20\t")
-        buf.write("\2$\36\3\2\2\2$\37\3\2\2\2$ \3\2\2\2$!\3\2\2\2$\"\3\2")
-        buf.write("\2\2$#\3\2\2\2%\5\3\2\2\2&)\7\3\2\2\'(\7\27\2\2(*\7\4")
-        buf.write("\2\2)\'\3\2\2\2)*\3\2\2\2*+\3\2\2\2+\65\7\32\2\2,-\7\23")
-        buf.write("\2\2-\60\7\3\2\2./\7\30\2\2/\61\7\4\2\2\60.\3\2\2\2\60")
-        buf.write("\61\3\2\2\2\61\62\3\2\2\2\62\64\7\32\2\2\63,\3\2\2\2\64")
-        buf.write("\67\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\66E\3\2\2\2\67")
-        buf.write("\65\3\2\2\289\7\5\2\29:\7\32\2\2:;\7\30\2\2;B\7\32\2\2")
-        buf.write("<=\7\23\2\2=>\7\32\2\2>?\7\30\2\2?A\7\32\2\2@<\3\2\2\2")
+        buf.write("\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\5\3\2\32\33\3\2\17")
+        buf.write("\21\4\2\f\r\33\33\2\u00ce\2\31\3\2\2\2\4$\3\2\2\2\6&\3")
+        buf.write("\2\2\2\bG\3\2\2\2\nO\3\2\2\2\fT\3\2\2\2\16b\3\2\2\2\20")
+        buf.write("x\3\2\2\2\22\u00b6\3\2\2\2\24\26\5\4\3\2\25\24\3\2\2\2")
+        buf.write("\26\27\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30\32\3\2\2")
+        buf.write("\2\31\25\3\2\2\2\31\32\3\2\2\2\32\34\3\2\2\2\33\35\7\2")
+        buf.write("\2\3\34\33\3\2\2\2\34\35\3\2\2\2\35\3\3\2\2\2\36%\5\6")
+        buf.write("\4\2\37%\5\b\5\2 %\5\n\6\2!%\5\f\7\2\"%\5\16\b\2#%\5\20")
+        buf.write("\t\2$\36\3\2\2\2$\37\3\2\2\2$ \3\2\2\2$!\3\2\2\2$\"\3")
+        buf.write("\2\2\2$#\3\2\2\2%\5\3\2\2\2&)\7\3\2\2\'(\7\27\2\2(*\7")
+        buf.write("\4\2\2)\'\3\2\2\2)*\3\2\2\2*+\3\2\2\2+\65\t\2\2\2,-\7")
+        buf.write("\23\2\2-\60\7\3\2\2./\7\30\2\2/\61\7\4\2\2\60.\3\2\2\2")
+        buf.write("\60\61\3\2\2\2\61\62\3\2\2\2\62\64\t\2\2\2\63,\3\2\2\2")
+        buf.write("\64\67\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\66E\3\2\2\2")
+        buf.write("\67\65\3\2\2\289\7\5\2\29:\t\2\2\2:;\7\30\2\2;B\t\2\2")
+        buf.write("\2<=\7\23\2\2=>\t\2\2\2>?\7\30\2\2?A\t\2\2\2@<\3\2\2\2")
         buf.write("AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2\2E8\3")
         buf.write("\2\2\2EF\3\2\2\2F\7\3\2\2\2GH\7\26\2\2HI\7\26\2\2IJ\7")
         buf.write("\31\2\2JK\7\32\2\2KL\7\31\2\2LM\7\32\2\2MN\7\31\2\2N\t")
-        buf.write("\3\2\2\2OP\t\2\2\2PQ\7\32\2\2QR\7\5\2\2RS\7\32\2\2S\13")
-        buf.write("\3\2\2\2TU\7\7\2\2UV\7\22\2\2VW\7\24\2\2WX\7\32\2\2XY")
-        buf.write("\7\31\2\2YZ\7\32\2\2Z[\7\26\2\2[\\\7\26\2\2\\]\7\31\2")
-        buf.write("\2]^\7\32\2\2^_\7\26\2\2_`\7\26\2\2`a\7\25\2\2a\r\3\2")
-        buf.write("\2\2bc\7\26\2\2cd\7\33\2\2do\7\31\2\2ej\7\33\2\2fg\7\31")
+        buf.write("\3\2\2\2OP\t\3\2\2PQ\t\2\2\2QR\7\5\2\2RS\t\2\2\2S\13\3")
+        buf.write("\2\2\2TU\7\7\2\2UV\7\22\2\2VW\7\24\2\2WX\7\32\2\2XY\7")
+        buf.write("\31\2\2YZ\7\32\2\2Z[\7\26\2\2[\\\7\26\2\2\\]\7\31\2\2")
+        buf.write("]^\7\32\2\2^_\7\26\2\2_`\7\26\2\2`a\7\25\2\2a\r\3\2\2")
+        buf.write("\2bc\7\26\2\2cd\7\33\2\2do\7\31\2\2ej\7\33\2\2fg\7\31")
         buf.write("\2\2gi\7\33\2\2hf\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2\2")
         buf.write("\2kn\3\2\2\2lj\3\2\2\2me\3\2\2\2nq\3\2\2\2om\3\2\2\2o")
         buf.write("p\3\2\2\2pr\3\2\2\2qo\3\2\2\2rt\7\31\2\2su\5\2\2\2ts\3")
@@ -70,7 +70,7 @@ def serializedATN():
         buf.write("\u0096\u0097\3\2\2\2\u0097\u009a\3\2\2\2\u0098\u0096\3")
         buf.write("\2\2\2\u0099\u0091\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009b")
         buf.write("\3\2\2\2\u009b\u009c\7\16\2\2\u009c\21\3\2\2\2\u009d\u009e")
-        buf.write("\7\24\2\2\u009e\u009f\t\3\2\2\u009f\u00b7\7\25\2\2\u00a0")
+        buf.write("\7\24\2\2\u009e\u009f\t\4\2\2\u009f\u00b7\7\25\2\2\u00a0")
         buf.write("\u00a6\7\24\2\2\u00a1\u00a7\7\32\2\2\u00a2\u00a7\7\33")
         buf.write("\2\2\u00a3\u00a7\7\f\2\2\u00a4\u00a7\7\r\2\2\u00a5\u00a7")
         buf.write("\5\22\n\2\u00a6\u00a1\3\2\2\2\u00a6\u00a2\3\2\2\2\u00a6")
@@ -358,6 +358,12 @@ class CRPPLParser ( Parser ):
             else:
                 return self.getToken(CRPPLParser.LITERAL, i)
 
+        def IDENTIFIER(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.IDENTIFIER)
+            else:
+                return self.getToken(CRPPLParser.IDENTIFIER, i)
+
         def OPERATING_FUNCTION(self):
             return self.getToken(CRPPLParser.OPERATING_FUNCTION, 0)
 
@@ -416,7 +422,12 @@ class CRPPLParser ( Parser ):
 
 
             self.state = 41
-            self.match(CRPPLParser.LITERAL)
+            _la = self._input.LA(1)
+            if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
             self.state = 51
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -436,7 +447,12 @@ class CRPPLParser ( Parser ):
 
 
                 self.state = 48
-                self.match(CRPPLParser.LITERAL)
+                _la = self._input.LA(1)
+                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
                 self.state = 53
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -448,11 +464,21 @@ class CRPPLParser ( Parser ):
                 self.state = 54
                 self.match(CRPPLParser.FOR)
                 self.state = 55
-                self.match(CRPPLParser.LITERAL)
+                _la = self._input.LA(1)
+                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
                 self.state = 56
                 self.match(CRPPLParser.OPERATOR)
                 self.state = 57
-                self.match(CRPPLParser.LITERAL)
+                _la = self._input.LA(1)
+                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
                 self.state = 64
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -460,11 +486,21 @@ class CRPPLParser ( Parser ):
                     self.state = 58
                     self.match(CRPPLParser.COMMA)
                     self.state = 59
-                    self.match(CRPPLParser.LITERAL)
+                    _la = self._input.LA(1)
+                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                        self._errHandler.recoverInline(self)
+                    else:
+                        self._errHandler.reportMatch(self)
+                        self.consume()
                     self.state = 60
                     self.match(CRPPLParser.OPERATOR)
                     self.state = 61
-                    self.match(CRPPLParser.LITERAL)
+                    _la = self._input.LA(1)
+                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                        self._errHandler.recoverInline(self)
+                    else:
+                        self._errHandler.reportMatch(self)
+                        self.consume()
                     self.state = 66
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
@@ -553,12 +589,6 @@ class CRPPLParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def LITERAL(self, i:int=None):
-            if i is None:
-                return self.getTokens(CRPPLParser.LITERAL)
-            else:
-                return self.getToken(CRPPLParser.LITERAL, i)
-
         def FOR(self):
             return self.getToken(CRPPLParser.FOR, 0)
 
@@ -570,6 +600,18 @@ class CRPPLParser ( Parser ):
 
         def DELETECOLUMN(self):
             return self.getToken(CRPPLParser.DELETECOLUMN, 0)
+
+        def LITERAL(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.LITERAL)
+            else:
+                return self.getToken(CRPPLParser.LITERAL, i)
+
+        def IDENTIFIER(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.IDENTIFIER)
+            else:
+                return self.getToken(CRPPLParser.IDENTIFIER, i)
 
         def getRuleIndex(self):
             return CRPPLParser.RULE_altercolumn
@@ -600,11 +642,21 @@ class CRPPLParser ( Parser ):
                 self._errHandler.reportMatch(self)
                 self.consume()
             self.state = 78
-            self.match(CRPPLParser.LITERAL)
+            _la = self._input.LA(1)
+            if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
             self.state = 79
             self.match(CRPPLParser.FOR)
             self.state = 80
-            self.match(CRPPLParser.LITERAL)
+            _la = self._input.LA(1)
+            if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
