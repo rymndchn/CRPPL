@@ -80,5 +80,14 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#booleanstatement.
+    def enterBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#booleanstatement.
+    def exitBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+        pass
+
+
 
 del CRPPLParser
