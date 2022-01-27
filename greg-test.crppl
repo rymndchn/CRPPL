@@ -9,3 +9,11 @@ create_function do_graph_inside(revenue)
 	do graph(bar, 'year' is x_axis, 'gross' is y_axis)
 	return do_graph_inside
 end_function
+
+num constant '0'
+create_function add_num(num)
+	if (num lt '25') then
+		do add_num(num)
+	end_if 
+return num
+end_function

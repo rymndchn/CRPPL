@@ -12,6 +12,7 @@ validexpr: generalquery
          | altercolumn
          | graphquery
          | createfunction
+         | functioncall
          | conditionalstatement
          ;
 
@@ -22,7 +23,11 @@ defineconstant: IDENTIFIER RESERVEDWORD_CONSTANT LITERAL;
 altercolumn: (NEWCOLUMN|ALTERCOLUMN|DELETECOLUMN) (LITERAL|IDENTIFIER) FOR (LITERAL|IDENTIFIER);
 graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO CLOSEPARENTHESIS;
 
-createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | graphquery | conditionalstatement)*?) (RETURN IDENTIFIER)? ENDFUNCTION;
+createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | graphquery | conditionalstatement)*?) (RETURN (IDENTIFIER | functioncall))? ENDFUNCTION;
+
+functioncall : RESERVEDWORD_DO functionprototype;
+
+functionprototype : IDENTIFIER OPENPARENTHESIS ((LITERAL|IDENTIFIER) (SEPARATOR (LITERAL|IDENTIFIER))*)? CLOSEPARENTHESIS;
 
 conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
 
