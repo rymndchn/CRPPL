@@ -1,0 +1,7 @@
+varFileName constant 'testFileName'
+varDataSetName constant 'testDataSetName' 
+do import_file (varFileName,varDataSetName)
+if ((date equal '25') and date equal ('25' and date)) then
+	get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+end_if
+do graph(bar, 'year' is x_axis, 'revenue' is y_axis)

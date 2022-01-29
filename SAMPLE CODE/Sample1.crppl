@@ -1,0 +1,4 @@
+do import_file ('testFileName','testDataSetName')
+get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+new_column 'isChristmas' for 'testDataSetName'
+do graph(line, 'month' is x_axis, 'revenue' is y_axis)
