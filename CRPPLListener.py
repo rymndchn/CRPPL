@@ -44,6 +44,15 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#defineconstant.
+    def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#defineconstant.
+    def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#altercolumn.
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
@@ -68,6 +77,24 @@ class CRPPLListener(ParseTreeListener):
 
     # Exit a parse tree produced by CRPPLParser#createfunction.
     def exitCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#functioncall.
+    def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functioncall.
+    def exitFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#functionprototype.
+    def enterFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functionprototype.
+    def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
         pass
 
 
