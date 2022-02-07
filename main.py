@@ -4,6 +4,7 @@ import sys
 from CRPPLLexer import CRPPLLexer
 from CRPPLParser import CRPPLParser
 from antlr4.error.ErrorListener import ErrorListener
+from subroutine import Subroutine
 
 token = CRPPLParser.symbolicNames
 
@@ -44,6 +45,7 @@ def traverse(tree, rule_names, indent = 0):
     else:
         #print("{0}{1}".format("  " * indent, rule_names[tree.getRuleIndex()]))
         print("   " * indent, "+--", "RULE NAME: ", rule_names[tree.getRuleIndex()])
+        print(type(rule_names[tree.getRuleIndex()]))
         for child in tree.children:
             traverse(child, rule_names, indent + 1)
 
