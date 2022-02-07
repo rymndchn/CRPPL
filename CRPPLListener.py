@@ -1,4 +1,4 @@
-# Generated from CRPPL.g4 by ANTLR 4.7.2
+# Generated from CRPPL.g4 by ANTLR 4.9
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .CRPPLParser import CRPPLParser
@@ -44,6 +44,15 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#defineconstant.
+    def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#defineconstant.
+    def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#altercolumn.
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
@@ -71,6 +80,24 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#functioncall.
+    def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functioncall.
+    def exitFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#functionprototype.
+    def enterFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functionprototype.
+    def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#conditionalstatement.
     def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
         pass
@@ -89,3 +116,5 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+
+del CRPPLParser
