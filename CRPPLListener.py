@@ -44,6 +44,15 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#defineconstant.
+    def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#defineconstant.
+    def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#altercolumn.
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
@@ -53,12 +62,12 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CRPPLParser#reportvisualization.
-    def enterReportvisualization(self, ctx:CRPPLParser.ReportvisualizationContext):
+    # Enter a parse tree produced by CRPPLParser#graphquery.
+    def enterGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
 
-    # Exit a parse tree produced by CRPPLParser#reportvisualization.
-    def exitReportvisualization(self, ctx:CRPPLParser.ReportvisualizationContext):
+    # Exit a parse tree produced by CRPPLParser#graphquery.
+    def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
 
 
@@ -71,12 +80,39 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#functioncall.
+    def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functioncall.
+    def exitFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#functionprototype.
+    def enterFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#functionprototype.
+    def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#conditionalstatement.
     def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
         pass
 
     # Exit a parse tree produced by CRPPLParser#conditionalstatement.
     def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+        pass
+
+
+    # Enter a parse tree produced by CRPPLParser#booleanstatement.
+    def enterBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#booleanstatement.
+    def exitBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
         pass
 
 

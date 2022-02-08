@@ -1,5 +1,15 @@
-if (date equal '25' and date equal '25' and date) then
+get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+new_column 'isChristmas' for 'testDataSetName'
+delete_column 'isHoliday' for 'testDataSetName'
+if ((date equal '25') and date equal ('25' and date)) then
 
-		do graph ('pie', 'foo' is x_axis, 'bar' is y_axis)
+	get sum of 'revenue' for 'year' = '2021', 'month' = '11'
 
 end_if 
+do graph(pie, 'expenses' is label,  'amount' is value)
+do graph(bar, 'year' is x_axis, 'gross' is y_axis)
+do graph(line, 'month' is x_axis, 'sold' is y_axis)
+do import_file ('testFileName','testDataSetName')
+varFileName constant 'testFileName'
+varDataSetName constant 'testDataSetName' 
+do import_file (varFileName,varDataSetName)

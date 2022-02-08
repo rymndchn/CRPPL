@@ -1,49 +1,42 @@
-from antlr4 import *
-from antlr4.tree.Tree import TerminalNodeImpl
 import sys
+from antlr4 import *
 from CRPPLLexer import CRPPLLexer
 from CRPPLParser import CRPPLParser
-from antlr4.error.ErrorListener import ErrorListener
+from myCRPPLListener import myCRPPLListener
 
-token = CRPPLParser.symbolicNames
+import pandas as pd
 
-class MyErrorListener( ErrorListener ):
+def main (argv):
+    input = FileStream(argv[1])
+    lexer = CRPPLLexer(input)
+    stream = CommonTokenStream(lexer)
+    parser = CRPPLParser(stream)
+    tree = parser.multiexpr()
+    output = open("output.py","w")
 
-    def __init__(self):
-        super(MyErrorListener, self).__init__()
+    data = {'Name': ['Tom', 'Joseph', 'Krish', 'John'], 'Age': [20, 21, 19, 18]}
+    df = pd.DataFrame(data)
 
-    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        raise Exception("Oh no!!")
+    tbl = 'df'
+    col = 'additionalcol1'
+    col1 = 'additionalcol2'
+    
+    myCRPPL = myCRPPLListener(output)
+    walker = ParseTreeWalker()
+    walker.walk(myCRPPL, tree)
+        
+    output.close()      
 
-    def reportAmbiguity(self, recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs):
-        raise Exception("Oh no!!")
+    program = open("output.py","r")
 
-    def reportAttemptingFullContext(self, recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs):
-        raise Exception("Oh no!!")
+    program_store = program.readlines()
 
-    def reportContextSensitivity(self, recognizer, dfa, startIndex, stopIndex, prediction, configs):
-        raise Exception("Oh no!!")
+    output.close()
 
-def main(argv):
-	input = FileStream(argv[1])
-	lexer = CRPPLLexer(input)
-	stream = CommonTokenStream(lexer)
-	parser = CRPPLParser(stream)
-	tree = parser.multiexpr()
-	traverse(tree, parser.ruleNames)
-	parser.addErrorListener( MyErrorListener() )
+    for line in program_store:
+        exec(line)
 
-def traverse(tree, rule_names, indent = 0):
-    if tree.getText() == "<EOF>":
-        return
-    elif isinstance(tree, TerminalNodeImpl):
-        #print("{0}TOKEN='{1}'".format("  " * indent, token[tree.getSymbol().type]))
-        #print("{0}LEXEME='{1}'".format("  " * indent, tree.getText()))
-        print("{",token[tree.getSymbol().type],", \"",tree.getText(),"\"}")
-    else:
-        #print("{0}{1}".format("  " * indent, rule_names[tree.getRuleIndex()]))
-        for child in tree.children:
-            traverse(child, rule_names, indent + 1)
+    print(df)
 
-if __name__ == "__main__":
-	main(sys.argv)
+if __name__ == '__main__':
+    main(sys.argv)
