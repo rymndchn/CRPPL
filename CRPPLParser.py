@@ -1,89 +1,114 @@
-# Generated from CRPPL.g4 by ANTLR 4.7.2
+# Generated from CRPPL.g4 by ANTLR 4.9
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
-from typing.io import TextIO
 import sys
+if sys.version_info[1] > 5:
+	from typing import TextIO
+else:
+	from typing.io import TextIO
 
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3$")
-        buf.write("\u00bb\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
-        buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\3\2\6\2\26\n\2\r\2\16\2\27\5")
-        buf.write("\2\32\n\2\3\2\5\2\35\n\2\3\3\3\3\3\3\3\3\3\3\3\3\5\3%")
-        buf.write("\n\3\3\4\3\4\3\4\5\4*\n\4\3\4\3\4\3\4\3\4\3\4\5\4\61\n")
-        buf.write("\4\3\4\7\4\64\n\4\f\4\16\4\67\13\4\3\4\3\4\3\4\3\4\3\4")
-        buf.write("\3\4\3\4\3\4\7\4A\n\4\f\4\16\4D\13\4\5\4F\n\4\3\5\3\5")
-        buf.write("\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3")
-        buf.write("\7\3\7\5\7Y\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3")
-        buf.write("\7\3\b\3\b\3\b\3\b\3\b\3\b\7\bk\n\b\f\b\16\bn\13\b\7\b")
-        buf.write("p\n\b\f\b\16\bs\13\b\3\b\3\b\5\bw\n\b\3\b\3\b\3\t\3\t")
-        buf.write("\3\t\3\t\3\t\7\t\u0080\n\t\f\t\16\t\u0083\13\t\3\t\3\t")
-        buf.write("\3\t\3\t\3\t\7\t\u008a\n\t\f\t\16\t\u008d\13\t\7\t\u008f")
-        buf.write("\n\t\f\t\16\t\u0092\13\t\3\t\3\t\3\t\7\t\u0097\n\t\f\t")
-        buf.write("\16\t\u009a\13\t\5\t\u009c\n\t\3\t\3\t\3\n\3\n\3\n\3\n")
-        buf.write("\3\n\3\n\3\n\3\n\3\n\5\n\u00a9\n\n\3\n\3\n\3\n\3\n\3\n")
-        buf.write("\3\n\5\n\u00b1\n\n\7\n\u00b3\n\n\f\n\16\n\u00b6\13\n\3")
-        buf.write("\n\5\n\u00b9\n\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\5\3")
-        buf.write("\2\36\37\3\2\17\21\4\2\f\r\37\37\2\u00d1\2\31\3\2\2\2")
-        buf.write("\4$\3\2\2\2\6&\3\2\2\2\bG\3\2\2\2\nO\3\2\2\2\fT\3\2\2")
-        buf.write("\2\16d\3\2\2\2\20z\3\2\2\2\22\u00b8\3\2\2\2\24\26\5\4")
-        buf.write("\3\2\25\24\3\2\2\2\26\27\3\2\2\2\27\25\3\2\2\2\27\30\3")
-        buf.write("\2\2\2\30\32\3\2\2\2\31\25\3\2\2\2\31\32\3\2\2\2\32\34")
-        buf.write("\3\2\2\2\33\35\7\2\2\3\34\33\3\2\2\2\34\35\3\2\2\2\35")
-        buf.write("\3\3\2\2\2\36%\5\6\4\2\37%\5\b\5\2 %\5\n\6\2!%\5\f\7\2")
-        buf.write("\"%\5\16\b\2#%\5\20\t\2$\36\3\2\2\2$\37\3\2\2\2$ \3\2")
-        buf.write("\2\2$!\3\2\2\2$\"\3\2\2\2$#\3\2\2\2%\5\3\2\2\2&)\7\3\2")
-        buf.write("\2\'(\7\33\2\2(*\7\4\2\2)\'\3\2\2\2)*\3\2\2\2*+\3\2\2")
-        buf.write("\2+\65\t\2\2\2,-\7$\2\2-\60\7\3\2\2./\7\34\2\2/\61\7\4")
-        buf.write("\2\2\60.\3\2\2\2\60\61\3\2\2\2\61\62\3\2\2\2\62\64\t\2")
-        buf.write("\2\2\63,\3\2\2\2\64\67\3\2\2\2\65\63\3\2\2\2\65\66\3\2")
-        buf.write("\2\2\66E\3\2\2\2\67\65\3\2\2\289\7\5\2\29:\t\2\2\2:;\7")
-        buf.write("\34\2\2;B\t\2\2\2<=\7$\2\2=>\t\2\2\2>?\7\34\2\2?A\t\2")
-        buf.write("\2\2@<\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2")
-        buf.write("DB\3\2\2\2E8\3\2\2\2EF\3\2\2\2F\7\3\2\2\2GH\7\32\2\2H")
-        buf.write("I\7\32\2\2IJ\7\35\2\2JK\7\36\2\2KL\7\35\2\2LM\7\36\2\2")
-        buf.write("MN\7\35\2\2N\t\3\2\2\2OP\t\3\2\2PQ\t\2\2\2QR\7\5\2\2R")
-        buf.write("S\t\2\2\2S\13\3\2\2\2TU\7\7\2\2UV\7\22\2\2VX\7\30\2\2")
-        buf.write("WY\7\23\2\2XW\3\2\2\2XY\3\2\2\2YZ\3\2\2\2Z[\7\35\2\2[")
-        buf.write("\\\7\27\2\2\\]\7\24\2\2]^\7\25\2\2^_\7\35\2\2_`\7\27\2")
-        buf.write("\2`a\7\24\2\2ab\7\26\2\2bc\7\31\2\2c\r\3\2\2\2de\7\32")
-        buf.write("\2\2ef\7\37\2\2fq\7\35\2\2gl\7\37\2\2hi\7\35\2\2ik\7\37")
-        buf.write("\2\2jh\3\2\2\2kn\3\2\2\2lj\3\2\2\2lm\3\2\2\2mp\3\2\2\2")
-        buf.write("nl\3\2\2\2og\3\2\2\2ps\3\2\2\2qo\3\2\2\2qr\3\2\2\2rt\3")
-        buf.write("\2\2\2sq\3\2\2\2tv\7\35\2\2uw\5\2\2\2vu\3\2\2\2vw\3\2")
-        buf.write("\2\2wx\3\2\2\2xy\7\32\2\2y\17\3\2\2\2z{\7\b\2\2{|\5\22")
-        buf.write("\n\2|}\7\t\2\2}\u0081\5\4\3\2~\u0080\5\4\3\2\177~\3\2")
-        buf.write("\2\2\u0080\u0083\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082")
-        buf.write("\3\2\2\2\u0082\u0090\3\2\2\2\u0083\u0081\3\2\2\2\u0084")
-        buf.write("\u0085\7\n\2\2\u0085\u0086\5\22\n\2\u0086\u0087\7\t\2")
-        buf.write("\2\u0087\u008b\5\4\3\2\u0088\u008a\5\4\3\2\u0089\u0088")
-        buf.write("\3\2\2\2\u008a\u008d\3\2\2\2\u008b\u0089\3\2\2\2\u008b")
-        buf.write("\u008c\3\2\2\2\u008c\u008f\3\2\2\2\u008d\u008b\3\2\2\2")
-        buf.write("\u008e\u0084\3\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3")
-        buf.write("\2\2\2\u0090\u0091\3\2\2\2\u0091\u009b\3\2\2\2\u0092\u0090")
-        buf.write("\3\2\2\2\u0093\u0094\7\13\2\2\u0094\u0098\5\4\3\2\u0095")
-        buf.write("\u0097\5\4\3\2\u0096\u0095\3\2\2\2\u0097\u009a\3\2\2\2")
-        buf.write("\u0098\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009c\3")
-        buf.write("\2\2\2\u009a\u0098\3\2\2\2\u009b\u0093\3\2\2\2\u009b\u009c")
-        buf.write("\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u009e\7\16\2\2\u009e")
-        buf.write("\21\3\2\2\2\u009f\u00a0\7\30\2\2\u00a0\u00a1\t\4\2\2\u00a1")
-        buf.write("\u00b9\7\31\2\2\u00a2\u00a8\7\30\2\2\u00a3\u00a9\7\36")
-        buf.write("\2\2\u00a4\u00a9\7\37\2\2\u00a5\u00a9\7\f\2\2\u00a6\u00a9")
-        buf.write("\7\r\2\2\u00a7\u00a9\5\22\n\2\u00a8\u00a3\3\2\2\2\u00a8")
-        buf.write("\u00a4\3\2\2\2\u00a8\u00a5\3\2\2\2\u00a8\u00a6\3\2\2\2")
-        buf.write("\u00a8\u00a7\3\2\2\2\u00a9\u00b4\3\2\2\2\u00aa\u00b0\7")
-        buf.write("\34\2\2\u00ab\u00b1\7\36\2\2\u00ac\u00b1\7\37\2\2\u00ad")
-        buf.write("\u00b1\7\f\2\2\u00ae\u00b1\7\r\2\2\u00af\u00b1\5\22\n")
-        buf.write("\2\u00b0\u00ab\3\2\2\2\u00b0\u00ac\3\2\2\2\u00b0\u00ad")
-        buf.write("\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b0\u00af\3\2\2\2\u00b1")
-        buf.write("\u00b3\3\2\2\2\u00b2\u00aa\3\2\2\2\u00b3\u00b6\3\2\2\2")
-        buf.write("\u00b4\u00b2\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00b7\3")
-        buf.write("\2\2\2\u00b6\u00b4\3\2\2\2\u00b7\u00b9\7\31\2\2\u00b8")
-        buf.write("\u009f\3\2\2\2\u00b8\u00a2\3\2\2\2\u00b9\23\3\2\2\2\30")
-        buf.write("\27\31\34$)\60\65BEXlqv\u0081\u008b\u0090\u0098\u009b")
-        buf.write("\u00a8\u00b0\u00b4\u00b8")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3&")
+        buf.write("\u00e3\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\3\2")
+        buf.write("\6\2\34\n\2\r\2\16\2\35\5\2 \n\2\3\2\5\2#\n\2\3\3\3\3")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\5\3-\n\3\3\4\3\4\3\4\5\4\62\n")
+        buf.write("\4\3\4\3\4\3\4\3\4\3\4\5\49\n\4\3\4\7\4<\n\4\f\4\16\4")
+        buf.write("?\13\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4I\n\4\f\4\16")
+        buf.write("\4L\13\4\5\4N\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\6")
+        buf.write("\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\5\be")
+        buf.write("\n\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3")
+        buf.write("\t\3\t\3\t\3\t\7\tw\n\t\f\t\16\tz\13\t\5\t|\n\t\3\t\3")
+        buf.write("\t\3\t\3\t\3\t\3\t\7\t\u0084\n\t\f\t\16\t\u0087\13\t\3")
+        buf.write("\t\3\t\3\t\5\t\u008c\n\t\5\t\u008e\n\t\3\t\3\t\3\n\3\n")
+        buf.write("\3\n\3\13\3\13\3\13\3\13\3\13\7\13\u009a\n\13\f\13\16")
+        buf.write("\13\u009d\13\13\5\13\u009f\n\13\3\13\3\13\3\f\3\f\3\f")
+        buf.write("\3\f\3\f\7\f\u00a8\n\f\f\f\16\f\u00ab\13\f\3\f\3\f\3\f")
+        buf.write("\3\f\3\f\7\f\u00b2\n\f\f\f\16\f\u00b5\13\f\7\f\u00b7\n")
+        buf.write("\f\f\f\16\f\u00ba\13\f\3\f\3\f\3\f\7\f\u00bf\n\f\f\f\16")
+        buf.write("\f\u00c2\13\f\5\f\u00c4\n\f\3\f\3\f\3\r\3\r\3\r\3\r\3")
+        buf.write("\r\3\r\3\r\3\r\3\r\5\r\u00d1\n\r\3\r\3\r\3\r\3\r\3\r\3")
+        buf.write("\r\5\r\u00d9\n\r\7\r\u00db\n\r\f\r\16\r\u00de\13\r\3\r")
+        buf.write("\5\r\u00e1\n\r\3\r\3\u0085\2\16\2\4\6\b\n\f\16\20\22\24")
+        buf.write("\26\30\2\5\3\2!\"\4\2\20\20\22\22\4\2\r\16\"\"\2\u0100")
+        buf.write("\2\37\3\2\2\2\4,\3\2\2\2\6.\3\2\2\2\bO\3\2\2\2\nW\3\2")
+        buf.write("\2\2\f[\3\2\2\2\16`\3\2\2\2\20p\3\2\2\2\22\u0091\3\2\2")
+        buf.write("\2\24\u0094\3\2\2\2\26\u00a2\3\2\2\2\30\u00e0\3\2\2\2")
+        buf.write("\32\34\5\4\3\2\33\32\3\2\2\2\34\35\3\2\2\2\35\33\3\2\2")
+        buf.write("\2\35\36\3\2\2\2\36 \3\2\2\2\37\33\3\2\2\2\37 \3\2\2\2")
+        buf.write(" \"\3\2\2\2!#\7\2\2\3\"!\3\2\2\2\"#\3\2\2\2#\3\3\2\2\2")
+        buf.write("$-\5\6\4\2%-\5\b\5\2&-\5\n\6\2\'-\5\f\7\2(-\5\16\b\2)")
+        buf.write("-\5\20\t\2*-\5\22\n\2+-\5\26\f\2,$\3\2\2\2,%\3\2\2\2,")
+        buf.write("&\3\2\2\2,\'\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2\2,+\3")
+        buf.write("\2\2\2-\5\3\2\2\2.\61\7\3\2\2/\60\7\36\2\2\60\62\7\4\2")
+        buf.write("\2\61/\3\2\2\2\61\62\3\2\2\2\62\63\3\2\2\2\63=\t\2\2\2")
+        buf.write("\64\65\7 \2\2\658\7\3\2\2\66\67\7\37\2\2\679\7\4\2\28")
+        buf.write("\66\3\2\2\289\3\2\2\29:\3\2\2\2:<\t\2\2\2;\64\3\2\2\2")
+        buf.write("<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>M\3\2\2\2?=\3\2\2\2@A\7")
+        buf.write("\5\2\2AB\t\2\2\2BC\7\37\2\2CJ\t\2\2\2DE\7 \2\2EF\t\2\2")
+        buf.write("\2FG\7\37\2\2GI\t\2\2\2HD\3\2\2\2IL\3\2\2\2JH\3\2\2\2")
+        buf.write("JK\3\2\2\2KN\3\2\2\2LJ\3\2\2\2M@\3\2\2\2MN\3\2\2\2N\7")
+        buf.write("\3\2\2\2OP\7\25\2\2PQ\7\23\2\2QR\7\33\2\2RS\t\2\2\2ST")
+        buf.write("\7 \2\2TU\t\2\2\2UV\7\34\2\2V\t\3\2\2\2WX\7\"\2\2XY\7")
+        buf.write("\26\2\2YZ\7!\2\2Z\13\3\2\2\2[\\\t\3\2\2\\]\t\2\2\2]^\7")
+        buf.write("\5\2\2^_\t\2\2\2_\r\3\2\2\2`a\7\25\2\2ab\7\27\2\2bd\7")
+        buf.write("\33\2\2ce\7\30\2\2dc\3\2\2\2de\3\2\2\2ef\3\2\2\2fg\7 ")
+        buf.write("\2\2gh\7!\2\2hi\7\24\2\2ij\7\31\2\2jk\7 \2\2kl\7!\2\2")
+        buf.write("lm\7\24\2\2mn\7\32\2\2no\7\34\2\2o\17\3\2\2\2pq\7\6\2")
+        buf.write("\2qr\7\"\2\2r{\7\33\2\2sx\7\"\2\2tu\7 \2\2uw\7\"\2\2v")
+        buf.write("t\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y|\3\2\2\2zx\3")
+        buf.write("\2\2\2{s\3\2\2\2{|\3\2\2\2|}\3\2\2\2}\u0085\7\34\2\2~")
+        buf.write("\u0084\5\6\4\2\177\u0084\5\b\5\2\u0080\u0084\5\f\7\2\u0081")
+        buf.write("\u0084\5\16\b\2\u0082\u0084\5\26\f\2\u0083~\3\2\2\2\u0083")
+        buf.write("\177\3\2\2\2\u0083\u0080\3\2\2\2\u0083\u0081\3\2\2\2\u0083")
+        buf.write("\u0082\3\2\2\2\u0084\u0087\3\2\2\2\u0085\u0086\3\2\2\2")
+        buf.write("\u0085\u0083\3\2\2\2\u0086\u008d\3\2\2\2\u0087\u0085\3")
+        buf.write("\2\2\2\u0088\u008b\7\b\2\2\u0089\u008c\7\"\2\2\u008a\u008c")
+        buf.write("\5\22\n\2\u008b\u0089\3\2\2\2\u008b\u008a\3\2\2\2\u008c")
+        buf.write("\u008e\3\2\2\2\u008d\u0088\3\2\2\2\u008d\u008e\3\2\2\2")
+        buf.write("\u008e\u008f\3\2\2\2\u008f\u0090\7\7\2\2\u0090\21\3\2")
+        buf.write("\2\2\u0091\u0092\7\25\2\2\u0092\u0093\5\24\13\2\u0093")
+        buf.write("\23\3\2\2\2\u0094\u0095\7\"\2\2\u0095\u009e\7\33\2\2\u0096")
+        buf.write("\u009b\t\2\2\2\u0097\u0098\7 \2\2\u0098\u009a\t\2\2\2")
+        buf.write("\u0099\u0097\3\2\2\2\u009a\u009d\3\2\2\2\u009b\u0099\3")
+        buf.write("\2\2\2\u009b\u009c\3\2\2\2\u009c\u009f\3\2\2\2\u009d\u009b")
+        buf.write("\3\2\2\2\u009e\u0096\3\2\2\2\u009e\u009f\3\2\2\2\u009f")
+        buf.write("\u00a0\3\2\2\2\u00a0\u00a1\7\34\2\2\u00a1\25\3\2\2\2\u00a2")
+        buf.write("\u00a3\7\t\2\2\u00a3\u00a4\5\30\r\2\u00a4\u00a5\7\n\2")
+        buf.write("\2\u00a5\u00a9\5\4\3\2\u00a6\u00a8\5\4\3\2\u00a7\u00a6")
+        buf.write("\3\2\2\2\u00a8\u00ab\3\2\2\2\u00a9\u00a7\3\2\2\2\u00a9")
+        buf.write("\u00aa\3\2\2\2\u00aa\u00b8\3\2\2\2\u00ab\u00a9\3\2\2\2")
+        buf.write("\u00ac\u00ad\7\13\2\2\u00ad\u00ae\5\30\r\2\u00ae\u00af")
+        buf.write("\7\n\2\2\u00af\u00b3\5\4\3\2\u00b0\u00b2\5\4\3\2\u00b1")
+        buf.write("\u00b0\3\2\2\2\u00b2\u00b5\3\2\2\2\u00b3\u00b1\3\2\2\2")
+        buf.write("\u00b3\u00b4\3\2\2\2\u00b4\u00b7\3\2\2\2\u00b5\u00b3\3")
+        buf.write("\2\2\2\u00b6\u00ac\3\2\2\2\u00b7\u00ba\3\2\2\2\u00b8\u00b6")
+        buf.write("\3\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00c3\3\2\2\2\u00ba")
+        buf.write("\u00b8\3\2\2\2\u00bb\u00bc\7\f\2\2\u00bc\u00c0\5\4\3\2")
+        buf.write("\u00bd\u00bf\5\4\3\2\u00be\u00bd\3\2\2\2\u00bf\u00c2\3")
+        buf.write("\2\2\2\u00c0\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\u00c4")
+        buf.write("\3\2\2\2\u00c2\u00c0\3\2\2\2\u00c3\u00bb\3\2\2\2\u00c3")
+        buf.write("\u00c4\3\2\2\2\u00c4\u00c5\3\2\2\2\u00c5\u00c6\7\17\2")
+        buf.write("\2\u00c6\27\3\2\2\2\u00c7\u00c8\7\33\2\2\u00c8\u00c9\t")
+        buf.write("\4\2\2\u00c9\u00e1\7\34\2\2\u00ca\u00d0\7\33\2\2\u00cb")
+        buf.write("\u00d1\7!\2\2\u00cc\u00d1\7\"\2\2\u00cd\u00d1\7\r\2\2")
+        buf.write("\u00ce\u00d1\7\16\2\2\u00cf\u00d1\5\30\r\2\u00d0\u00cb")
+        buf.write("\3\2\2\2\u00d0\u00cc\3\2\2\2\u00d0\u00cd\3\2\2\2\u00d0")
+        buf.write("\u00ce\3\2\2\2\u00d0\u00cf\3\2\2\2\u00d1\u00dc\3\2\2\2")
+        buf.write("\u00d2\u00d8\7\37\2\2\u00d3\u00d9\7!\2\2\u00d4\u00d9\7")
+        buf.write("\"\2\2\u00d5\u00d9\7\r\2\2\u00d6\u00d9\7\16\2\2\u00d7")
+        buf.write("\u00d9\5\30\r\2\u00d8\u00d3\3\2\2\2\u00d8\u00d4\3\2\2")
+        buf.write("\2\u00d8\u00d5\3\2\2\2\u00d8\u00d6\3\2\2\2\u00d8\u00d7")
+        buf.write("\3\2\2\2\u00d9\u00db\3\2\2\2\u00da\u00d2\3\2\2\2\u00db")
+        buf.write("\u00de\3\2\2\2\u00dc\u00da\3\2\2\2\u00dc\u00dd\3\2\2\2")
+        buf.write("\u00dd\u00df\3\2\2\2\u00de\u00dc\3\2\2\2\u00df\u00e1\7")
+        buf.write("\34\2\2\u00e0\u00c7\3\2\2\2\u00e0\u00ca\3\2\2\2\u00e1")
+        buf.write("\31\3\2\2\2\35\35\37\",\618=JMdx{\u0083\u0085\u008b\u008d")
+        buf.write("\u009b\u009e\u00a9\u00b3\u00b8\u00c0\u00c3\u00d0\u00d8")
+        buf.write("\u00dc\u00e0")
         return buf.getvalue()
 
 
@@ -102,72 +127,80 @@ class CRPPLParser ( Parser ):
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "'('", "')'", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "' '", "'\n'", "'\t'", "'\r'" ]
+                     "<INVALID>", "'('", "')'", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "' '", "'\n'", "'\t'", "'\r'" ]
 
-    symbolicNames = [ "<INVALID>", "GET", "OF", "FOR", "CONSTANT", "DO", 
-                      "IF", "THEN", "ELSE_IF", "ELSE", "TRUE", "FALSE", 
-                      "END_IF", "NEWCOLUMN", "ALTERCOLUMN", "DELETECOLUMN", 
-                      "GRAPH", "TYPE", "IS", "LABELONE", "LABELTWO", "TABLECOLUMN", 
-                      "OPENPARENTHESIS", "CLOSEPARENTHESIS", "RESERVEDWORD", 
-                      "OPERATING_FUNCTION", "OPERATOR", "SEPARATOR", "LITERAL", 
-                      "IDENTIFIER", "WHITESPACE", "NEXTLINE", "TAB", "CARRIAGERETURN", 
-                      "COMMA" ]
+    symbolicNames = [ "<INVALID>", "GET", "OF", "FOR", "CREATEFUNCTION", 
+                      "ENDFUNCTION", "RETURN", "IF", "THEN", "ELSE_IF", 
+                      "ELSE", "TRUE", "FALSE", "END_IF", "NEWCOLUMN", "ALTERCOLUMN", 
+                      "DELETECOLUMN", "IMPORTFILE", "ASSIGNEMT_OPERATOR", 
+                      "RESERVEDWORD_DO", "RESERVEDWORD_CONSTANT", "GRAPH", 
+                      "TYPE", "LABELONE", "LABELTWO", "OPENPARENTHESIS", 
+                      "CLOSEPARENTHESIS", "RESERVEDWORD", "OPERATING_FUNCTION", 
+                      "OPERATOR", "SEPARATOR", "LITERAL", "IDENTIFIER", 
+                      "WHITESPACE", "NEXTLINE", "TAB", "CARRIAGERETURN" ]
 
     RULE_multiexpr = 0
     RULE_validexpr = 1
     RULE_generalquery = 2
     RULE_importfile = 3
-    RULE_altercolumn = 4
-    RULE_graphquery = 5
-    RULE_createfunction = 6
-    RULE_conditionalstatement = 7
-    RULE_booleanstatement = 8
+    RULE_defineconstant = 4
+    RULE_altercolumn = 5
+    RULE_graphquery = 6
+    RULE_createfunction = 7
+    RULE_functioncall = 8
+    RULE_functionprototype = 9
+    RULE_conditionalstatement = 10
+    RULE_booleanstatement = 11
 
     ruleNames =  [ "multiexpr", "validexpr", "generalquery", "importfile", 
-                   "altercolumn", "graphquery", "createfunction", "conditionalstatement", 
+                   "defineconstant", "altercolumn", "graphquery", "createfunction", 
+                   "functioncall", "functionprototype", "conditionalstatement", 
                    "booleanstatement" ]
 
     EOF = Token.EOF
     GET=1
     OF=2
     FOR=3
-    CONSTANT=4
-    DO=5
-    IF=6
-    THEN=7
-    ELSE_IF=8
-    ELSE=9
-    TRUE=10
-    FALSE=11
-    END_IF=12
-    NEWCOLUMN=13
-    ALTERCOLUMN=14
-    DELETECOLUMN=15
-    GRAPH=16
-    TYPE=17
-    IS=18
-    LABELONE=19
-    LABELTWO=20
-    TABLECOLUMN=21
-    OPENPARENTHESIS=22
-    CLOSEPARENTHESIS=23
-    RESERVEDWORD=24
-    OPERATING_FUNCTION=25
-    OPERATOR=26
-    SEPARATOR=27
-    LITERAL=28
-    IDENTIFIER=29
-    WHITESPACE=30
-    NEXTLINE=31
-    TAB=32
-    CARRIAGERETURN=33
-    COMMA=34
+    CREATEFUNCTION=4
+    ENDFUNCTION=5
+    RETURN=6
+    IF=7
+    THEN=8
+    ELSE_IF=9
+    ELSE=10
+    TRUE=11
+    FALSE=12
+    END_IF=13
+    NEWCOLUMN=14
+    ALTERCOLUMN=15
+    DELETECOLUMN=16
+    IMPORTFILE=17
+    ASSIGNEMT_OPERATOR=18
+    RESERVEDWORD_DO=19
+    RESERVEDWORD_CONSTANT=20
+    GRAPH=21
+    TYPE=22
+    LABELONE=23
+    LABELTWO=24
+    OPENPARENTHESIS=25
+    CLOSEPARENTHESIS=26
+    RESERVEDWORD=27
+    OPERATING_FUNCTION=28
+    OPERATOR=29
+    SEPARATOR=30
+    LITERAL=31
+    IDENTIFIER=32
+    WHITESPACE=33
+    NEXTLINE=34
+    TAB=35
+    CARRIAGERETURN=36
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.7.2")
+        self.checkVersion("4.9")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -201,6 +234,12 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitMultiexpr" ):
                 listener.exitMultiexpr(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitMultiexpr" ):
+                return visitor.visitMultiexpr(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -211,31 +250,29 @@ class CRPPLParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 23
-            self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
-            if la_ == 1:
-                self.state = 19 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 18
-                        self.validexpr()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 21 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,0,self._ctx)
-
-
-
-            self.state = 26
+            self.state = 29
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==CRPPLParser.EOF:
-                self.state = 25
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0):
+                self.state = 25 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 24
+                    self.validexpr()
+                    self.state = 27 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0)):
+                        break
+
+
+
+            self.state = 32
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+            if la_ == 1:
+                self.state = 31
                 self.match(CRPPLParser.EOF)
 
 
@@ -262,6 +299,10 @@ class CRPPLParser ( Parser ):
             return self.getTypedRuleContext(CRPPLParser.ImportfileContext,0)
 
 
+        def defineconstant(self):
+            return self.getTypedRuleContext(CRPPLParser.DefineconstantContext,0)
+
+
         def altercolumn(self):
             return self.getTypedRuleContext(CRPPLParser.AltercolumnContext,0)
 
@@ -272,6 +313,10 @@ class CRPPLParser ( Parser ):
 
         def createfunction(self):
             return self.getTypedRuleContext(CRPPLParser.CreatefunctionContext,0)
+
+
+        def functioncall(self):
+            return self.getTypedRuleContext(CRPPLParser.FunctioncallContext,0)
 
 
         def conditionalstatement(self):
@@ -289,6 +334,12 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitValidexpr" ):
                 listener.exitValidexpr(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitValidexpr" ):
+                return visitor.visitValidexpr(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -297,42 +348,54 @@ class CRPPLParser ( Parser ):
         localctx = CRPPLParser.ValidexprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_validexpr)
         try:
-            self.state = 34
+            self.state = 42
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 28
+                self.state = 34
                 self.generalquery()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 29
+                self.state = 35
                 self.importfile()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 30
-                self.altercolumn()
+                self.state = 36
+                self.defineconstant()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 31
-                self.graphquery()
+                self.state = 37
+                self.altercolumn()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 32
-                self.createfunction()
+                self.state = 38
+                self.graphquery()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 33
+                self.state = 39
+                self.createfunction()
+                pass
+
+            elif la_ == 7:
+                self.enterOuterAlt(localctx, 7)
+                self.state = 40
+                self.functioncall()
+                pass
+
+            elif la_ == 8:
+                self.enterOuterAlt(localctx, 8)
+                self.state = 41
                 self.conditionalstatement()
                 pass
 
@@ -379,11 +442,11 @@ class CRPPLParser ( Parser ):
             else:
                 return self.getToken(CRPPLParser.OF, i)
 
-        def COMMA(self, i:int=None):
+        def SEPARATOR(self, i:int=None):
             if i is None:
-                return self.getTokens(CRPPLParser.COMMA)
+                return self.getTokens(CRPPLParser.SEPARATOR)
             else:
-                return self.getToken(CRPPLParser.COMMA, i)
+                return self.getToken(CRPPLParser.SEPARATOR, i)
 
         def FOR(self):
             return self.getToken(CRPPLParser.FOR, 0)
@@ -405,6 +468,12 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitGeneralquery" ):
                 listener.exitGeneralquery(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitGeneralquery" ):
+                return visitor.visitGeneralquery(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -415,70 +484,61 @@ class CRPPLParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 36
+            self.state = 44
             self.match(CRPPLParser.GET)
-            self.state = 39
+            self.state = 47
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.OPERATING_FUNCTION:
-                self.state = 37
+                self.state = 45
                 self.match(CRPPLParser.OPERATING_FUNCTION)
-                self.state = 38
+                self.state = 46
                 self.match(CRPPLParser.OF)
 
 
-            self.state = 41
+            self.state = 49
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 51
+            self.state = 59
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==CRPPLParser.COMMA:
-                self.state = 42
-                self.match(CRPPLParser.COMMA)
-                self.state = 43
+            while _la==CRPPLParser.SEPARATOR:
+                self.state = 50
+                self.match(CRPPLParser.SEPARATOR)
+                self.state = 51
                 self.match(CRPPLParser.GET)
-                self.state = 46
+                self.state = 54
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==CRPPLParser.OPERATOR:
-                    self.state = 44
+                    self.state = 52
                     self.match(CRPPLParser.OPERATOR)
-                    self.state = 45
+                    self.state = 53
                     self.match(CRPPLParser.OF)
 
 
-                self.state = 48
+                self.state = 56
                 _la = self._input.LA(1)
                 if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 53
+                self.state = 61
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 67
+            self.state = 75
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.FOR:
-                self.state = 54
+                self.state = 62
                 self.match(CRPPLParser.FOR)
-                self.state = 55
-                _la = self._input.LA(1)
-                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
-                    self._errHandler.recoverInline(self)
-                else:
-                    self._errHandler.reportMatch(self)
-                    self.consume()
-                self.state = 56
-                self.match(CRPPLParser.OPERATOR)
-                self.state = 57
+                self.state = 63
                 _la = self._input.LA(1)
                 if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                     self._errHandler.recoverInline(self)
@@ -486,28 +546,37 @@ class CRPPLParser ( Parser ):
                     self._errHandler.reportMatch(self)
                     self.consume()
                 self.state = 64
+                self.match(CRPPLParser.OPERATOR)
+                self.state = 65
+                _la = self._input.LA(1)
+                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
+                self.state = 72
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==CRPPLParser.COMMA:
-                    self.state = 58
-                    self.match(CRPPLParser.COMMA)
-                    self.state = 59
-                    _la = self._input.LA(1)
-                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
-                        self._errHandler.recoverInline(self)
-                    else:
-                        self._errHandler.reportMatch(self)
-                        self.consume()
-                    self.state = 60
-                    self.match(CRPPLParser.OPERATOR)
-                    self.state = 61
-                    _la = self._input.LA(1)
-                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
-                        self._errHandler.recoverInline(self)
-                    else:
-                        self._errHandler.reportMatch(self)
-                        self.consume()
+                while _la==CRPPLParser.SEPARATOR:
                     self.state = 66
+                    self.match(CRPPLParser.SEPARATOR)
+                    self.state = 67
+                    _la = self._input.LA(1)
+                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                        self._errHandler.recoverInline(self)
+                    else:
+                        self._errHandler.reportMatch(self)
+                        self.consume()
+                    self.state = 68
+                    self.match(CRPPLParser.OPERATOR)
+                    self.state = 69
+                    _la = self._input.LA(1)
+                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                        self._errHandler.recoverInline(self)
+                    else:
+                        self._errHandler.reportMatch(self)
+                        self.consume()
+                    self.state = 74
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -528,23 +597,32 @@ class CRPPLParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def RESERVEDWORD(self, i:int=None):
-            if i is None:
-                return self.getTokens(CRPPLParser.RESERVEDWORD)
-            else:
-                return self.getToken(CRPPLParser.RESERVEDWORD, i)
+        def RESERVEDWORD_DO(self):
+            return self.getToken(CRPPLParser.RESERVEDWORD_DO, 0)
 
-        def SEPARATOR(self, i:int=None):
-            if i is None:
-                return self.getTokens(CRPPLParser.SEPARATOR)
-            else:
-                return self.getToken(CRPPLParser.SEPARATOR, i)
+        def IMPORTFILE(self):
+            return self.getToken(CRPPLParser.IMPORTFILE, 0)
+
+        def OPENPARENTHESIS(self):
+            return self.getToken(CRPPLParser.OPENPARENTHESIS, 0)
+
+        def SEPARATOR(self):
+            return self.getToken(CRPPLParser.SEPARATOR, 0)
+
+        def CLOSEPARENTHESIS(self):
+            return self.getToken(CRPPLParser.CLOSEPARENTHESIS, 0)
 
         def LITERAL(self, i:int=None):
             if i is None:
                 return self.getTokens(CRPPLParser.LITERAL)
             else:
                 return self.getToken(CRPPLParser.LITERAL, i)
+
+        def IDENTIFIER(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.IDENTIFIER)
+            else:
+                return self.getToken(CRPPLParser.IDENTIFIER, i)
 
         def getRuleIndex(self):
             return CRPPLParser.RULE_importfile
@@ -557,6 +635,12 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitImportfile" ):
                 listener.exitImportfile(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitImportfile" ):
+                return visitor.visitImportfile(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -564,22 +648,89 @@ class CRPPLParser ( Parser ):
 
         localctx = CRPPLParser.ImportfileContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_importfile)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 69
-            self.match(CRPPLParser.RESERVEDWORD)
-            self.state = 70
-            self.match(CRPPLParser.RESERVEDWORD)
-            self.state = 71
+            self.state = 77
+            self.match(CRPPLParser.RESERVEDWORD_DO)
+            self.state = 78
+            self.match(CRPPLParser.IMPORTFILE)
+            self.state = 79
+            self.match(CRPPLParser.OPENPARENTHESIS)
+            self.state = 80
+            _la = self._input.LA(1)
+            if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
+            self.state = 81
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 72
+            self.state = 82
+            _la = self._input.LA(1)
+            if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
+            self.state = 83
+            self.match(CRPPLParser.CLOSEPARENTHESIS)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class DefineconstantContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def IDENTIFIER(self):
+            return self.getToken(CRPPLParser.IDENTIFIER, 0)
+
+        def RESERVEDWORD_CONSTANT(self):
+            return self.getToken(CRPPLParser.RESERVEDWORD_CONSTANT, 0)
+
+        def LITERAL(self):
+            return self.getToken(CRPPLParser.LITERAL, 0)
+
+        def getRuleIndex(self):
+            return CRPPLParser.RULE_defineconstant
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterDefineconstant" ):
+                listener.enterDefineconstant(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitDefineconstant" ):
+                listener.exitDefineconstant(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefineconstant" ):
+                return visitor.visitDefineconstant(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def defineconstant(self):
+
+        localctx = CRPPLParser.DefineconstantContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 8, self.RULE_defineconstant)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 85
+            self.match(CRPPLParser.IDENTIFIER)
+            self.state = 86
+            self.match(CRPPLParser.RESERVEDWORD_CONSTANT)
+            self.state = 87
             self.match(CRPPLParser.LITERAL)
-            self.state = 73
-            self.match(CRPPLParser.SEPARATOR)
-            self.state = 74
-            self.match(CRPPLParser.LITERAL)
-            self.state = 75
-            self.match(CRPPLParser.SEPARATOR)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -600,9 +751,6 @@ class CRPPLParser ( Parser ):
 
         def NEWCOLUMN(self):
             return self.getToken(CRPPLParser.NEWCOLUMN, 0)
-
-        def ALTERCOLUMN(self):
-            return self.getToken(CRPPLParser.ALTERCOLUMN, 0)
 
         def DELETECOLUMN(self):
             return self.getToken(CRPPLParser.DELETECOLUMN, 0)
@@ -630,33 +778,39 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitAltercolumn" ):
                 listener.exitAltercolumn(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAltercolumn" ):
+                return visitor.visitAltercolumn(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
     def altercolumn(self):
 
         localctx = CRPPLParser.AltercolumnContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_altercolumn)
+        self.enterRule(localctx, 10, self.RULE_altercolumn)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 77
+            self.state = 89
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.ALTERCOLUMN) | (1 << CRPPLParser.DELETECOLUMN))) != 0)):
+            if not(_la==CRPPLParser.NEWCOLUMN or _la==CRPPLParser.DELETECOLUMN):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 78
+            self.state = 90
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 79
+            self.state = 91
             self.match(CRPPLParser.FOR)
-            self.state = 80
+            self.state = 92
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
@@ -678,8 +832,8 @@ class CRPPLParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def DO(self):
-            return self.getToken(CRPPLParser.DO, 0)
+        def RESERVEDWORD_DO(self):
+            return self.getToken(CRPPLParser.RESERVEDWORD_DO, 0)
 
         def GRAPH(self):
             return self.getToken(CRPPLParser.GRAPH, 0)
@@ -693,17 +847,17 @@ class CRPPLParser ( Parser ):
             else:
                 return self.getToken(CRPPLParser.SEPARATOR, i)
 
-        def TABLECOLUMN(self, i:int=None):
+        def LITERAL(self, i:int=None):
             if i is None:
-                return self.getTokens(CRPPLParser.TABLECOLUMN)
+                return self.getTokens(CRPPLParser.LITERAL)
             else:
-                return self.getToken(CRPPLParser.TABLECOLUMN, i)
+                return self.getToken(CRPPLParser.LITERAL, i)
 
-        def IS(self, i:int=None):
+        def ASSIGNEMT_OPERATOR(self, i:int=None):
             if i is None:
-                return self.getTokens(CRPPLParser.IS)
+                return self.getTokens(CRPPLParser.ASSIGNEMT_OPERATOR)
             else:
-                return self.getToken(CRPPLParser.IS, i)
+                return self.getToken(CRPPLParser.ASSIGNEMT_OPERATOR, i)
 
         def LABELONE(self):
             return self.getToken(CRPPLParser.LABELONE, 0)
@@ -728,47 +882,53 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitGraphquery" ):
                 listener.exitGraphquery(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitGraphquery" ):
+                return visitor.visitGraphquery(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
     def graphquery(self):
 
         localctx = CRPPLParser.GraphqueryContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_graphquery)
+        self.enterRule(localctx, 12, self.RULE_graphquery)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 82
-            self.match(CRPPLParser.DO)
-            self.state = 83
+            self.state = 94
+            self.match(CRPPLParser.RESERVEDWORD_DO)
+            self.state = 95
             self.match(CRPPLParser.GRAPH)
-            self.state = 84
+            self.state = 96
             self.match(CRPPLParser.OPENPARENTHESIS)
-            self.state = 86
+            self.state = 98
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.TYPE:
-                self.state = 85
+                self.state = 97
                 self.match(CRPPLParser.TYPE)
 
 
-            self.state = 88
+            self.state = 100
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 89
-            self.match(CRPPLParser.TABLECOLUMN)
-            self.state = 90
-            self.match(CRPPLParser.IS)
-            self.state = 91
+            self.state = 101
+            self.match(CRPPLParser.LITERAL)
+            self.state = 102
+            self.match(CRPPLParser.ASSIGNEMT_OPERATOR)
+            self.state = 103
             self.match(CRPPLParser.LABELONE)
-            self.state = 92
+            self.state = 104
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 93
-            self.match(CRPPLParser.TABLECOLUMN)
-            self.state = 94
-            self.match(CRPPLParser.IS)
-            self.state = 95
+            self.state = 105
+            self.match(CRPPLParser.LITERAL)
+            self.state = 106
+            self.match(CRPPLParser.ASSIGNEMT_OPERATOR)
+            self.state = 107
             self.match(CRPPLParser.LABELTWO)
-            self.state = 96
+            self.state = 108
             self.match(CRPPLParser.CLOSEPARENTHESIS)
         except RecognitionException as re:
             localctx.exception = re
@@ -785,11 +945,8 @@ class CRPPLParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def RESERVEDWORD(self, i:int=None):
-            if i is None:
-                return self.getTokens(CRPPLParser.RESERVEDWORD)
-            else:
-                return self.getToken(CRPPLParser.RESERVEDWORD, i)
+        def CREATEFUNCTION(self):
+            return self.getToken(CRPPLParser.CREATEFUNCTION, 0)
 
         def IDENTIFIER(self, i:int=None):
             if i is None:
@@ -797,15 +954,62 @@ class CRPPLParser ( Parser ):
             else:
                 return self.getToken(CRPPLParser.IDENTIFIER, i)
 
+        def OPENPARENTHESIS(self):
+            return self.getToken(CRPPLParser.OPENPARENTHESIS, 0)
+
+        def CLOSEPARENTHESIS(self):
+            return self.getToken(CRPPLParser.CLOSEPARENTHESIS, 0)
+
+        def ENDFUNCTION(self):
+            return self.getToken(CRPPLParser.ENDFUNCTION, 0)
+
+        def RETURN(self):
+            return self.getToken(CRPPLParser.RETURN, 0)
+
+        def generalquery(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.GeneralqueryContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.GeneralqueryContext,i)
+
+
+        def importfile(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.ImportfileContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.ImportfileContext,i)
+
+
+        def altercolumn(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.AltercolumnContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.AltercolumnContext,i)
+
+
+        def graphquery(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.GraphqueryContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.GraphqueryContext,i)
+
+
+        def conditionalstatement(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.ConditionalstatementContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.ConditionalstatementContext,i)
+
+
+        def functioncall(self):
+            return self.getTypedRuleContext(CRPPLParser.FunctioncallContext,0)
+
+
         def SEPARATOR(self, i:int=None):
             if i is None:
                 return self.getTokens(CRPPLParser.SEPARATOR)
             else:
                 return self.getToken(CRPPLParser.SEPARATOR, i)
-
-        def multiexpr(self):
-            return self.getTypedRuleContext(CRPPLParser.MultiexprContext,0)
-
 
         def getRuleIndex(self):
             return CRPPLParser.RULE_createfunction
@@ -818,57 +1022,267 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitCreatefunction" ):
                 listener.exitCreatefunction(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitCreatefunction" ):
+                return visitor.visitCreatefunction(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
     def createfunction(self):
 
         localctx = CRPPLParser.CreatefunctionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_createfunction)
+        self.enterRule(localctx, 14, self.RULE_createfunction)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 98
-            self.match(CRPPLParser.RESERVEDWORD)
-            self.state = 99
-            self.match(CRPPLParser.IDENTIFIER)
-            self.state = 100
-            self.match(CRPPLParser.SEPARATOR)
+            self.state = 110
+            self.match(CRPPLParser.CREATEFUNCTION)
             self.state = 111
+            self.match(CRPPLParser.IDENTIFIER)
+            self.state = 112
+            self.match(CRPPLParser.OPENPARENTHESIS)
+            self.state = 121
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==CRPPLParser.IDENTIFIER:
-                self.state = 101
-                self.match(CRPPLParser.IDENTIFIER)
-                self.state = 106
-                self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,10,self._ctx)
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt==1:
-                        self.state = 102
-                        self.match(CRPPLParser.SEPARATOR)
-                        self.state = 103
-                        self.match(CRPPLParser.IDENTIFIER) 
-                    self.state = 108
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,10,self._ctx)
-
+            if _la==CRPPLParser.IDENTIFIER:
                 self.state = 113
+                self.match(CRPPLParser.IDENTIFIER)
+                self.state = 118
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
+                while _la==CRPPLParser.SEPARATOR:
+                    self.state = 114
+                    self.match(CRPPLParser.SEPARATOR)
+                    self.state = 115
+                    self.match(CRPPLParser.IDENTIFIER)
+                    self.state = 120
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
 
-            self.state = 114
-            self.match(CRPPLParser.SEPARATOR)
-            self.state = 116
+
+
+            self.state = 123
+            self.match(CRPPLParser.CLOSEPARENTHESIS)
+
+            self.state = 131
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,12,self._ctx)
-            if la_ == 1:
-                self.state = 115
-                self.multiexpr()
+            _alt = self._interp.adaptivePredict(self._input,13,self._ctx)
+            while _alt!=1 and _alt!=ATN.INVALID_ALT_NUMBER:
+                if _alt==1+1:
+                    self.state = 129
+                    self._errHandler.sync(self)
+                    la_ = self._interp.adaptivePredict(self._input,12,self._ctx)
+                    if la_ == 1:
+                        self.state = 124
+                        self.generalquery()
+                        pass
+
+                    elif la_ == 2:
+                        self.state = 125
+                        self.importfile()
+                        pass
+
+                    elif la_ == 3:
+                        self.state = 126
+                        self.altercolumn()
+                        pass
+
+                    elif la_ == 4:
+                        self.state = 127
+                        self.graphquery()
+                        pass
+
+                    elif la_ == 5:
+                        self.state = 128
+                        self.conditionalstatement()
+                        pass
+
+             
+                self.state = 133
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,13,self._ctx)
+
+            self.state = 139
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            if _la==CRPPLParser.RETURN:
+                self.state = 134
+                self.match(CRPPLParser.RETURN)
+                self.state = 137
+                self._errHandler.sync(self)
+                token = self._input.LA(1)
+                if token in [CRPPLParser.IDENTIFIER]:
+                    self.state = 135
+                    self.match(CRPPLParser.IDENTIFIER)
+                    pass
+                elif token in [CRPPLParser.RESERVEDWORD_DO]:
+                    self.state = 136
+                    self.functioncall()
+                    pass
+                else:
+                    raise NoViableAltException(self)
 
 
-            self.state = 118
-            self.match(CRPPLParser.RESERVEDWORD)
+
+            self.state = 141
+            self.match(CRPPLParser.ENDFUNCTION)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class FunctioncallContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def RESERVEDWORD_DO(self):
+            return self.getToken(CRPPLParser.RESERVEDWORD_DO, 0)
+
+        def functionprototype(self):
+            return self.getTypedRuleContext(CRPPLParser.FunctionprototypeContext,0)
+
+
+        def getRuleIndex(self):
+            return CRPPLParser.RULE_functioncall
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFunctioncall" ):
+                listener.enterFunctioncall(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFunctioncall" ):
+                listener.exitFunctioncall(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFunctioncall" ):
+                return visitor.visitFunctioncall(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def functioncall(self):
+
+        localctx = CRPPLParser.FunctioncallContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 16, self.RULE_functioncall)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 143
+            self.match(CRPPLParser.RESERVEDWORD_DO)
+            self.state = 144
+            self.functionprototype()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class FunctionprototypeContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def IDENTIFIER(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.IDENTIFIER)
+            else:
+                return self.getToken(CRPPLParser.IDENTIFIER, i)
+
+        def OPENPARENTHESIS(self):
+            return self.getToken(CRPPLParser.OPENPARENTHESIS, 0)
+
+        def CLOSEPARENTHESIS(self):
+            return self.getToken(CRPPLParser.CLOSEPARENTHESIS, 0)
+
+        def LITERAL(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.LITERAL)
+            else:
+                return self.getToken(CRPPLParser.LITERAL, i)
+
+        def SEPARATOR(self, i:int=None):
+            if i is None:
+                return self.getTokens(CRPPLParser.SEPARATOR)
+            else:
+                return self.getToken(CRPPLParser.SEPARATOR, i)
+
+        def getRuleIndex(self):
+            return CRPPLParser.RULE_functionprototype
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFunctionprototype" ):
+                listener.enterFunctionprototype(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFunctionprototype" ):
+                listener.exitFunctionprototype(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFunctionprototype" ):
+                return visitor.visitFunctionprototype(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def functionprototype(self):
+
+        localctx = CRPPLParser.FunctionprototypeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 18, self.RULE_functionprototype)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 146
+            self.match(CRPPLParser.IDENTIFIER)
+            self.state = 147
+            self.match(CRPPLParser.OPENPARENTHESIS)
+            self.state = 156
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            if _la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER:
+                self.state = 148
+                _la = self._input.LA(1)
+                if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                    self._errHandler.recoverInline(self)
+                else:
+                    self._errHandler.reportMatch(self)
+                    self.consume()
+                self.state = 153
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while _la==CRPPLParser.SEPARATOR:
+                    self.state = 149
+                    self.match(CRPPLParser.SEPARATOR)
+                    self.state = 150
+                    _la = self._input.LA(1)
+                    if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
+                        self._errHandler.recoverInline(self)
+                    else:
+                        self._errHandler.reportMatch(self)
+                        self.consume()
+                    self.state = 155
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+
+
+            self.state = 158
+            self.match(CRPPLParser.CLOSEPARENTHESIS)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -930,86 +1344,92 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitConditionalstatement" ):
                 listener.exitConditionalstatement(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitConditionalstatement" ):
+                return visitor.visitConditionalstatement(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
     def conditionalstatement(self):
 
         localctx = CRPPLParser.ConditionalstatementContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_conditionalstatement)
+        self.enterRule(localctx, 20, self.RULE_conditionalstatement)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 120
+            self.state = 160
             self.match(CRPPLParser.IF)
 
-            self.state = 121
+            self.state = 161
             self.booleanstatement()
-            self.state = 122
+            self.state = 162
             self.match(CRPPLParser.THEN)
 
-            self.state = 123
+            self.state = 163
             self.validexpr()
-            self.state = 127
+            self.state = 167
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.DO) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.ALTERCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD))) != 0):
-                self.state = 124
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0):
+                self.state = 164
                 self.validexpr()
-                self.state = 129
+                self.state = 169
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 142
+            self.state = 182
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==CRPPLParser.ELSE_IF:
-                self.state = 130
+                self.state = 170
                 self.match(CRPPLParser.ELSE_IF)
 
-                self.state = 131
+                self.state = 171
                 self.booleanstatement()
-                self.state = 132
+                self.state = 172
                 self.match(CRPPLParser.THEN)
 
-                self.state = 133
+                self.state = 173
                 self.validexpr()
-                self.state = 137
+                self.state = 177
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.DO) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.ALTERCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD))) != 0):
-                    self.state = 134
+                while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0):
+                    self.state = 174
                     self.validexpr()
-                    self.state = 139
+                    self.state = 179
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 144
+                self.state = 184
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 153
+            self.state = 193
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.ELSE:
-                self.state = 145
+                self.state = 185
                 self.match(CRPPLParser.ELSE)
 
-                self.state = 146
+                self.state = 186
                 self.validexpr()
-                self.state = 150
+                self.state = 190
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.DO) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.ALTERCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD))) != 0):
-                    self.state = 147
+                while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0):
+                    self.state = 187
                     self.validexpr()
-                    self.state = 152
+                    self.state = 192
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
 
 
-            self.state = 155
+            self.state = 195
             self.match(CRPPLParser.END_IF)
         except RecognitionException as re:
             localctx.exception = re
@@ -1080,99 +1500,105 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitBooleanstatement" ):
                 listener.exitBooleanstatement(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBooleanstatement" ):
+                return visitor.visitBooleanstatement(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
     def booleanstatement(self):
 
         localctx = CRPPLParser.BooleanstatementContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_booleanstatement)
+        self.enterRule(localctx, 22, self.RULE_booleanstatement)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 182
+            self.state = 222
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,21,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,26,self._ctx)
             if la_ == 1:
-                self.state = 157
+                self.state = 197
                 self.match(CRPPLParser.OPENPARENTHESIS)
-                self.state = 158
+                self.state = 198
                 _la = self._input.LA(1)
                 if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.TRUE) | (1 << CRPPLParser.FALSE) | (1 << CRPPLParser.IDENTIFIER))) != 0)):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 159
+                self.state = 199
                 self.match(CRPPLParser.CLOSEPARENTHESIS)
                 pass
 
             elif la_ == 2:
-                self.state = 160
+                self.state = 200
                 self.match(CRPPLParser.OPENPARENTHESIS)
-                self.state = 166
+                self.state = 206
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [CRPPLParser.LITERAL]:
-                    self.state = 161
+                    self.state = 201
                     self.match(CRPPLParser.LITERAL)
                     pass
                 elif token in [CRPPLParser.IDENTIFIER]:
-                    self.state = 162
+                    self.state = 202
                     self.match(CRPPLParser.IDENTIFIER)
                     pass
                 elif token in [CRPPLParser.TRUE]:
-                    self.state = 163
+                    self.state = 203
                     self.match(CRPPLParser.TRUE)
                     pass
                 elif token in [CRPPLParser.FALSE]:
-                    self.state = 164
+                    self.state = 204
                     self.match(CRPPLParser.FALSE)
                     pass
                 elif token in [CRPPLParser.OPENPARENTHESIS]:
-                    self.state = 165
+                    self.state = 205
                     self.booleanstatement()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 178
+                self.state = 218
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==CRPPLParser.OPERATOR:
-                    self.state = 168
+                    self.state = 208
                     self.match(CRPPLParser.OPERATOR)
-                    self.state = 174
+                    self.state = 214
                     self._errHandler.sync(self)
                     token = self._input.LA(1)
                     if token in [CRPPLParser.LITERAL]:
-                        self.state = 169
+                        self.state = 209
                         self.match(CRPPLParser.LITERAL)
                         pass
                     elif token in [CRPPLParser.IDENTIFIER]:
-                        self.state = 170
+                        self.state = 210
                         self.match(CRPPLParser.IDENTIFIER)
                         pass
                     elif token in [CRPPLParser.TRUE]:
-                        self.state = 171
+                        self.state = 211
                         self.match(CRPPLParser.TRUE)
                         pass
                     elif token in [CRPPLParser.FALSE]:
-                        self.state = 172
+                        self.state = 212
                         self.match(CRPPLParser.FALSE)
                         pass
                     elif token in [CRPPLParser.OPENPARENTHESIS]:
-                        self.state = 173
+                        self.state = 213
                         self.booleanstatement()
                         pass
                     else:
                         raise NoViableAltException(self)
 
-                    self.state = 180
+                    self.state = 220
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 181
+                self.state = 221
                 self.match(CRPPLParser.CLOSEPARENTHESIS)
                 pass
 
