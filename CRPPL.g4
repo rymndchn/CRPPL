@@ -37,7 +37,6 @@ booleanstatement: (
   OPENPARENTHESIS (LITERAL|IDENTIFIER|TRUE|FALSE| booleanstatement) (OPERATOR (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement))* CLOSEPARENTHESIS
 );
 
-
 //LEXER RULES.
 fragment A: ('A'|'a');
 fragment B: ('B'|'b');
