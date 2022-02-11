@@ -81,3 +81,54 @@ class myCRPPLListener(CRPPLListener) :
 
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
+
+    def enterCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
+        
+        indentifier_count = len(ctx.IDENTIFIER())
+        return_val = None
+
+        if ctx.CREATEFUNCTION() is not None:
+            self.output.write('def ')
+            
+            #constructing function header.
+            if(ctx.IDENTIFIER()[0] != None):
+                self.output.write(ctx.IDENTIFIER()[0].getText())
+                self.output.write(ctx.OPENPARENTHESIS().getText())
+            else:
+                pass
+
+            #handling parameters.
+            for i in range(1,indentifier_count):
+                self.output.write(ctx.IDENTIFIER()[i].getText())
+
+                if(len(ctx.SEPARATOR()) < i):
+                    break
+
+                #multiple parameters.
+                if(ctx.SEPARATOR() != None and i <= len(ctx.SEPARATOR())):
+                    self.output.write(ctx.SEPARATOR()[i-1].getText() + ' ')
+
+            self.output.write(ctx.CLOSEPARENTHESIS().getText() + ':\n')
+
+            if ctx.RETURN() is not None:
+                self.output.write('\t' + ctx.RETURN().getText() + ' ')
+
+                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText())
+                
+                #self.output.write(ctx.functioncall().getText())
+
+            else:
+                self.output.write('\tpass')
+
+            self.output.write('\n')
+
+            #end the function.
+            if ctx.ENDFUNCTION() is not None:
+                self.output.write('\n')
+
+
+        else:
+            print('Error!')
+
+    def exitCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
+        pass
