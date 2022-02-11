@@ -29,12 +29,11 @@ def main (argv):
 
     program = open("output.py","r")
 
-    program_store = program.readlines()
+    program_store = program.read()
 
     output.close()
 
-    for line in program_store:
-        exec(line)
+    exec(program_store)
 
     print(df)
 
