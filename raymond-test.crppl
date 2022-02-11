@@ -3,4 +3,7 @@ new_column col1 for 'df'
 new_column 'additional_col3' for tbl
 new_column col for tbl
 get sum of 'revenue' for 'year' = '2021', 'month' = '11'
-delete_column 'Name' for 'df'
+delete_column 'additional_col' for 'df'
+delete_column col for tbl
+delete_column col1 for 'df'
+delete_column 'additional_col3' for tbl
