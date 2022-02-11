@@ -16,6 +16,13 @@ validexpr: generalquery
          | conditionalstatement
          ;
 
+//ARITHMETIC EXPRESSION.
+expr:   '(' expr ')'
+         | left=expr op=('*'|'/') right=expr
+         | left=expr op=('+'|'-') right=expr
+         | value=NUM_EXPR
+         ;
+
 //PARSER RULES.
 generalquery: GET (OPERATING_FUNCTION OF)? (LITERAL|IDENTIFIER) (SEPARATOR GET (OPERATOR OF)? (LITERAL|IDENTIFIER))* (FOR (LITERAL|IDENTIFIER) OPERATOR (LITERAL|IDENTIFIER) (SEPARATOR (LITERAL|IDENTIFIER) OPERATOR (LITERAL|IDENTIFIER))*)?;
 importfile: RESERVEDWORD_DO IMPORTFILE OPENPARENTHESIS (LITERAL|IDENTIFIER) SEPARATOR (LITERAL|IDENTIFIER) CLOSEPARENTHESIS;
@@ -70,6 +77,9 @@ fragment UPPERCASE: [A-Z];
 fragment NUMBERS: [0-9];
 fragment UNDERSCORE: '_';
 fragment ALPHANUMERIC: [a-zA-Z0-9]*;
+
+//Arithmetic operation queries.
+NUM_EXPR : [0-9]+ ('.' [0-9]+)?;
 
 //GENERAL QUERY RESERVED WORD LEXEMES
 GET: G E T;
