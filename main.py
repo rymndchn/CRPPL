@@ -17,7 +17,6 @@ def main (argv):
     data = {'Name': ['Tom', 'Joseph', 'Krish', 'John'], 'Age': [20, 21, 19, 18]}
     df = pd.DataFrame(data)
 
-    tbl = 'df'
     col = 'additionalcol1'
     col1 = 'additionalcol2'
     
