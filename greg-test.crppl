@@ -3,7 +3,7 @@ new_column additional_col2 for df
 delete_column additional_col2 for df
 change_value of additional_col1 to 'Thomas' for Name equal 'Tom' on df
 
-create_function do_graph_inside()
+create_function do_graph_in()
 	get sum of revenue for year = '2021', month = '11' on df
 end_function
 
@@ -19,5 +19,5 @@ create_function add_num(num)
 	if (num lt '25') then
 		do add_num(num)
 	end_if 
-return num
+	return num
 end_function

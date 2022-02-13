@@ -12,8 +12,8 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('import numpy as np\n')
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-        print('General query coming soon!')
-        #self.output.write("print(\'General query coming soon!\')")
+        #print('General query coming soon!')
+        self.output.write('print(\'General query coming soon!\')\n')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
@@ -91,6 +91,9 @@ class myCRPPLListener(CRPPLListener) :
         return_val = None
 
         if ctx.CREATEFUNCTION() is not None:
+
+            create_pos = self.findPosition(str(ctx.CREATEFUNCTION().getSymbol()))
+            end_pos = self.findPosition(str(ctx.ENDFUNCTION().getSymbol()))
             
             self.output.write('def ')
             
@@ -114,37 +117,35 @@ class myCRPPLListener(CRPPLListener) :
 
             self.output.write(ctx.CLOSEPARENTHESIS().getText() + ':\n')
 
-            if(ctx.generalquery() is not None):
+            #handles if function is empty.
+            if((end_pos-create_pos) == 1):
+                self.output.write('pass\n')
+
+            if(len(ctx.generalquery()) != 0):
                 self.output.write('\t')
-
-            if ctx.RETURN() is not None:
-
-                self.output.write('\t' + ctx.RETURN().getText() + ' ')
-
-                ret_pos = self.findPosition(str(ctx.RETURN().getSymbol()))
-                ret_id_pos = self.findPosition(str(ctx.IDENTIFIER()[indentifier_count-1].getSymbol()))
-                
-                #last identifier is after the return statement.
-                if(ret_id_pos > ret_pos):
-                    self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText())
-                
-                #self.output.write(ctx.functioncall().getText())
-
-            else:
-                self.output.write('\tpass')
-
-            self.output.write('\n')
-
-            #end the function.
-            if ctx.ENDFUNCTION() is not None:
-                self.output.write('\n')
-
-
         else:
             print('Error!')
 
     def exitCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
-        pass
+        if ctx.RETURN() is not None:
+            indentifier_count = len(ctx.IDENTIFIER())
+
+            self.output.write('\t' + ctx.RETURN().getText() + ' ')
+
+            ret_pos = self.findPosition(str(ctx.RETURN().getSymbol()))
+            ret_id_pos = self.findPosition(str(ctx.IDENTIFIER()[indentifier_count-1].getSymbol()))
+                
+            #last identifier is after the return statement.
+            if(ret_id_pos > ret_pos):
+                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n')
+        else:
+            pass
+
+        #end the function.
+        if ctx.ENDFUNCTION() is not None:
+            self.output.write('\n')
+        else:
+            pass
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")
