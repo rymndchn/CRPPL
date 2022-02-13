@@ -2,3 +2,4 @@
 *.pyc
 *.interp
 *.tokens
+.gitignore
