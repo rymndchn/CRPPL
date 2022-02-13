@@ -133,17 +133,19 @@ class CRPPLParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+    literalNames = [ "<INVALID>", "'*'", "'/'", "'+'", "'-'", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "'('", "')'", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "' '", "'\n'", "'\t'", "'\r'" ]
+                     "'('", "')'", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "' '", "'\n'", 
+                     "'\t'", "'\r'" ]
 
-    symbolicNames = [ "<INVALID>", "GET", "OF", "FOR", "CREATEFUNCTION", 
+    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                      "<INVALID>", "NUM_EXPR", "GET", "OF", "FOR", "CREATEFUNCTION", 
                       "ENDFUNCTION", "RETURN", "IF", "THEN", "ELSE_IF", 
                       "ELSE", "TRUE", "FALSE", "END_IF", "NEWCOLUMN", "ALTERCOLUMN", 
                       "DELETECOLUMN", "IMPORTFILE", "ASSIGNEMT_OPERATOR", 
@@ -155,59 +157,65 @@ class CRPPLParser ( Parser ):
 
     RULE_multiexpr = 0
     RULE_validexpr = 1
-    RULE_generalquery = 2
-    RULE_importfile = 3
-    RULE_defineconstant = 4
-    RULE_altercolumn = 5
-    RULE_graphquery = 6
-    RULE_createfunction = 7
-    RULE_functioncall = 8
-    RULE_functionprototype = 9
-    RULE_conditionalstatement = 10
-    RULE_booleanstatement = 11
+    RULE_expr = 2
+    RULE_generalquery = 3
+    RULE_importfile = 4
+    RULE_defineconstant = 5
+    RULE_altercolumn = 6
+    RULE_graphquery = 7
+    RULE_createfunction = 8
+    RULE_functioncall = 9
+    RULE_functionprototype = 10
+    RULE_conditionalstatement = 11
+    RULE_booleanstatement = 12
 
-    ruleNames =  [ "multiexpr", "validexpr", "generalquery", "importfile", 
+    ruleNames =  [ "multiexpr", "validexpr", "expr", "generalquery", "importfile", 
                    "defineconstant", "altercolumn", "graphquery", "createfunction", 
                    "functioncall", "functionprototype", "conditionalstatement", 
                    "booleanstatement" ]
 
     EOF = Token.EOF
-    GET=1
-    OF=2
-    FOR=3
-    CREATEFUNCTION=4
-    ENDFUNCTION=5
-    RETURN=6
-    IF=7
-    THEN=8
-    ELSE_IF=9
-    ELSE=10
-    TRUE=11
-    FALSE=12
-    END_IF=13
-    NEWCOLUMN=14
-    ALTERCOLUMN=15
-    DELETECOLUMN=16
-    IMPORTFILE=17
-    ASSIGNEMT_OPERATOR=18
-    RESERVEDWORD_DO=19
-    RESERVEDWORD_CONSTANT=20
-    GRAPH=21
-    TYPE=22
-    LABELONE=23
-    LABELTWO=24
-    OPENPARENTHESIS=25
-    CLOSEPARENTHESIS=26
-    RESERVEDWORD=27
-    OPERATING_FUNCTION=28
-    OPERATOR=29
-    SEPARATOR=30
-    LITERAL=31
-    IDENTIFIER=32
-    WHITESPACE=33
-    NEXTLINE=34
-    TAB=35
-    CARRIAGERETURN=36
+    T__0=1
+    T__1=2
+    T__2=3
+    T__3=4
+    NUM_EXPR=5
+    GET=6
+    OF=7
+    FOR=8
+    CREATEFUNCTION=9
+    ENDFUNCTION=10
+    RETURN=11
+    IF=12
+    THEN=13
+    ELSE_IF=14
+    ELSE=15
+    TRUE=16
+    FALSE=17
+    END_IF=18
+    NEWCOLUMN=19
+    ALTERCOLUMN=20
+    DELETECOLUMN=21
+    IMPORTFILE=22
+    ASSIGNEMT_OPERATOR=23
+    RESERVEDWORD_DO=24
+    RESERVEDWORD_CONSTANT=25
+    GRAPH=26
+    TYPE=27
+    LABELONE=28
+    LABELTWO=29
+    OPENPARENTHESIS=30
+    CLOSEPARENTHESIS=31
+    RESERVEDWORD=32
+    OPERATING_FUNCTION=33
+    OPERATOR=34
+    SEPARATOR=35
+    LITERAL=36
+    IDENTIFIER=37
+    WHITESPACE=38
+    NEXTLINE=39
+    TAB=40
+    CARRIAGERETURN=41
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -245,12 +253,6 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitMultiexpr" ):
                 listener.exitMultiexpr(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMultiexpr" ):
-                return visitor.visitMultiexpr(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -261,17 +263,17 @@ class CRPPLParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 29
+            self.state = 31
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0):
-                self.state = 25 
+                self.state = 27 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 24
+                    self.state = 26
                     self.validexpr()
-                    self.state = 27 
+                    self.state = 29 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << CRPPLParser.GET) | (1 << CRPPLParser.CREATEFUNCTION) | (1 << CRPPLParser.IF) | (1 << CRPPLParser.NEWCOLUMN) | (1 << CRPPLParser.DELETECOLUMN) | (1 << CRPPLParser.RESERVEDWORD_DO) | (1 << CRPPLParser.IDENTIFIER))) != 0)):
@@ -279,11 +281,11 @@ class CRPPLParser ( Parser ):
 
 
 
-            self.state = 32
+            self.state = 34
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
-                self.state = 31
+                self.state = 33
                 self.match(CRPPLParser.EOF)
 
 
@@ -345,12 +347,6 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitValidexpr" ):
                 listener.exitValidexpr(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitValidexpr" ):
-                return visitor.visitValidexpr(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -359,54 +355,54 @@ class CRPPLParser ( Parser ):
         localctx = CRPPLParser.ValidexprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_validexpr)
         try:
-            self.state = 42
+            self.state = 44
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 34
+                self.state = 36
                 self.generalquery()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 35
+                self.state = 37
                 self.importfile()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 36
+                self.state = 38
                 self.defineconstant()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 37
+                self.state = 39
                 self.altercolumn()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 38
+                self.state = 40
                 self.graphquery()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 39
+                self.state = 41
                 self.createfunction()
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 40
+                self.state = 42
                 self.functioncall()
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 41
+                self.state = 43
                 self.conditionalstatement()
                 pass
 
@@ -417,6 +413,139 @@ class CRPPLParser ( Parser ):
             self._errHandler.recover(self, re)
         finally:
             self.exitRule()
+        return localctx
+
+
+    class ExprContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+            self.left = None # ExprContext
+            self.value = None # Token
+            self.op = None # Token
+            self.right = None # ExprContext
+
+        def OPENPARENTHESIS(self):
+            return self.getToken(CRPPLParser.OPENPARENTHESIS, 0)
+
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CRPPLParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(CRPPLParser.ExprContext,i)
+
+
+        def CLOSEPARENTHESIS(self):
+            return self.getToken(CRPPLParser.CLOSEPARENTHESIS, 0)
+
+        def NUM_EXPR(self):
+            return self.getToken(CRPPLParser.NUM_EXPR, 0)
+
+        def getRuleIndex(self):
+            return CRPPLParser.RULE_expr
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExpr" ):
+                listener.enterExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExpr" ):
+                listener.exitExpr(self)
+
+
+
+    def expr(self, _p:int=0):
+        _parentctx = self._ctx
+        _parentState = self.state
+        localctx = CRPPLParser.ExprContext(self, self._ctx, _parentState)
+        _prevctx = localctx
+        _startState = 4
+        self.enterRecursionRule(localctx, 4, self.RULE_expr, _p)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 52
+            self._errHandler.sync(self)
+            token = self._input.LA(1)
+            if token in [CRPPLParser.OPENPARENTHESIS]:
+                self.state = 47
+                self.match(CRPPLParser.OPENPARENTHESIS)
+                self.state = 48
+                self.expr(0)
+                self.state = 49
+                self.match(CRPPLParser.CLOSEPARENTHESIS)
+                pass
+            elif token in [CRPPLParser.NUM_EXPR]:
+                self.state = 51
+                localctx.value = self.match(CRPPLParser.NUM_EXPR)
+                pass
+            else:
+                raise NoViableAltException(self)
+
+            self._ctx.stop = self._input.LT(-1)
+            self.state = 62
+            self._errHandler.sync(self)
+            _alt = self._interp.adaptivePredict(self._input,6,self._ctx)
+            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                if _alt==1:
+                    if self._parseListeners is not None:
+                        self.triggerExitRuleEvent()
+                    _prevctx = localctx
+                    self.state = 60
+                    self._errHandler.sync(self)
+                    la_ = self._interp.adaptivePredict(self._input,5,self._ctx)
+                    if la_ == 1:
+                        localctx = CRPPLParser.ExprContext(self, _parentctx, _parentState)
+                        localctx.left = _prevctx
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 54
+                        if not self.precpred(self._ctx, 3):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 3)")
+                        self.state = 55
+                        localctx.op = self._input.LT(1)
+                        _la = self._input.LA(1)
+                        if not(_la==CRPPLParser.T__0 or _la==CRPPLParser.T__1):
+                            localctx.op = self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 56
+                        localctx.right = self.expr(4)
+                        pass
+
+                    elif la_ == 2:
+                        localctx = CRPPLParser.ExprContext(self, _parentctx, _parentState)
+                        localctx.left = _prevctx
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 57
+                        if not self.precpred(self._ctx, 2):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
+                        self.state = 58
+                        localctx.op = self._input.LT(1)
+                        _la = self._input.LA(1)
+                        if not(_la==CRPPLParser.T__2 or _la==CRPPLParser.T__3):
+                            localctx.op = self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 59
+                        localctx.right = self.expr(3)
+                        pass
+
+             
+                self.state = 64
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,6,self._ctx)
+
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.unrollRecursionContexts(_parentctx)
         return localctx
 
 
@@ -479,115 +608,109 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitGeneralquery" ):
                 listener.exitGeneralquery(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitGeneralquery" ):
-                return visitor.visitGeneralquery(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def generalquery(self):
 
         localctx = CRPPLParser.GeneralqueryContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 4, self.RULE_generalquery)
+        self.enterRule(localctx, 6, self.RULE_generalquery)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 44
+            self.state = 65
             self.match(CRPPLParser.GET)
-            self.state = 47
+            self.state = 68
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.OPERATING_FUNCTION:
-                self.state = 45
+                self.state = 66
                 self.match(CRPPLParser.OPERATING_FUNCTION)
-                self.state = 46
+                self.state = 67
                 self.match(CRPPLParser.OF)
 
 
-            self.state = 49
+            self.state = 70
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 59
+            self.state = 80
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==CRPPLParser.SEPARATOR:
-                self.state = 50
+                self.state = 71
                 self.match(CRPPLParser.SEPARATOR)
-                self.state = 51
+                self.state = 72
                 self.match(CRPPLParser.GET)
-                self.state = 54
+                self.state = 75
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==CRPPLParser.OPERATOR:
-                    self.state = 52
+                    self.state = 73
                     self.match(CRPPLParser.OPERATOR)
-                    self.state = 53
+                    self.state = 74
                     self.match(CRPPLParser.OF)
 
 
-                self.state = 56
+                self.state = 77
                 _la = self._input.LA(1)
                 if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 61
+                self.state = 82
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 75
+            self.state = 96
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.FOR:
-                self.state = 62
+                self.state = 83
                 self.match(CRPPLParser.FOR)
-                self.state = 63
+                self.state = 84
                 _la = self._input.LA(1)
                 if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 64
+                self.state = 85
                 self.match(CRPPLParser.OPERATOR)
-                self.state = 65
+                self.state = 86
                 _la = self._input.LA(1)
                 if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
-                self.state = 72
+                self.state = 93
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==CRPPLParser.SEPARATOR:
-                    self.state = 66
+                    self.state = 87
                     self.match(CRPPLParser.SEPARATOR)
-                    self.state = 67
+                    self.state = 88
                     _la = self._input.LA(1)
                     if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                         self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
-                    self.state = 68
+                    self.state = 89
                     self.match(CRPPLParser.OPERATOR)
-                    self.state = 69
+                    self.state = 90
                     _la = self._input.LA(1)
                     if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                         self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
-                    self.state = 74
+                    self.state = 95
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -646,45 +769,39 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitImportfile" ):
                 listener.exitImportfile(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitImportfile" ):
-                return visitor.visitImportfile(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def importfile(self):
 
         localctx = CRPPLParser.ImportfileContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 6, self.RULE_importfile)
+        self.enterRule(localctx, 8, self.RULE_importfile)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 77
+            self.state = 98
             self.match(CRPPLParser.RESERVEDWORD_DO)
-            self.state = 78
+            self.state = 99
             self.match(CRPPLParser.IMPORTFILE)
-            self.state = 79
+            self.state = 100
             self.match(CRPPLParser.OPENPARENTHESIS)
-            self.state = 80
+            self.state = 101
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 81
+            self.state = 102
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 82
+            self.state = 103
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 83
+            self.state = 104
             self.match(CRPPLParser.CLOSEPARENTHESIS)
         except RecognitionException as re:
             localctx.exception = re
@@ -721,26 +838,20 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitDefineconstant" ):
                 listener.exitDefineconstant(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitDefineconstant" ):
-                return visitor.visitDefineconstant(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def defineconstant(self):
 
         localctx = CRPPLParser.DefineconstantContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_defineconstant)
+        self.enterRule(localctx, 10, self.RULE_defineconstant)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 85
+            self.state = 106
             self.match(CRPPLParser.IDENTIFIER)
-            self.state = 86
+            self.state = 107
             self.match(CRPPLParser.RESERVEDWORD_CONSTANT)
-            self.state = 87
+            self.state = 108
             self.match(CRPPLParser.LITERAL)
         except RecognitionException as re:
             localctx.exception = re
@@ -789,39 +900,33 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitAltercolumn" ):
                 listener.exitAltercolumn(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAltercolumn" ):
-                return visitor.visitAltercolumn(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def altercolumn(self):
 
         localctx = CRPPLParser.AltercolumnContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_altercolumn)
+        self.enterRule(localctx, 12, self.RULE_altercolumn)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 89
+            self.state = 110
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.NEWCOLUMN or _la==CRPPLParser.DELETECOLUMN):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 90
+            self.state = 111
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
                 self.consume()
-            self.state = 91
+            self.state = 112
             self.match(CRPPLParser.FOR)
-            self.state = 92
+            self.state = 113
             _la = self._input.LA(1)
             if not(_la==CRPPLParser.LITERAL or _la==CRPPLParser.IDENTIFIER):
                 self._errHandler.recoverInline(self)
@@ -893,51 +998,45 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitGraphquery" ):
                 listener.exitGraphquery(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitGraphquery" ):
-                return visitor.visitGraphquery(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def graphquery(self):
 
         localctx = CRPPLParser.GraphqueryContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_graphquery)
+        self.enterRule(localctx, 14, self.RULE_graphquery)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 94
+            self.state = 115
             self.match(CRPPLParser.RESERVEDWORD_DO)
-            self.state = 95
+            self.state = 116
             self.match(CRPPLParser.GRAPH)
-            self.state = 96
+            self.state = 117
             self.match(CRPPLParser.OPENPARENTHESIS)
-            self.state = 98
+            self.state = 119
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==CRPPLParser.TYPE:
-                self.state = 97
+                self.state = 118
                 self.match(CRPPLParser.TYPE)
 
 
-            self.state = 100
+            self.state = 121
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 101
+            self.state = 122
             self.match(CRPPLParser.LITERAL)
-            self.state = 102
+            self.state = 123
             self.match(CRPPLParser.ASSIGNEMT_OPERATOR)
-            self.state = 103
+            self.state = 124
             self.match(CRPPLParser.LABELONE)
-            self.state = 104
+            self.state = 125
             self.match(CRPPLParser.SEPARATOR)
-            self.state = 105
+            self.state = 126
             self.match(CRPPLParser.LITERAL)
-            self.state = 106
+            self.state = 127
             self.match(CRPPLParser.ASSIGNEMT_OPERATOR)
-            self.state = 107
+            self.state = 128
             self.match(CRPPLParser.LABELTWO)
             self.state = 129
             self.match(CRPPLParser.SEPARATOR)
@@ -1050,19 +1149,13 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitCreatefunction" ):
                 listener.exitCreatefunction(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitCreatefunction" ):
-                return visitor.visitCreatefunction(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def createfunction(self):
 
         localctx = CRPPLParser.CreatefunctionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_createfunction)
+        self.enterRule(localctx, 16, self.RULE_createfunction)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1097,12 +1190,12 @@ class CRPPLParser ( Parser ):
 
             self.state = 155
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,13,self._ctx)
+            _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
             while _alt!=1 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1+1:
                     self.state = 153
                     self._errHandler.sync(self)
-                    la_ = self._interp.adaptivePredict(self._input,12,self._ctx)
+                    la_ = self._interp.adaptivePredict(self._input,15,self._ctx)
                     if la_ == 1:
                         self.state = 146
                         self.generalquery()
@@ -1141,7 +1234,7 @@ class CRPPLParser ( Parser ):
              
                 self.state = 157
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,13,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
 
             self.state = 161
             self._errHandler.sync(self)
@@ -1192,19 +1285,13 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitFunctioncall" ):
                 listener.exitFunctioncall(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctioncall" ):
-                return visitor.visitFunctioncall(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def functioncall(self):
 
         localctx = CRPPLParser.FunctioncallContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_functioncall)
+        self.enterRule(localctx, 18, self.RULE_functioncall)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 165
@@ -1261,19 +1348,13 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitFunctionprototype" ):
                 listener.exitFunctionprototype(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionprototype" ):
-                return visitor.visitFunctionprototype(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def functionprototype(self):
 
         localctx = CRPPLParser.FunctionprototypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_functionprototype)
+        self.enterRule(localctx, 20, self.RULE_functionprototype)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1369,19 +1450,13 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitConditionalstatement" ):
                 listener.exitConditionalstatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitConditionalstatement" ):
-                return visitor.visitConditionalstatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def conditionalstatement(self):
 
         localctx = CRPPLParser.ConditionalstatementContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_conditionalstatement)
+        self.enterRule(localctx, 22, self.RULE_conditionalstatement)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1525,19 +1600,13 @@ class CRPPLParser ( Parser ):
             if hasattr( listener, "exitBooleanstatement" ):
                 listener.exitBooleanstatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBooleanstatement" ):
-                return visitor.visitBooleanstatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
     def booleanstatement(self):
 
         localctx = CRPPLParser.BooleanstatementContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_booleanstatement)
+        self.enterRule(localctx, 24, self.RULE_booleanstatement)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -1636,6 +1705,26 @@ class CRPPLParser ( Parser ):
             self.exitRule()
         return localctx
 
+
+
+    def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
+        if self._predicates == None:
+            self._predicates = dict()
+        self._predicates[2] = self.expr_sempred
+        pred = self._predicates.get(ruleIndex, None)
+        if pred is None:
+            raise Exception("No predicate with index:" + str(ruleIndex))
+        else:
+            return pred(localctx, predIndex)
+
+    def expr_sempred(self, localctx:ExprContext, predIndex:int):
+            if predIndex == 0:
+                return self.precpred(self._ctx, 3)
+         
+
+            if predIndex == 1:
+                return self.precpred(self._ctx, 2)
+         
 
 
 
