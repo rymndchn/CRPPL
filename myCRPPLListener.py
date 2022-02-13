@@ -13,7 +13,7 @@ class myCRPPLListener(CRPPLListener) :
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         print('General query coming soon!')
-        self.output.write("print(\'General query coming soon!\')")
+        #self.output.write("print(\'General query coming soon!\')")
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
