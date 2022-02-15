@@ -12,7 +12,8 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('import numpy as np\n')
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-        print('General query coming soon!')
+        #print('General query coming soon!')
+        self.output.write('print(\'General query coming soon!\')\n')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
@@ -20,116 +21,68 @@ class myCRPPLListener(CRPPLListener) :
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
 
         if ctx.NEWCOLUMN() is not None:
+            colname = ctx.IDENTIFIER()[0].getText()
+            tblname = ctx.IDENTIFIER()[1].getText()
 
-            if (type(ctx.LITERAL())) == list and len(ctx.LITERAL()) == 2: #literal + literal
-                colname = ctx.LITERAL()[0].getText()
-                tblname = ctx.LITERAL()[1].getText()
-
-                #clean up col & tbl name
-                colname = colname[1:-1]
-                tblname = tblname[1:-1]
-
-                #declare command
-                command = tblname + '["' + colname + '"] = np.nan'
-                self.output.write(command + '\n')
-
-            elif(type(ctx.IDENTIFIER())) == list and len(ctx.IDENTIFIER()) == 2: #identifier + identifier
-                colname = ctx.IDENTIFIER()[0].getText()
-                tblname = ctx.IDENTIFIER()[1].getText()
-
-                #declare command
-                command = 'exec(' + tblname + '+' + '\'["\'' + '+' + colname + '+' + '\'"] = np.nan\'' + ')'
-                self.output.write(command + '\n')
-
-            else:
-            #    print(len(ctx.LITERAL()))
-                tmp_var1 = str(ctx.LITERAL()[0].getSymbol())
-                tmp_var2 = str(ctx.IDENTIFIER()[0].getSymbol())
-
-                #get the position of literal and identifier
-                literal_pos = int(re.search('(\[@)(\d+)(,.*)', tmp_var1).group(2))
-                identifier_pos = int(re.search('(\[@)(\d+)(,.*)', tmp_var2).group(2))
-
-                #check if literal comes first or identifier
-                if literal_pos > identifier_pos: #identifier + literal
-                    colname = ctx.IDENTIFIER()[0].getText()
-                    tblname = ctx.LITERAL()[0].getText()
-
-                    #clean up col & tbl name
-                    tblname = tblname[1:-1]
-
-                    #declare command
-                    command = tblname + '[' + colname + '] = np.nan'
-                    self.output.write(command + '\n')
-                elif literal_pos < identifier_pos: #literal + identifier
-                    colname = ctx.LITERAL()[0].getText()
-                    tblname = ctx.IDENTIFIER()[0].getText()
-
-                    #clean up col & tbl name
-                    colname = colname[1:-1]
-
-                    #declare command
-                    command = 'exec(' + tblname + '+' + '\'["'+ colname + '"] = np.nan\'' + ')'
-                    self.output.write(command + '\n')
-
+            #declare command
+            command = tblname + '["' + colname + '"] = np.nan'
+            self.output.write(command + '\n')
 
         elif ctx.DELETECOLUMN() is not None:
-            #do something
-            if (type(ctx.LITERAL())) == list and len(ctx.LITERAL()) == 2: #literal + literal
-                colname = ctx.LITERAL()[0].getText()
-                tblname = ctx.LITERAL()[1].getText()
+            colname = ctx.IDENTIFIER()[0].getText()
+            tblname = ctx.IDENTIFIER()[1].getText()
 
-                #clean up col & tbl name
-                colname = colname[1:-1]
-                tblname = tblname[1:-1]
-
-                #declare command
-                #command = tblname + '["' + colname + '"] = np.nan' #df["col"]=np.nan
-                command = 'del ' + tblname + '["' + colname + '"]'
-                self.output.write(command + '\n')
-
-            elif(type(ctx.IDENTIFIER())) == list and len(ctx.IDENTIFIER()) == 2: #identifier + identifier
-                colname = ctx.IDENTIFIER()[0].getText()
-                tblname = ctx.IDENTIFIER()[1].getText()
-
-                #declare command
-                command = 'exec( \'del \' + ' + tblname + '+' + '\'["\'' + '+' + colname + '+' + '\'"]\'' + ')'
-                self.output.write(command + '\n')
-
-            else:
-            #    print(len(ctx.LITERAL()))
-                tmp_var1 = str(ctx.LITERAL()[0].getSymbol())
-                tmp_var2 = str(ctx.IDENTIFIER()[0].getSymbol())
-
-                #get the position of literal and identifier
-                literal_pos = int(re.search('(\[@)(\d+)(,.*)', tmp_var1).group(2))
-                identifier_pos = int(re.search('(\[@)(\d+)(,.*)', tmp_var2).group(2))
-
-                #check if literal comes first or identifier
-                if literal_pos > identifier_pos: #identifier + literal
-                    colname = ctx.IDENTIFIER()[0].getText()
-                    tblname = ctx.LITERAL()[0].getText()
-
-                    #clean up col & tbl name
-                    tblname = tblname[1:-1]
-
-                    #declare command
-                    command = 'del ' + tblname + '[' + colname + ']'
-                    self.output.write(command + '\n')
-                elif literal_pos < identifier_pos: #literal + identifier
-                    colname = ctx.LITERAL()[0].getText()
-                    tblname = ctx.IDENTIFIER()[0].getText()
-
-                    #clean up col & tbl name
-                    colname = colname[1:-1]
-
-                    #declare command
-                    command = 'exec( \'del \' + ' + tblname + '+' + '\'["'+ colname + '"]\'' + ')'
-                    self.output.write(command + '\n')
+            #declare command
+            command = 'del ' + tblname + '["' + colname + '"]'
+            self.output.write(command + '\n')
         else:
             print('Error!')
 
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
+        pass
+
+    def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
+        #get how many identifiers and literals there are
+        ctr_literal = len(ctx.LITERAL())
+        ctr_identifier = len(ctx.IDENTIFIER())
+
+        #get the literal values and their positions
+        literal_collection  = []
+
+        i = 0
+
+        while i < ctr_literal:
+            individual_literal = []
+            individual_literal.append(int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[i].getSymbol())).group(2)))
+            individual_literal.append(ctx.LITERAL()[i].getText())
+            individual_literal.append('literal')
+            literal_collection.append(individual_literal)
+            i += 1
+
+        #get the identifier values and their positions
+        identifier_collection = []
+
+        i = 0
+
+        while i < ctr_identifier:
+            individual_identifier = []
+            individual_identifier.append(int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)))
+            individual_identifier.append(ctx.IDENTIFIER()[i].getText())
+            identifier_collection.append(individual_identifier)
+            i += 1
+
+        #combine the literals and identifiers into one collection
+        collective = []
+        collective = literal_collection + identifier_collection
+
+        #sort the values in collective
+        collective.sort()
+
+        #generate command
+        command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1]
+        self.output.write(command + '\n')
+
+    def exitChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
         pass
 
     def enterCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
@@ -138,6 +91,10 @@ class myCRPPLListener(CRPPLListener) :
         return_val = None
 
         if ctx.CREATEFUNCTION() is not None:
+
+            create_pos = self.findPosition(str(ctx.CREATEFUNCTION().getSymbol()))
+            end_pos = self.findPosition(str(ctx.ENDFUNCTION().getSymbol()))
+            
             self.output.write('def ')
             
             #constructing function header.
@@ -160,25 +117,39 @@ class myCRPPLListener(CRPPLListener) :
 
             self.output.write(ctx.CLOSEPARENTHESIS().getText() + ':\n')
 
-            if ctx.RETURN() is not None:
-                self.output.write('\t' + ctx.RETURN().getText() + ' ')
+            #handles if function is empty.
+            if((end_pos-create_pos) == 1):
+                self.output.write('pass\n')
 
-                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText())
-                
-                #self.output.write(ctx.functioncall().getText())
-
-            else:
-                self.output.write('\tpass')
-
-            self.output.write('\n')
-
-            #end the function.
-            if ctx.ENDFUNCTION() is not None:
-                self.output.write('\n')
-
-
+            if(len(ctx.generalquery()) != 0):
+                self.output.write('\t')
         else:
             print('Error!')
 
     def exitCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
-        pass
+        if ctx.RETURN() is not None:
+            indentifier_count = len(ctx.IDENTIFIER())
+
+            self.output.write('\t' + ctx.RETURN().getText() + ' ')
+
+            ret_pos = self.findPosition(str(ctx.RETURN().getSymbol()))
+            ret_id_pos = self.findPosition(str(ctx.IDENTIFIER()[indentifier_count-1].getSymbol()))
+                
+            #last identifier is after the return statement.
+            if(ret_id_pos > ret_pos):
+                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n')
+        else:
+            pass
+
+        #end the function.
+        if ctx.ENDFUNCTION() is not None:
+            self.output.write('\n')
+        else:
+            pass
+
+    def findPosition(self, pos_string):
+        split_string = pos_string.split(",")
+        ret_string = split_string[0]
+        ret_string = ret_string[2:]
+        ret_val = int(ret_string)
+        return ret_val
