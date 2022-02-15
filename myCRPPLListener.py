@@ -12,7 +12,57 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('import numpy as np\n')
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-        print('General query coming soon!')
+        if ctx.GET() is not None:
+            # get position of GET
+            get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
+
+            # get position of ON
+            on_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.ON().getSymbol())).group(2))
+
+            # get length of SEPARATOR
+            sep_count = len(ctx.SEPARATOR())
+
+            # get length of IDENTIFIER
+            ident_count = len(ctx.IDENTIFIER())
+
+            # pointer for identifier
+            i = 0
+
+            # list for columns
+            cols = []
+
+            # table name
+            tbl = ''
+
+            # declare tmp_col for query
+            tmp_col = ''
+
+            # check if there OPERATING FUNCTIONS
+            if ctx.OPERATING_FUNCTION() is None:
+                #check if there is FOR
+                if ctx.FOR() is None:
+                    # put the columns into the list 'cols'
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos:
+                        cols.append(ctx.IDENTIFIER()[i].getText())
+                        i += 1
+                    # if there is group by on simple select statement, return error
+                    if len(ctx.GROUPBY()) != 0:
+                        print('Error! Invalid group_by statement!')
+                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                        tbl = ctx.IDENTIFIER()[i].getText()
+                        i +=1
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        # assemble the command to do simple query
+                        command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
+                        self.output.write(command + '\n')
+                    else: 
+                        print('Error!')
+        else:
+            print('Error!')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass

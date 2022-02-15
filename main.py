@@ -14,7 +14,7 @@ def main (argv):
     tree = parser.multiexpr()
     output = open("output.py","w")
 
-    data = {'Name': ['Tom', 'Joseph', 'Krish', 'John'], 'Age': [20, 21, 19, 18]}
+    data = {'Name': ['Tom', 'Joseph', 'Krish', 'John', 'Tom'], 'Age': [20, 21, 19, 18, 13]}
     df = pd.DataFrame(data)
 
     col = 'additionalcol1'
@@ -33,8 +33,6 @@ def main (argv):
     output.close()
 
     exec(program_store)
-
-    print(df)
-
+    
 if __name__ == '__main__':
     main(sys.argv)
