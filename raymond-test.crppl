@@ -1,5 +1,6 @@
 new_column additional_col1 for df
 new_column additional_col2 for df
 delete_column additional_col2 for df
-get sum of revenue for year = '2021', month = '11' on df
+get Name, Age for Age lt '20' on df
+get Name, Age on df
 change_value of additional_col1 to 'Thomas' for Name equal 'Tom' on df

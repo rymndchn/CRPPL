@@ -12,8 +12,131 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('import numpy as np\n')
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
+<<<<<<< HEAD
+        if ctx.GET() is not None:
+            # get position of GET
+            get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
+
+            # get position of ON
+            on_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.ON().getSymbol())).group(2))
+
+            # get length of SEPARATOR
+            sep_count = len(ctx.SEPARATOR())
+
+            # get length of IDENTIFIER
+            ident_count = len(ctx.IDENTIFIER())
+
+            # pointer for identifier
+            i = 0
+
+            # pointer for literal
+            l = 0
+
+            # list for columns
+            cols = []
+
+            # table name
+            tbl = ''
+
+            # declare tmp_cond for query
+            tmp_cond1 = ''
+            tmp_cond2 = ''
+
+            # list for conditions
+            cond = []
+
+            # declare tmp_col for query
+            tmp_col = ''
+
+            # check if there OPERATING FUNCTIONS
+            if len(ctx.OPERATING_FUNCTION()) == 0:
+                #check if there is FOR
+                if ctx.FOR() is None:
+                    # put the columns into the list 'cols'
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos:
+                        cols.append(ctx.IDENTIFIER()[i].getText())
+                        i += 1
+                    # if there is group by on simple select statement, return error
+                    if ctx.GROUPBY() is not None:
+                        print('Error! Invalid group_by statement!')
+                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                        tbl = ctx.IDENTIFIER()[i].getText()
+                        i +=1
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        # assemble the command to do simple query
+                        command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
+                        self.output.write(command + '\n')
+                    else: 
+                        print('Error!')
+                elif ctx.FOR() is not None:
+                    # get the position of FOR
+                    for_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.FOR().getSymbol())).group(2))
+                    # put the columns of the GET into list 'cols'
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos:
+                        cols.append(ctx.IDENTIFIER()[i].getText())
+                        i += 1
+
+                    # see how many conditions there are, if 1 then simple, if more than 1 then complicated
+                    cond_count = len(ctx.OPERATOR())
+                    if cond_count == 1:
+                        # get OPERATOR position
+                        cond_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATOR()[0].getSymbol())).group(2))
+                        # get the left side of the operator
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos:
+                            tmp_cond1 = tmp_cond1 + ctx.IDENTIFIER()[i].getText()
+                            i += 1
+                            print(i)
+
+                        # get the operator
+                        o = ctx.OPERATOR()[0].getText().upper()
+
+                        if o == 'EQUAL':
+                            tmp_cond2 = tmp_cond2 + '=='
+                        elif o == 'GT':
+                            tmp_cond2 = tmp_cond2 + '>'
+                        elif o == 'GTE':
+                            tmp_cond2 = tmp_cond2 + '>='
+                        elif o == 'LT':
+                            tmp_cond2 = tmp_cond2 + '<'
+                        elif o == 'LTE':
+                            tmp_cond2 = tmp_cond2 + '<='
+                        elif o == 'NOT_EQUAL':
+                            tmp_cond2 = tmp_cond2 + '!='
+                        else:
+                            print('Error! Invalid operator for general query filter!' + o)
+
+                        # get the right side of the operator
+                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos:
+                            tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+
+                        # if there is group by on simple select statement, return error
+                        if ctx.GROUPBY() is not None:
+                            print('Error! Invalid group_by statement!')
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+
+                        self.output.write(command + '\n')
+
+                else:
+                    print('Coming soon!')
+
+
+        else:
+            print('Error!')
+=======
         #print('General query coming soon!')
         self.output.write('print(\'General query coming soon!\')\n')
+>>>>>>> origin/master
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
