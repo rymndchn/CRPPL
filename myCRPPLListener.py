@@ -12,7 +12,6 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('import numpy as np\n')
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-<<<<<<< HEAD
         if ctx.GET() is not None:
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
