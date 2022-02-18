@@ -1,5 +1,31 @@
-if ((date equal '25') and date equal ('25' and date)) then
+if (not(true equal '25') and not true equal ('25' and true)) then
 
 	get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	
+ELSE_IF ((true equal '25') and true equal ('25' and true)) then 
 
+	if ((true equal '25') and true equal ('25' and true)) then
+
+		get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	ELSE_IF (not(true equal '25') and true equal ('25' and true)) then 
+		get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	ELSE_IF ((true equal '25') and true equal ('25' and true)) then 
+		if (not (not (true equal '25')) and true equal ('25' and true)) then
+
+			get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+		end_if
+	else 
+
+		get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	end_if
+
+else 
+
+	get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	if ((true equal '25') and true equal ('25' and true)) then
+
+		get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	else 
+		get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	end_if
 end_if 
