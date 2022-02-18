@@ -11,8 +11,33 @@ class myCRPPLListener(CRPPLListener) :
         self.output = output
         self.output.write('import numpy as np\n')
 
+        self.tab_ctr=0
+        self.elif_ctr={0:0,1:0}
+        self.else_ctr={0:0,1:0}
+        self.if_nest_ctr=0
+
+        self.inside_if=False
+        self.boolean_nest_ctr=0
+        self.inside_parenthesis=[]
+
+    # Enter a parse tree produced by CRPPLParser#validexpr.
+    def enterValidexpr(self, ctx:CRPPLParser.ValidexprContext):
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
+            
+            
+
+    # Exit a parse tree produced by CRPPLParser#validexpr.
+    def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
+        
+        if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
+            if(self.else_ctr[self.if_nest_ctr]>0):
+                for i in range(0,self.if_nest_ctr-1):
+                    self.output.write("\t")
+                self.output.write("else:\n")
+                self.else_ctr[self.if_nest_ctr]-=1
+
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-<<<<<<< HEAD
         if ctx.GET() is not None:
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
@@ -133,10 +158,7 @@ class myCRPPLListener(CRPPLListener) :
 
         else:
             print('Error!')
-=======
-        #print('General query coming soon!')
-        self.output.write('print(\'General query coming soon!\')\n')
->>>>>>> origin/master
+
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
@@ -269,6 +291,107 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write('\n')
         else:
             pass
+
+    def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+
+            if ctx.IF() is not None:
+                self.output.write("if ")
+                self.inside_if=True
+                self.if_nest_ctr+=1
+                if ctx.ELSE_IF is not None:
+                    self.elif_ctr[self.if_nest_ctr]=len(ctx.ELSE_IF())
+            if ctx.ELSE() is not None:
+                self.else_ctr[self.if_nest_ctr]=1
+
+    def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+        self.output.write('\n#end if\n')
+        self.if_nest_ctr-=1
+
+
+    # Enter a parse tree produced by CRPPLParser#booleanstatement.
+    def enterBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+
+        if ctx.OPENPARENTHESIS() is not None:
+            parenthesis_text=str(ctx.OPENPARENTHESIS().getText())
+            parenthesis_pos = self.findPosition(str(ctx.OPENPARENTHESIS().getSymbol())) 
+            self.inside_parenthesis.append([parenthesis_text,parenthesis_pos])
+            if ctx.IDENTIFIER() is not None:
+                for i in ctx.IDENTIFIER():
+                    identifier_text=str(i.getText())
+                    indentifier_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([identifier_text,indentifier_pos])
+            if ctx.LITERAL() is not None:
+                for i in ctx.LITERAL():
+                    literal_text=str(i.getText())
+                    literal_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([literal_text,literal_pos])     
+            if ctx.NEGATOR() is not None:
+                for i in ctx.NEGATOR():
+                    operator_text="not"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.TRUE() is not None:
+                  for i in ctx.TRUE():
+                    operator_text="True"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.FALSE() is not None:
+                  for i in ctx.FALSE():
+                    operator_text="False"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.BOOLEAN_CONNECTOR() is not None:
+                for i in ctx.BOOLEAN_CONNECTOR():
+                    operator_text="and"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.OPERATOR() is not None:
+                for i in ctx.OPERATOR():
+                    operator_text=str(i.getText()).lower()
+                    switcher = {
+                        "equal": "==",
+                        "gt": ">",
+                        "lt": "<",
+                        "gte": ">=",
+                        "lte": ">=",
+                        "not_equal":"!=",
+                        "xor":"^"
+                    }
+                    if operator_text in switcher:
+                        operator_text=switcher[operator_text]
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos])    
+            
+            if(self.elif_ctr[self.if_nest_ctr]>0 and self.inside_if==False):
+                for i in range(0,self.if_nest_ctr-1):
+                    self.output.write("\t")
+                self.output.write("elif ")
+                
+                self.inside_if=True
+                self.elif_ctr[self.if_nest_ctr]-=1
+            self.boolean_nest_ctr+=1
+            
+
+
+
+    # Exit a parse tree produced by CRPPLParser#booleanstatement.
+    def exitBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+
+        if ctx.CLOSEPARENTHESIS() is not None:
+
+            parenthesis_text=str(ctx.CLOSEPARENTHESIS().getText())
+            parenthesis_pos = self.findPosition(str(ctx.CLOSEPARENTHESIS().getSymbol()))
+            self.inside_parenthesis.append([parenthesis_text,parenthesis_pos])
+            
+        #     self.output.write(')')
+            self.boolean_nest_ctr-=1
+            if self.boolean_nest_ctr==0:
+                self.inside_parenthesis.sort(key=lambda x:x[1])
+                for i in self.inside_parenthesis:
+                    self.output.write(i[0]+" ")
+                self.inside_parenthesis=[]
+                self.output.write(":\n")
+                self.inside_if=False
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")
