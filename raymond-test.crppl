@@ -1,9 +1,6 @@
-new_column 'additional_col' for 'df'
-new_column col1 for 'df'
-new_column 'additional_col3' for tbl
-new_column col for tbl
-get sum of 'revenue' for 'year' = '2021', 'month' = '11'
-delete_column 'additional_col' for 'df'
-delete_column col for tbl
-delete_column col1 for 'df'
-delete_column 'additional_col3' for tbl
+new_column additional_col1 for df
+new_column additional_col2 for df
+delete_column additional_col2 for df
+get Name, Age for Age lt '20' on df
+get Name, Age on df
+change_value of additional_col1 to 'Thomas' for Name equal 'Tom' on df
