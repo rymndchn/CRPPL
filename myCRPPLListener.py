@@ -206,6 +206,26 @@ class myCRPPLListener(CRPPLListener) :
                     literal_text=str(i.getText())
                     literal_pos = self.findPosition(str(i.getSymbol()))
                     self.inside_parenthesis.append([literal_text,literal_pos])     
+            if ctx.NEGATOR() is not None:
+                for i in ctx.NEGATOR():
+                    operator_text="not"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.TRUE() is not None:
+                  for i in ctx.TRUE():
+                    operator_text="True"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.FALSE() is not None:
+                  for i in ctx.FALSE():
+                    operator_text="False"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.BOOLEAN_CONNECTOR() is not None:
+                for i in ctx.BOOLEAN_CONNECTOR():
+                    operator_text="and"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
             if ctx.OPERATOR() is not None:
                 for i in ctx.OPERATOR():
                     operator_text=str(i.getText()).lower()
