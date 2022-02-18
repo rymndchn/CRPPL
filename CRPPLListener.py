@@ -71,6 +71,15 @@ class CRPPLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CRPPLParser#assignment.
+    def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#assignment.
+    def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        pass
+
+
     # Enter a parse tree produced by CRPPLParser#changevalue.
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
         pass
