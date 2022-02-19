@@ -41,6 +41,14 @@ class myCRPPLListener(CRPPLListener) :
             tmp_cond1 = ''
             tmp_cond2 = ''
 
+            # declare tmp_cond list for query
+            tmp_cond_list1 = []
+            tmp_cond_list2 = []
+            tmp_cond_list3 = []
+
+            # declare filter_statement for queries with multiple conditions
+            filter_statement = ''
+
             # list for conditions
             cond = []
 
@@ -48,17 +56,17 @@ class myCRPPLListener(CRPPLListener) :
             tmp_col = ''
 
             # check if there OPERATING FUNCTIONS
-            if len(ctx.OPERATING_FUNCTION()) == 0:
+            if len(ctx.OPERATING_FUNCTION()) == 0: # no operators
                 #check if there is FOR
-                if ctx.FOR() is None:
+                if ctx.FOR() is None: # no for conditions
                     # put the columns into the list 'cols'
-                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos:
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos: # if position of identifier is before the on
                         cols.append(ctx.IDENTIFIER()[i].getText())
                         i += 1
                     # if there is group by on simple select statement, return error
-                    if ctx.GROUPBY() is not None:
+                    if ctx.GROUPBY() is not None: # has group by
                         print('Error! Invalid group_by statement!')
-                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # if position of identifier is after the on
                         tbl = ctx.IDENTIFIER()[i].getText()
                         i +=1
 
@@ -71,21 +79,21 @@ class myCRPPLListener(CRPPLListener) :
                         self.output.write(command + '\n')
                     else: 
                         print('Error!')
-                elif ctx.FOR() is not None:
+                elif ctx.FOR() is not None: #has for conditions
                     # get the position of FOR
                     for_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.FOR().getSymbol())).group(2))
                     # put the columns of the GET into list 'cols'
-                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos:
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos: # if position of identifier is before the for
                         cols.append(ctx.IDENTIFIER()[i].getText())
                         i += 1
 
                     # see how many conditions there are, if 1 then simple, if more than 1 then complicated
                     cond_count = len(ctx.OPERATOR())
-                    if cond_count == 1:
+                    if cond_count == 1: #only 1 condition
                         # get OPERATOR position
                         cond_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATOR()[0].getSymbol())).group(2))
                         # get the left side of the operator
-                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos:
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos: # get the left side of the conditional operator
                             tmp_cond1 = tmp_cond1 + ctx.IDENTIFIER()[i].getText()
                             i += 1
 
@@ -108,13 +116,16 @@ class myCRPPLListener(CRPPLListener) :
                             print('Error! Invalid operator for general query filter!' + o)
 
                         # get the right side of the operator
-                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos:
-                            tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos: # get the literal on the right side of the conditional operator
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+                            else:
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()
 
                         # if there is group by on simple select statement, return error
-                        if ctx.GROUPBY() is not None:
+                        if ctx.GROUPBY() is not None: # has group by
                             print('Error! Invalid group_by statement!')
-                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
                             tbl = ctx.IDENTIFIER()[i].getText()
                             i +=1
                         # assemble the column part of the simple query
@@ -122,6 +133,63 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+
+                        self.output.write(command + '\n')
+
+                    if cond_count > 1: # more than 1 condition
+
+                        cond_ctr = 0
+
+                        while cond_ctr < cond_count:
+                            tmp_cond_list1.append(ctx.IDENTIFIER()[i].getText())
+                            i += 1
+
+                            o = ctx.OPERATOR()[cond_ctr].getText().upper()
+
+                            if o == 'EQUAL':
+                                tmp_cond_list2.append('==')
+                            elif o == 'GT':
+                                tmp_cond_list2.append('>')
+                            elif o == 'GTE':
+                                tmp_cond_list2.append('>=')
+                            elif o == 'LT':
+                                tmp_cond_list2.append('<')
+                            elif o == 'LTE':
+                                tmp_cond_list2.append('<=')
+                            elif o == 'NOT_EQUAL':
+                                tmp_cond_list2.append('!=')
+                            else:
+                                print('Error! Invalid operator for general query filter!' + o)
+
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()[1:-1])
+                            else:
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()) 
+                            l += 1
+
+                            cond_ctr += 1
+
+                        # if there is group by on simple select statement, return error
+                        if ctx.GROUPBY() is not None: # has group by
+                            print('Error! Invalid group_by statement!')
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+
+                        tmp_cond_ctr = 0
+
+                        while tmp_cond_ctr < cond_ctr:
+                            if tmp_cond_ctr == cond_ctr - 1:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')'
+                            else:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')&'
+                            tmp_cond_ctr += 1
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
 
                         self.output.write(command + '\n')
 
