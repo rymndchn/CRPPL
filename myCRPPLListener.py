@@ -88,7 +88,6 @@ class myCRPPLListener(CRPPLListener) :
                         if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos:
                             tmp_cond1 = tmp_cond1 + ctx.IDENTIFIER()[i].getText()
                             i += 1
-                            print(i)
 
                         # get the operator
                         o = ctx.OPERATOR()[0].getText().upper()
@@ -132,8 +131,6 @@ class myCRPPLListener(CRPPLListener) :
 
         else:
             print('Error!')
-        #print('General query coming soon!')
-        self.output.write('print(\'General query coming soon!\')\n')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
