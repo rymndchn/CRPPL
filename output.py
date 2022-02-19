@@ -6,6 +6,7 @@ df.loc[df.Name=='Tom',"additional_col1"]='Thomas'
 def do_graph_in():
 	print('General query coming soon!')
 	print('General query coming soon!')
+	num = 3+1
 
 def do_graph_inside(revenue):
 	print('General query coming soon!')
@@ -15,3 +16,4 @@ def add_num(num):
 	add_num(num)
 	return num
 
+do_graph_in()

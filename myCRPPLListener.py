@@ -17,6 +17,8 @@ class myCRPPLListener(CRPPLListener) :
         if(self.tab_count > 0):
             self.output.write('\t')
             self.tab_count -= 1
+        else:
+            pass
 
         if ctx.GET() is not None:
             # get position of GET
@@ -146,6 +148,12 @@ class myCRPPLListener(CRPPLListener) :
 
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
 
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
         if ctx.NEWCOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
             tblname = ctx.IDENTIFIER()[1].getText()
@@ -167,7 +175,36 @@ class myCRPPLListener(CRPPLListener) :
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
 
+    def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
+        if ctx.ASSIGNEMT_OPERATOR() is not None:
+
+            if(ctx.IDENTIFIER() != None):
+                self.output.write(ctx.IDENTIFIER().getText())
+                self.output.write(' = ')
+                self.output.write(ctx.expr().getText())
+            else:
+                print('Error!')
+        else:
+            print('Error!')
+
+    def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        pass
+
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
         #get how many identifiers and literals there are
         ctr_literal = len(ctx.LITERAL())
         ctr_identifier = len(ctx.IDENTIFIER())
@@ -247,16 +284,7 @@ class myCRPPLListener(CRPPLListener) :
             if((end_pos-create_pos) == 1):
                 self.output.write('pass\n')
 
-            #checking existence of queries and operations inside.
-            if( len(ctx.generalquery()) != 0):
-                for i in range(0,len(ctx.generalquery())):
-                    self.tab_count += 1
-
-            #checking existence of queries and operations inside.
-            if( len(ctx.functioncall()) != 0):
-                for i in range(0,len(ctx.functioncall())):
-                    self.tab_count += 1
-                
+            self.tab_count = len(ctx.generalquery()) + len(ctx.importfile()) + len(ctx.altercolumn()) + len(ctx.changevalue()) + len(ctx.expr()) + len(ctx.assignment()) + len(ctx.defineconstant()) + len(ctx.functioncall()) + len(ctx.graphquery()) + len(ctx.conditionalstatement())
         else:
             print('Error!')
 
@@ -273,7 +301,7 @@ class myCRPPLListener(CRPPLListener) :
             if(ret_id_pos > ret_pos):
                 self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n')
         else:
-            pass
+            self.output.write('\n')
 
         #end the function.
         if ctx.ENDFUNCTION() is not None:
@@ -282,6 +310,12 @@ class myCRPPLListener(CRPPLListener) :
             pass
 
     def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
 
         if(self.tab_count > 0):
             self.output.write('\t')
