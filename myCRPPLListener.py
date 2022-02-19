@@ -10,8 +10,14 @@ class myCRPPLListener(CRPPLListener) :
 
         self.output = output
         self.output.write('import numpy as np\n')
+        self.tab_count = 0
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
+
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+
         if ctx.GET() is not None:
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
@@ -241,8 +247,16 @@ class myCRPPLListener(CRPPLListener) :
             if((end_pos-create_pos) == 1):
                 self.output.write('pass\n')
 
-            if(len(ctx.generalquery()) != 0):
-                self.output.write('\t')
+            #checking existence of queries and operations inside.
+            if( len(ctx.generalquery()) != 0):
+                for i in range(0,len(ctx.generalquery())):
+                    self.tab_count += 1
+
+            #checking existence of queries and operations inside.
+            if( len(ctx.functioncall()) != 0):
+                for i in range(0,len(ctx.functioncall())):
+                    self.tab_count += 1
+                
         else:
             print('Error!')
 
@@ -266,6 +280,48 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write('\n')
         else:
             pass
+
+    def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+
+        if ctx.RESERVEDWORD_DO() is not None:
+            pass
+        else:
+            print('Error!')
+
+    def exitFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+    def enterFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+
+        indentifier_count = len(ctx.IDENTIFIER())
+        
+        #constructing function header.
+        if(ctx.IDENTIFIER()[0] != None):
+            self.output.write(ctx.IDENTIFIER()[0].getText())
+            self.output.write(ctx.OPENPARENTHESIS().getText())
+        else:
+            pass
+
+        #handling parameters.
+        for i in range(1,indentifier_count):
+            self.output.write(ctx.IDENTIFIER()[i].getText())
+
+            if(len(ctx.SEPARATOR()) < i):
+                break
+
+            #multiple parameters.
+            if(ctx.SEPARATOR() != None and i <= len(ctx.SEPARATOR())):
+                self.output.write(ctx.SEPARATOR()[i-1].getText() + ' ')
+
+        self.output.write(ctx.CLOSEPARENTHESIS().getText() + '\n')
+        
+
+    def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")
