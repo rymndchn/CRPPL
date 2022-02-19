@@ -11,6 +11,7 @@ class myCRPPLListener(CRPPLListener) :
         self.output = output
         self.output.write('import numpy as np\n')
         self.tab_count = 0
+        self.const_dict = dict()
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
 
@@ -146,6 +147,36 @@ class myCRPPLListener(CRPPLListener) :
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
 
+    # Enter a parse tree produced by CRPPLParser#defineconstant.
+    def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
+        if ctx.RESERVEDWORD_CONSTANT() is not None:
+
+            if(ctx.IDENTIFIER() != None):
+                identifier_val = ctx.IDENTIFIER().getText()
+                actual_val = ctx.LITERAL().getText()[1:-1]
+
+                key_list = self.const_dict.keys()
+                if(identifier_val not in key_list):
+                    self.const_dict.update({identifier_val: actual_val})
+                    self.output.write(identifier_val + ' = ' + actual_val)
+
+                else:
+                    print("Error! Constant variable already exist")
+            else:
+                print('Error!')
+        else:
+            print('Error!')
+
+    # Exit a parse tree produced by CRPPLParser#defineconstant.
+    def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        self.output.write('\n')
+
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
 
         if(self.tab_count > 0):
@@ -195,7 +226,7 @@ class myCRPPLListener(CRPPLListener) :
             print('Error!')
 
     def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
-        pass
+        self.output.write('\n')
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
         
