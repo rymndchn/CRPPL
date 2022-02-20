@@ -13,15 +13,37 @@ class myCRPPLListener(CRPPLListener) :
         self.tab_count = 0
         self.const_dict = dict()
 
+        self.tab_ctr=0
+        self.elif_ctr={0:0,1:0}
+        self.else_ctr={0:0,1:0}
+        self.if_nest_ctr=0
+
+        self.inside_if=False
+        self.boolean_nest_ctr=0
+        self.inside_parenthesis=[]
+
+    # Enter a parse tree produced by CRPPLParser#validexpr.
+    def enterValidexpr(self, ctx:CRPPLParser.ValidexprContext):
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
+            
+            
+
+    # Exit a parse tree produced by CRPPLParser#validexpr.
+    def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
+        
+        if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
+            if(self.else_ctr[self.if_nest_ctr]>0):
+                for i in range(0,self.if_nest_ctr-1):
+                    self.output.write("\t")
+                self.output.write("else:\n")
+                self.else_ctr[self.if_nest_ctr]-=1
+
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
-
+        
         if ctx.GET() is not None:
+            for i in range(0,self.if_nest_ctr):
+                self.output.write("\t")
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
 
@@ -84,6 +106,8 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         # assemble the command to do simple query
+                        for i in range(0,self.if_nest_ctr):
+                            self.output.write("\t")
                         command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
                         self.output.write(command + '\n')
                     else: 
@@ -141,9 +165,16 @@ class myCRPPLListener(CRPPLListener) :
                         for x in cols:
                             tmp_col = tmp_col + '"' + x + '",'
 
-                        command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        #command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
+                        command2 ='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
 
                         self.output.write(command + '\n')
+
+                        for i in range(0,self.if_nest_ctr):
+                            self.output.write("\t")
+
+                        self.output.write(command2 + '\n')
 
                     if cond_count > 1: # more than 1 condition
 
@@ -198,9 +229,14 @@ class myCRPPLListener(CRPPLListener) :
                         for x in cols:
                             tmp_col = tmp_col + '"' + x + '",'
 
-                        command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\n'
 
                         self.output.write(command + '\n')
+                        command2='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        
+                        for i in range(0,self.if_nest_ctr):
+                            self.output.write("\t")
+                        self.output.write(command2 + '\n')
 
                 else:
                     print('Coming soon!')
@@ -214,11 +250,9 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
+        self.output.write("#is constant\n")
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
 
         if ctx.RESERVEDWORD_CONSTANT() is not None:
 
@@ -273,11 +307,8 @@ class myCRPPLListener(CRPPLListener) :
 
     def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
         
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
 
         if ctx.ASSIGNEMT_OPERATOR() is not None:
 
@@ -294,7 +325,6 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('\n')
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
-        
         if(self.tab_count > 0):
             self.output.write('\t')
             self.tab_count -= 1
@@ -380,7 +410,8 @@ class myCRPPLListener(CRPPLListener) :
             if((end_pos-create_pos) == 1):
                 self.output.write('pass\n')
 
-            self.tab_count = len(ctx.generalquery()) + len(ctx.importfile()) + len(ctx.altercolumn()) + len(ctx.changevalue()) + len(ctx.expr()) + len(ctx.assignment()) + len(ctx.defineconstant()) + len(ctx.functioncall()) + len(ctx.graphquery()) + len(ctx.conditionalstatement())
+            #self.tab_count = len(ctx.generalquery()) + len(ctx.importfile()) + len(ctx.altercolumn()) + len(ctx.changevalue()) + len(ctx.expr()) + len(ctx.assignment()) + len(ctx.defineconstant()) + len(ctx.functioncall()) + len(ctx.graphquery()) + len(ctx.conditionalstatement())
+            self.if_nest_ctr+=1
         else:
             print('Error!')
 
@@ -401,17 +432,114 @@ class myCRPPLListener(CRPPLListener) :
 
         #end the function.
         if ctx.ENDFUNCTION() is not None:
-            self.output.write('\n')
+            self.if_nest_ctr-=1
         else:
             pass
 
+    def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+
+            if ctx.IF() is not None:
+                self.output.write("if ")
+                self.inside_if=True
+                self.if_nest_ctr+=1
+                if ctx.ELSE_IF is not None:
+                    self.elif_ctr[self.if_nest_ctr]=len(ctx.ELSE_IF())
+            if ctx.ELSE() is not None:
+                self.else_ctr[self.if_nest_ctr]=1
+
+    def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+        self.output.write('\n#end if\n')
+        self.if_nest_ctr-=1
+
+
+    # Enter a parse tree produced by CRPPLParser#booleanstatement.
+    def enterBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+
+        if ctx.OPENPARENTHESIS() is not None:
+            parenthesis_text=str(ctx.OPENPARENTHESIS().getText())
+            parenthesis_pos = self.findPosition(str(ctx.OPENPARENTHESIS().getSymbol())) 
+            self.inside_parenthesis.append([parenthesis_text,parenthesis_pos])
+            if ctx.IDENTIFIER() is not None:
+                for i in ctx.IDENTIFIER():
+                    identifier_text=str(i.getText())
+                    indentifier_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([identifier_text,indentifier_pos])
+            if ctx.LITERAL() is not None:
+                for i in ctx.LITERAL():
+                    literal_text=str(i.getText())
+                    literal_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([literal_text,literal_pos])     
+            if ctx.NEGATOR() is not None:
+                for i in ctx.NEGATOR():
+                    operator_text="not"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.TRUE() is not None:
+                  for i in ctx.TRUE():
+                    operator_text="True"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.FALSE() is not None:
+                  for i in ctx.FALSE():
+                    operator_text="False"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.BOOLEAN_CONNECTOR() is not None:
+                for i in ctx.BOOLEAN_CONNECTOR():
+                    operator_text="and"
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.OPERATOR() is not None:
+                for i in ctx.OPERATOR():
+                    operator_text=str(i.getText()).lower()
+                    switcher = {
+                        "equal": "==",
+                        "gt": ">",
+                        "lt": "<",
+                        "gte": ">=",
+                        "lte": ">=",
+                        "not_equal":"!=",
+                        "xor":"^"
+                    }
+                    if operator_text in switcher:
+                        operator_text=switcher[operator_text]
+                    operator_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([operator_text,operator_pos])    
+            
+            if(self.elif_ctr[self.if_nest_ctr]>0 and self.inside_if==False):
+                for i in range(0,self.if_nest_ctr-1):
+                    self.output.write("\t")
+                self.output.write("elif ")
+                
+                self.inside_if=True
+                self.elif_ctr[self.if_nest_ctr]-=1
+            self.boolean_nest_ctr+=1
+            
+
+
+
+    # Exit a parse tree produced by CRPPLParser#booleanstatement.
+    def exitBooleanstatement(self, ctx:CRPPLParser.BooleanstatementContext):
+
+        if ctx.CLOSEPARENTHESIS() is not None:
+
+            parenthesis_text=str(ctx.CLOSEPARENTHESIS().getText())
+            parenthesis_pos = self.findPosition(str(ctx.CLOSEPARENTHESIS().getSymbol()))
+            self.inside_parenthesis.append([parenthesis_text,parenthesis_pos])
+            
+        #     self.output.write(')')
+            self.boolean_nest_ctr-=1
+            if self.boolean_nest_ctr==0:
+                self.inside_parenthesis.sort(key=lambda x:x[1])
+                for i in self.inside_parenthesis:
+                    self.output.write(i[0]+" ")
+                self.inside_parenthesis=[]
+                self.output.write(":\n")
+                self.inside_if=False
     def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
         
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
 
         if(self.tab_count > 0):
             self.output.write('\t')
