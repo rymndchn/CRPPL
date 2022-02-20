@@ -1,4 +1,4 @@
-# Generated from CRPPL.g4 by ANTLR 4.9.3
+# Generated from CRPPL.g4 by ANTLR 4.9
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -247,7 +247,7 @@ class CRPPLParser ( Parser ):
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.9.3")
+        self.checkVersion("4.9")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -255,7 +255,6 @@ class CRPPLParser ( Parser ):
 
 
     class MultiexprContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -328,7 +327,6 @@ class CRPPLParser ( Parser ):
 
 
     class ValidexprContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -477,7 +475,6 @@ class CRPPLParser ( Parser ):
 
 
     class ExprContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -611,7 +608,6 @@ class CRPPLParser ( Parser ):
 
 
     class GeneralqueryContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -788,7 +784,6 @@ class CRPPLParser ( Parser ):
 
 
     class ImportfileContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -876,7 +871,6 @@ class CRPPLParser ( Parser ):
 
 
     class DefineconstantContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -927,7 +921,6 @@ class CRPPLParser ( Parser ):
 
 
     class AltercolumnContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -992,7 +985,6 @@ class CRPPLParser ( Parser ):
 
 
     class AssignmentContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1044,7 +1036,6 @@ class CRPPLParser ( Parser ):
 
 
     class ChangevalueContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1148,7 +1139,6 @@ class CRPPLParser ( Parser ):
 
 
     class GraphqueryContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1263,7 +1253,6 @@ class CRPPLParser ( Parser ):
 
 
     class CreatefunctionContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1505,7 +1494,6 @@ class CRPPLParser ( Parser ):
 
 
     class FunctioncallContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1552,7 +1540,6 @@ class CRPPLParser ( Parser ):
 
 
     class FunctionprototypeContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1644,7 +1631,6 @@ class CRPPLParser ( Parser ):
 
 
     class ConditionalstatementContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1787,7 +1773,6 @@ class CRPPLParser ( Parser ):
 
 
     class BooleanstatementContext(ParserRuleContext):
-        __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
