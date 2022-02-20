@@ -7,8 +7,8 @@ from myCRPPLListener import myCRPPLListener
 import pandas as pd
 
 def main (argv):
-    input = FileStream(argv[1])
-    lexer = CRPPLLexer(input)
+    file_input = FileStream(argv[1])
+    lexer = CRPPLLexer(file_input)
     stream = CommonTokenStream(lexer)
     parser = CRPPLParser(stream)
     tree = parser.multiexpr()

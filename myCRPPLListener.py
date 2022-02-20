@@ -10,6 +10,8 @@ class myCRPPLListener(CRPPLListener) :
 
         self.output = output
         self.output.write('import numpy as np\n')
+        self.tab_count = 0
+        self.const_dict = dict()
 
         self.tab_ctr=0
         self.elif_ctr={0:0,1:0}
@@ -38,6 +40,13 @@ class myCRPPLListener(CRPPLListener) :
                 self.else_ctr[self.if_nest_ctr]-=1
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
+
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
         if ctx.GET() is not None:
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
@@ -67,6 +76,14 @@ class myCRPPLListener(CRPPLListener) :
             tmp_cond1 = ''
             tmp_cond2 = ''
 
+            # declare tmp_cond list for query
+            tmp_cond_list1 = []
+            tmp_cond_list2 = []
+            tmp_cond_list3 = []
+
+            # declare filter_statement for queries with multiple conditions
+            filter_statement = ''
+
             # list for conditions
             cond = []
 
@@ -74,17 +91,17 @@ class myCRPPLListener(CRPPLListener) :
             tmp_col = ''
 
             # check if there OPERATING FUNCTIONS
-            if len(ctx.OPERATING_FUNCTION()) == 0:
+            if len(ctx.OPERATING_FUNCTION()) == 0: # no operators
                 #check if there is FOR
-                if ctx.FOR() is None:
+                if ctx.FOR() is None: # no for conditions
                     # put the columns into the list 'cols'
-                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos:
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos: # if position of identifier is before the on
                         cols.append(ctx.IDENTIFIER()[i].getText())
                         i += 1
                     # if there is group by on simple select statement, return error
-                    if ctx.GROUPBY() is not None:
+                    if ctx.GROUPBY() is not None: # has group by
                         print('Error! Invalid group_by statement!')
-                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # if position of identifier is after the on
                         tbl = ctx.IDENTIFIER()[i].getText()
                         i +=1
 
@@ -97,24 +114,23 @@ class myCRPPLListener(CRPPLListener) :
                         self.output.write(command + '\n')
                     else: 
                         print('Error!')
-                elif ctx.FOR() is not None:
+                elif ctx.FOR() is not None: #has for conditions
                     # get the position of FOR
                     for_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.FOR().getSymbol())).group(2))
                     # put the columns of the GET into list 'cols'
-                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos:
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos: # if position of identifier is before the for
                         cols.append(ctx.IDENTIFIER()[i].getText())
                         i += 1
 
                     # see how many conditions there are, if 1 then simple, if more than 1 then complicated
                     cond_count = len(ctx.OPERATOR())
-                    if cond_count == 1:
+                    if cond_count == 1: #only 1 condition
                         # get OPERATOR position
                         cond_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATOR()[0].getSymbol())).group(2))
                         # get the left side of the operator
-                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos:
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos: # get the left side of the conditional operator
                             tmp_cond1 = tmp_cond1 + ctx.IDENTIFIER()[i].getText()
                             i += 1
-                            print(i)
 
                         # get the operator
                         o = ctx.OPERATOR()[0].getText().upper()
@@ -135,13 +151,16 @@ class myCRPPLListener(CRPPLListener) :
                             print('Error! Invalid operator for general query filter!' + o)
 
                         # get the right side of the operator
-                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos:
-                            tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos: # get the literal on the right side of the conditional operator
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+                            else:
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()
 
                         # if there is group by on simple select statement, return error
-                        if ctx.GROUPBY() is not None:
+                        if ctx.GROUPBY() is not None: # has group by
                             print('Error! Invalid group_by statement!')
-                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos:
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
                             tbl = ctx.IDENTIFIER()[i].getText()
                             i +=1
                         # assemble the column part of the simple query
@@ -152,19 +171,110 @@ class myCRPPLListener(CRPPLListener) :
 
                         self.output.write(command + '\n')
 
+                    if cond_count > 1: # more than 1 condition
+
+                        cond_ctr = 0
+
+                        while cond_ctr < cond_count:
+                            tmp_cond_list1.append(ctx.IDENTIFIER()[i].getText())
+                            i += 1
+
+                            o = ctx.OPERATOR()[cond_ctr].getText().upper()
+
+                            if o == 'EQUAL':
+                                tmp_cond_list2.append('==')
+                            elif o == 'GT':
+                                tmp_cond_list2.append('>')
+                            elif o == 'GTE':
+                                tmp_cond_list2.append('>=')
+                            elif o == 'LT':
+                                tmp_cond_list2.append('<')
+                            elif o == 'LTE':
+                                tmp_cond_list2.append('<=')
+                            elif o == 'NOT_EQUAL':
+                                tmp_cond_list2.append('!=')
+                            else:
+                                print('Error! Invalid operator for general query filter!' + o)
+
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()[1:-1])
+                            else:
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()) 
+                            l += 1
+
+                            cond_ctr += 1
+
+                        # if there is group by on simple select statement, return error
+                        if ctx.GROUPBY() is not None: # has group by
+                            print('Error! Invalid group_by statement!')
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+
+                        tmp_cond_ctr = 0
+
+                        while tmp_cond_ctr < cond_ctr:
+                            if tmp_cond_ctr == cond_ctr - 1:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')'
+                            else:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')&'
+                            tmp_cond_ctr += 1
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+
+                        self.output.write(command + '\n')
+
                 else:
                     print('Coming soon!')
 
 
         else:
             print('Error!')
-        #print('General query coming soon!')
-        self.output.write('print(\'General query coming soon!\')\n')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         pass
 
+    # Enter a parse tree produced by CRPPLParser#defineconstant.
+    def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
+        if ctx.RESERVEDWORD_CONSTANT() is not None:
+
+            if(ctx.IDENTIFIER() != None):
+                identifier_val = ctx.IDENTIFIER().getText()
+                actual_val = ctx.LITERAL().getText()[1:-1]
+
+                key_list = self.const_dict.keys()
+                if(identifier_val not in key_list):
+                    self.const_dict.update({identifier_val: actual_val})
+                    self.output.write(identifier_val + ' = ' + actual_val)
+
+                else:
+                    print("Error! Constant variable already exist")
+            else:
+                print('Error!')
+        else:
+            print('Error!')
+
+    # Exit a parse tree produced by CRPPLParser#defineconstant.
+    def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
+        self.output.write('\n')
+
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
+
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
 
         if ctx.NEWCOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
@@ -187,7 +297,36 @@ class myCRPPLListener(CRPPLListener) :
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
         pass
 
+    def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
+        if ctx.ASSIGNEMT_OPERATOR() is not None:
+
+            if(ctx.IDENTIFIER() != None):
+                self.output.write(ctx.IDENTIFIER().getText())
+                self.output.write(' = ')
+                self.output.write(ctx.expr().getText())
+            else:
+                print('Error!')
+        else:
+            print('Error!')
+
+    def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        self.output.write('\n')
+
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
         #get how many identifiers and literals there are
         ctr_literal = len(ctx.LITERAL())
         ctr_identifier = len(ctx.IDENTIFIER())
@@ -267,8 +406,7 @@ class myCRPPLListener(CRPPLListener) :
             if((end_pos-create_pos) == 1):
                 self.output.write('pass\n')
 
-            if(len(ctx.generalquery()) != 0):
-                self.output.write('\t')
+            self.tab_count = len(ctx.generalquery()) + len(ctx.importfile()) + len(ctx.altercolumn()) + len(ctx.changevalue()) + len(ctx.expr()) + len(ctx.assignment()) + len(ctx.defineconstant()) + len(ctx.functioncall()) + len(ctx.graphquery()) + len(ctx.conditionalstatement())
         else:
             print('Error!')
 
@@ -285,7 +423,7 @@ class myCRPPLListener(CRPPLListener) :
             if(ret_id_pos > ret_pos):
                 self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n')
         else:
-            pass
+            self.output.write('\n')
 
         #end the function.
         if ctx.ENDFUNCTION() is not None:
@@ -393,6 +531,53 @@ class myCRPPLListener(CRPPLListener) :
                 self.inside_parenthesis=[]
                 self.output.write(":\n")
                 self.inside_if=False
+    def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+        else:
+            pass
+
+        if(self.tab_count > 0):
+            self.output.write('\t')
+            self.tab_count -= 1
+
+        if ctx.RESERVEDWORD_DO() is not None:
+            pass
+        else:
+            print('Error!')
+
+    def exitFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
+        pass
+
+    def enterFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+
+        indentifier_count = len(ctx.IDENTIFIER())
+        
+        #constructing function header.
+        if(ctx.IDENTIFIER()[0] != None):
+            self.output.write(ctx.IDENTIFIER()[0].getText())
+            self.output.write(ctx.OPENPARENTHESIS().getText())
+        else:
+            pass
+
+        #handling parameters.
+        for i in range(1,indentifier_count):
+            self.output.write(ctx.IDENTIFIER()[i].getText())
+
+            if(len(ctx.SEPARATOR()) < i):
+                break
+
+            #multiple parameters.
+            if(ctx.SEPARATOR() != None and i <= len(ctx.SEPARATOR())):
+                self.output.write(ctx.SEPARATOR()[i-1].getText() + ' ')
+
+        self.output.write(ctx.CLOSEPARENTHESIS().getText() + '\n')
+        
+
+    def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
+        pass
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")

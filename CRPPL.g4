@@ -10,6 +10,8 @@ validexpr: generalquery
          | importfile
          | defineconstant
          | altercolumn
+         | assignment
+         | expr
          | changevalue
          | graphquery
          | createfunction
@@ -35,7 +37,7 @@ changevalue: CHANGEVALUE OF IDENTIFIER TO (LITERAL|IDENTIFIER) FOR (LITERAL|IDEN
 
 graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO SEPARATOR (LITERAL|IDENTIFIER);
 
-createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | changevalue | defineconstant | functioncall | graphquery | conditionalstatement)*?) (RETURN | (RETURN IDENTIFIER))? ENDFUNCTION;
+createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*?) (RETURN | (RETURN IDENTIFIER))? ENDFUNCTION;
 
 functioncall : RESERVEDWORD_DO functionprototype;
 
