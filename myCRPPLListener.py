@@ -257,20 +257,20 @@ class myCRPPLListener(CRPPLListener) :
             graph_command = 'print(' + dataframe + '.plot.line(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             self.output.write(graph_command)
             self.output.write('\n')
-            fig_command = "plt.savefig('line.png')"
+            fig_command = "plt.savefig('Report/line.png')"
             self.output.write(fig_command)
         elif graph_type == 'bar':
             graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             self.output.write(graph_command)
             self.output.write('\n')
-            fig_command = "plt.savefig('bar.png')"
+            fig_command = "plt.savefig('Report/bar.png')"
             self.output.write(fig_command)
         if graph_type == 'pie':
             # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
             self.output.write(graph_command)
             self.output.write('\n')
-            fig_command = "plt.savefig('pie.png')"
+            fig_command = "plt.savefig('Report/pie.png')"
             self.output.write(fig_command)
         pass
 
