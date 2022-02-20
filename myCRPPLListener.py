@@ -27,8 +27,6 @@ class myCRPPLListener(CRPPLListener) :
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
             
-            
-
     # Exit a parse tree produced by CRPPLParser#validexpr.
     def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
         
@@ -38,7 +36,7 @@ class myCRPPLListener(CRPPLListener) :
                     self.output.write("\t")
                 self.output.write("else:\n")
                 self.else_ctr[self.if_nest_ctr]-=1
-
+    
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
         if ctx.GET() is not None:
@@ -250,7 +248,7 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        self.output.write("#is constant\n")
+        #self.output.write("#is constant\n")
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
 
@@ -258,7 +256,7 @@ class myCRPPLListener(CRPPLListener) :
 
             if(ctx.IDENTIFIER() != None):
                 identifier_val = ctx.IDENTIFIER().getText()
-                actual_val = ctx.LITERAL().getText()[1:-1]
+                actual_val = ctx.LITERAL().getText()
 
                 key_list = self.const_dict.keys()
                 if(identifier_val not in key_list):
