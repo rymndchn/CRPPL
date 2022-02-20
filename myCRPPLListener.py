@@ -10,6 +10,7 @@ class myCRPPLListener(CRPPLListener) :
 
         self.output = output
         self.output.write('import numpy as np\n')
+        self.output.write('import matplotlib.pyplot as plt\n')
         self.tab_count = 0
         self.const_dict = dict()
 
@@ -246,6 +247,35 @@ class myCRPPLListener(CRPPLListener) :
             print('Error!')
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
+        pass
+
+    def enterGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
+        graph_type = ctx.TYPE().getText()
+        dataframe = ctx.IDENTIFIER().getText()
+
+        if graph_type == 'line':
+            graph_command = 'print(' + dataframe + '.plot.line(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            self.output.write(graph_command)
+            self.output.write('\n')
+            fig_command = "plt.savefig('line.png')"
+            self.output.write(fig_command)
+        elif graph_type == 'bar':
+            graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            self.output.write(graph_command)
+            self.output.write('\n')
+            fig_command = "plt.savefig('bar.png')"
+            self.output.write(fig_command)
+        if graph_type == 'pie':
+            # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
+            graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+            self.output.write(graph_command)
+            self.output.write('\n')
+            fig_command = "plt.savefig('pie.png')"
+            self.output.write(fig_command)
+        pass
+
+    def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
+        self.output.write('\n')
         pass
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
