@@ -19,13 +19,16 @@ end_function
 
 counter is 0
 count_max is 3
-create_function add_num(counter,count_max)
+create_function add_num(counter,count_max,df)
+	get Name, Age for Age lt '15' on df
 	if(counter lt count_max) then
 		get Name, Age for Age lt '20' on df
 	else
 		counter is counter + 1
-		do add_num(counter,count_max)
+		do add_num(counter,count_max,df)
 	end_if
 end_function
+
+do add_num(counter,count_max,df)
 
 do do_graph_in(df)
