@@ -1,13 +1,23 @@
-do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
+create_function do_graph_inside(revenue)
 
-varSales constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
-do import_file (varSales,'CRPPL/CSV Files/target/sales.csv') as sales
+if ('25' and true) then
 
-varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
-varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
-do import_file (varFileName,varDataSetName) as movies
+    do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
+    if ('25' and true) then
+        varSales constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+        do import_file (varSales,'CRPPL/CSV Files/target/sales.csv') as sales
+    end_if
+ELSE_IF ('25' and true) then
+    varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
+    varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
+    do import_file (varFileName,varDataSetName) as movies
+else 
+    new_column test_col for movies
+    if ('25' and true) then
+    delete_column test_col for movies
+    else
+    get name, name for name equal 'Caddyshack' on movies
+    end_if
+end_if
 
-new_column test_col for movies
-delete_column test_col for movies
-
-get name, name for name equal 'Caddyshack' on movies
+end_function
