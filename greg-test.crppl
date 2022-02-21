@@ -3,10 +3,10 @@ new_column additional_col2 for df
 delete_column additional_col2 for df
 change_value of additional_col1 to 'Thomas' for Name equal 'Tom' on df
 
-create_function do_graph_in()
+create_function do_graph_in(df)
 	get Name, Age for Age lt '20' on df
 	num is 3 + 1
-	get Name, Age for Age lt '20' on df
+	get Name, Age for Age lt '15' on df
 
 	
 end_function
@@ -17,10 +17,15 @@ create_function do_graph_inside(revenue)
 	return graph_name
 end_function
 
-num constant '0'
-create_function add_num(num)
-	do add_num(num)
-	return num
+counter is 0
+count_max is 3
+create_function add_num(counter,count_max)
+	if(counter lt count_max) then
+		get Name, Age for Age lt '20' on df
+	else
+		counter is counter + 1
+		do add_num(counter,count_max)
+	end_if
 end_function
 
-do do_graph_in()
+do do_graph_in(df)

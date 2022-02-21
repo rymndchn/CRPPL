@@ -21,9 +21,10 @@ validexpr: generalquery
 
 //ARITHMETIC EXPRESSION.
 expr:   '(' expr ')'
-         | left=expr op=('*'|'/') right=expr
-         | left=expr op=('+'|'-') right=expr
+         | left=expr op=(MULT | DIV) right=expr
+         | left=expr op=(ADD | SUB) right=expr
          | value=NUM_EXPR
+         | IDENTIFIER
          ;
 
 //PARSER RULES.
@@ -32,7 +33,7 @@ importfile: RESERVEDWORD_DO IMPORTFILE OPENPARENTHESIS (LITERAL|IDENTIFIER) SEPA
 defineconstant: IDENTIFIER RESERVEDWORD_CONSTANT LITERAL;
 altercolumn: (NEWCOLUMN|DELETECOLUMN) IDENTIFIER FOR IDENTIFIER;
 
-assignment: IDENTIFIER ASSIGNEMT_OPERATOR expr;
+assignment: IDENTIFIER ASSIGNEMT_OPERATOR (expr);
 changevalue: CHANGEVALUE OF IDENTIFIER TO (LITERAL|IDENTIFIER) FOR (LITERAL|IDENTIFIER) OPERATOR (LITERAL|IDENTIFIER) ON IDENTIFIER;
 
 graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO SEPARATOR IDENTIFIER CLOSEPARENTHESIS;
@@ -41,7 +42,7 @@ createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR
 
 functioncall : RESERVEDWORD_DO functionprototype;
 
-functionprototype : IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR (LITERAL|IDENTIFIER))*)? CLOSEPARENTHESIS;
+functionprototype : IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR (LITERAL | IDENTIFIER))*)? CLOSEPARENTHESIS;
 
 conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
 
@@ -85,7 +86,13 @@ fragment NUMBERS: [0-9];
 fragment UNDERSCORE: '_';
 fragment ALPHANUMERIC: [a-zA-Z0-9]*;
 
+
+
 //Arithmetic operation queries.
+ADD: '+';
+SUB: '-';
+MULT: '*';
+DIV: '/';
 NUM_EXPR : [0-9]+ ('.' [0-9]+)?;
 NUM : [0-9];
 
