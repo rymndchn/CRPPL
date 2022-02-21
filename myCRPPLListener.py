@@ -77,7 +77,7 @@ class myCRPPLListener(CRPPLListener) :
     # Exit a parse tree produced by CRPPLParser#importfile.
     def exitImportfile(self, ctx:CRPPLParser.ImportfileContext):
         self.output.write('\n')
-        pass
+        #pass
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
@@ -350,7 +350,7 @@ class myCRPPLListener(CRPPLListener) :
 
                     # perform the group by
                     if ctx.GROUPBY() is not None: # has group by
-                        command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                        command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.output.write(command + '\n')
                     else:
                         command = 'grouped = ' + tbl
@@ -453,7 +453,7 @@ class myCRPPLListener(CRPPLListener) :
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
-                            command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                            command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.output.write(command + '\n')
                         else:
                             command = 'grouped = ' + tbl
