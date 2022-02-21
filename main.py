@@ -1,4 +1,5 @@
 import sys
+import os
 from antlr4 import *
 from CRPPLLexer import CRPPLLexer
 from CRPPLParser import CRPPLParser
@@ -7,6 +8,12 @@ from myCRPPLListener import myCRPPLListener
 import pandas as pd
 
 def main (argv):
+
+    report_folder_path = os.getcwd() + "\\Report"
+
+    if not os.path.exists(report_folder_path):
+        os.makedirs(report_folder_path)  # Create Report folder at current directory
+
     file_input = FileStream(argv[1])
     lexer = CRPPLLexer(file_input)
     stream = CommonTokenStream(lexer)
