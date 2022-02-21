@@ -1,0 +1,13 @@
+do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
+
+varSales constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+do import_file (varSales,'CRPPL/CSV Files/target/sales.csv') as sales
+
+varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
+do import_file (varFileName,varDataSetName) as movies
+
+new_column test_col for movies
+delete_column test_col for movies
+
+get name, name for name equal 'Caddyshack' on movies

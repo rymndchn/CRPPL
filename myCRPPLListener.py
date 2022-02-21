@@ -3,6 +3,7 @@ from antlr4 import *
 from CRPPLParser import CRPPLParser
 from CRPPLListener import CRPPLListener
 import re
+import shutil
 
 class myCRPPLListener(CRPPLListener) :
 
@@ -10,6 +11,8 @@ class myCRPPLListener(CRPPLListener) :
 
         self.output = output
         self.output.write('import numpy as np\n')
+        self.output.write('import shutil\n')
+        self.output.write('import pandas as pd\n')
         self.tab_count = 0
         self.const_dict = dict()
 
@@ -22,13 +25,13 @@ class myCRPPLListener(CRPPLListener) :
         self.boolean_nest_ctr=0
         self.inside_parenthesis=[]
 
+        self.output.write('\n')
+
     # Enter a parse tree produced by CRPPLParser#validexpr.
     def enterValidexpr(self, ctx:CRPPLParser.ValidexprContext):
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
             
-            
-
     # Exit a parse tree produced by CRPPLParser#validexpr.
     def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
         
@@ -38,6 +41,42 @@ class myCRPPLListener(CRPPLListener) :
                     self.output.write("\t")
                 self.output.write("else:\n")
                 self.else_ctr[self.if_nest_ctr]-=1
+
+    # Enter a parse tree produced by CRPPLParser#importfile.
+    def enterImportfile(self, ctx:CRPPLParser.ImportfileContext):
+        
+        if len(ctx.IDENTIFIER()) > 1:
+            sourceDir = self.const_dict.get(ctx.IDENTIFIER()[0].getText())[1:-1]
+
+            if len(ctx.LITERAL()) < 1 and len(ctx.IDENTIFIER()[1].getText()) > 0:
+                targetDir = self.const_dict.get(ctx.IDENTIFIER()[1].getText())[1:-1]
+            else:
+                targetDir = ctx.LITERAL()[0].getText()[1:-1] 
+
+        elif len(ctx.LITERAL()) > 0:
+            sourceDir = ctx.LITERAL()[0].getText()[1:-1]
+
+            if len(ctx.IDENTIFIER()) > 1 and len(ctx.IDENTIFIER()[0].getText()) > 0:
+                targetDir = self.const_dict.get(ctx.IDENTIFIER()[0].getText())[1:-1]
+            else:
+                targetDir = ctx.LITERAL()[1].getText()[1:-1]
+            
+        self.output.write('source = r\''+sourceDir+'\'\n')
+        self.output.write('target = r\''+targetDir+'\'\n')
+        self.output.write('shutil.copyfile(source,target)'+ '\n')
+
+        #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText())
+        #alias = ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()
+        loadCsv = 'pd.read_csv(\''+targetDir+'\')\n'
+        self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
+        #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
+        #self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = \''+targetDir+'\'\n')
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#importfile.
+    def exitImportfile(self, ctx:CRPPLParser.ImportfileContext):
+        self.output.write('\n')
+        pass
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
@@ -250,7 +289,7 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        self.output.write("#is constant\n")
+        #self.output.write("#is constant\n")
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
 
@@ -258,7 +297,7 @@ class myCRPPLListener(CRPPLListener) :
 
             if(ctx.IDENTIFIER() != None):
                 identifier_val = ctx.IDENTIFIER().getText()
-                actual_val = ctx.LITERAL().getText()[1:-1]
+                actual_val = ctx.LITERAL().getText()
 
                 key_list = self.const_dict.keys()
                 if(identifier_val not in key_list):
@@ -292,13 +331,27 @@ class myCRPPLListener(CRPPLListener) :
             command = tblname + '["' + colname + '"] = np.nan'
             self.output.write(command + '\n')
 
+            #update CSV with new column
+            staticDir = 'CRPPL/CSV Files/target/'
+            command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.output.write(command + '\n')
+
         elif ctx.DELETECOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
             tblname = ctx.IDENTIFIER()[1].getText()
 
             #declare command
-            command = 'del ' + tblname + '["' + colname + '"]'
+            #command = 'del ' + tblname + '["' + colname + '"]'
+            #self.output.write(command + '\n')
+
+            #update CSV with deleted column
+            command = tblname + '.drop(\''+ colname + '\',axis=1, inplace=True)'  #command = tblname + '.pop(\''+ colname + '\')'
             self.output.write(command + '\n')
+
+            staticDir = 'CRPPL/CSV Files/target/'
+            command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.output.write(command + '\n')
+
         else:
             print('Error!')
 
