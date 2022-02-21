@@ -77,7 +77,8 @@ class myCRPPLListener(CRPPLListener) :
     # Exit a parse tree produced by CRPPLParser#importfile.
     def exitImportfile(self, ctx:CRPPLParser.ImportfileContext):
         self.output.write('\n')
-        #pass
+        self.endOfTheLineChecking()
+        pass
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
