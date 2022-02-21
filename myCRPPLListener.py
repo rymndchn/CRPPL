@@ -26,6 +26,10 @@ class myCRPPLListener(CRPPLListener) :
         self.boolean_nest_ctr=0
         self.inside_parenthesis=[]
 
+        self.inside_assigning_query=False
+        self.identifier_name=""
+        self.inside_grouping=False
+
         self.output.write('\n')
 
     # Enter a parse tree produced by CRPPLParser#validexpr.
@@ -346,18 +350,25 @@ class myCRPPLListener(CRPPLListener) :
 
                     # perform the group by
                     if ctx.GROUPBY() is not None: # has group by
+                        self.inside_grouping=True
                         command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.tabChecking()
                         self.output.write(command + '\n')
                     else:
+                        self.inside_grouping=True
                         command = 'grouped = ' + tbl
                         self.tabChecking()
                         self.output.write(command + '\n')
 
                     #perform the aggregations
-                    command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                    if (tmp_agg_cols[0:-1]) !="":
+                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                    else:
+                        command = 'print(grouped)'
+                    command = 'print(grouped)'
                     self.tabChecking()
                     self.output.write(command + '\n')
+                    self.saveAggregation(tmp_agg_cols[0:-1])
 
                     # select the columns
 
@@ -453,18 +464,24 @@ class myCRPPLListener(CRPPLListener) :
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
+                            self.inside_grouping=True
                             command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.tabChecking()
                             self.output.write(command + '\n')
                         else:
+                            self.inside_grouping=True
                             command = 'grouped = ' + tbl
                             self.tabChecking()
                             self.output.write(command + '\n')
 
                         #perform the aggregations
-                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        if (tmp_agg_cols[0:-1]) !="":
+                            command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        else:
+                            command = 'print(grouped)'
                         self.tabChecking()
                         self.output.write(command + '\n')
+                        self.saveAggregation(tmp_agg_cols[0:-1])
 
                     elif cond_count > 1: # more than 1 condition
 
@@ -544,24 +561,31 @@ class myCRPPLListener(CRPPLListener) :
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
+                            self.inside_grouping=True
                             command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
                             self.tabChecking()
                             self.output.write(command + '\n')
                         else:
+                            self.inside_grouping=True
                             command = 'grouped = ' + tbl
                             self.tabChecking()
                             self.output.write(command + '\n')
 
                         #perform the aggregations
-                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        if (tmp_agg_cols[0:-1]) !="":
+                            command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        else:
+                            command = 'print(grouped)'
                         self.tabChecking()
                         self.output.write(command + '\n')
+                        self.saveAggregation(tmp_agg_cols[0:-1])
 
         else:
             print('Error!')
         
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
+        
         self.endOfTheLineChecking()
 
     def enterGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
@@ -577,11 +601,21 @@ class myCRPPLListener(CRPPLListener) :
             self.tabChecking()
             self.output.write(fig_command)
         elif graph_type == 'bar':
-            graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            self.output.write('#inside grouping is'+str(self.inside_grouping)+'\n')
+            #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            graph_command = f"print({dataframe}.plot.bar())"
+            xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
+            ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
             self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
-            fig_command = "plt.savefig('Report/bar.png')"
+            self.tabChecking()
+            self.output.write(xlabel_command)
+            self.output.write('\n')
+            self.tabChecking()
+            self.output.write(ylabel_command)
+            self.output.write('\n')
+            fig_command = "plt.savefig('Report/bar.pdf',bbox_inches='tight')"
             self.tabChecking()
             self.output.write(fig_command)
         if graph_type == 'pie':
@@ -668,15 +702,20 @@ class myCRPPLListener(CRPPLListener) :
         self.endOfTheLineChecking()
 
     def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
+        self.output.write('#entering assignment\n')
         
-        self.tabChecking()
 
         if ctx.ASSIGNEMT_OPERATOR() is not None:
 
             if(ctx.IDENTIFIER() != None):
-                self.output.write(ctx.IDENTIFIER().getText())
-                self.output.write(' = ')
-                self.output.write(ctx.expr().getText())
+                if(ctx.expr()!=None):
+                    self.tabChecking()
+                    self.output.write(ctx.IDENTIFIER().getText())
+                    self.output.write(' = ')
+                    self.output.write(ctx.expr().getText())
+                elif (ctx.generalquery()!=None):
+                    self.inside_assigning_query=True
+                    self.identifier_name=ctx.IDENTIFIER().getText()
             else:
                 print('Error!')
         else:
@@ -684,6 +723,7 @@ class myCRPPLListener(CRPPLListener) :
 
     def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
         self.output.write('\n')
+        self.output.write('#exiting assignment\n')
         self.endOfTheLineChecking()
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
@@ -939,6 +979,7 @@ class myCRPPLListener(CRPPLListener) :
         pass
 
     def endOfTheLineChecking(self):
+        self.output.write("# i am checking line\n")
         if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
             if(self.else_ctr[self.if_nest_ctr]>0):
                 for i in range(0,self.if_nest_ctr-1):
@@ -949,6 +990,21 @@ class myCRPPLListener(CRPPLListener) :
     def tabChecking(self):
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
+    def saveAggregation(self,aggregationCode):
+        if (self.inside_assigning_query==True):
+            if(self.inside_grouping==True and (aggregationCode !="")):
+                self.tabChecking()
+                self.output.write(self.identifier_name+'=grouped'+'.agg({' + aggregationCode + '})'+'\n')
+                self.inside_assigning_query=False
+                self.inside_grouping=False
+                self.identifier_name=""
+            else:
+                self.tabChecking()
+                self.output.write(self.identifier_name+'=tmp_result\n')
+                self.inside_assigning_query=False
+                self.inside_grouping=False
+                self.identifier_name=""
+
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")

@@ -6,9 +6,9 @@ legalAge is 18
 myAge is 18
 
 if ( myAge GTE legalAge) then
-    get rating, sum of budget, sum of gross on movies group_by rating
+    a is get rating, sum of budget, sum of gross on movies group_by rating
 else
-    get rating, sum of budget, sum of gross for rating not_equal 'X' on movies group_by rating
+    a is get rating, sum of budget, sum of gross on movies 
 end_if 
 
-do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, movies)
+do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, a)
