@@ -30,22 +30,18 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#validexpr.
     def enterValidexpr(self, ctx:CRPPLParser.ValidexprContext):
-        for i in range(0,self.if_nest_ctr):
-            self.output.write("\t")
+        pass
+        #for i in range(0,self.if_nest_ctr):
+        #    self.output.write("\t")
             
     # Exit a parse tree produced by CRPPLParser#validexpr.
     def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
+        pass
         
-        if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
-            if(self.else_ctr[self.if_nest_ctr]>0):
-                for i in range(0,self.if_nest_ctr-1):
-                    self.output.write("\t")
-                self.output.write("else:\n")
-                self.else_ctr[self.if_nest_ctr]-=1
 
     # Enter a parse tree produced by CRPPLParser#importfile.
     def enterImportfile(self, ctx:CRPPLParser.ImportfileContext):
-        
+        self.tabChecking()
         if len(ctx.IDENTIFIER()) > 1:
             sourceDir = self.const_dict.get(ctx.IDENTIFIER()[0].getText())[1:-1]
 
@@ -63,12 +59,15 @@ class myCRPPLListener(CRPPLListener) :
                 targetDir = ctx.LITERAL()[1].getText()[1:-1]
             
         self.output.write('source = r\''+sourceDir+'\'\n')
+        self.tabChecking()
         self.output.write('target = r\''+targetDir+'\'\n')
+        self.tabChecking()
         self.output.write('shutil.copyfile(source,target)'+ '\n')
 
         #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText())
         #alias = ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()
         loadCsv = 'pd.read_csv(\''+targetDir+'\')\n'
+        self.tabChecking()
         self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
         #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
         #self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = \''+targetDir+'\'\n')
@@ -83,8 +82,6 @@ class myCRPPLListener(CRPPLListener) :
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
         if ctx.GET() is not None:
-            for i in range(0,self.if_nest_ctr):
-                self.output.write("\t")
 
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
@@ -163,8 +160,7 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         # assemble the command to do simple query
-                        for i in range(0,self.if_nest_ctr):
-                            self.output.write("\t")
+                        self.tabChecking()
                         command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
                         self.output.write(command + '\n')
                     else: 
@@ -225,11 +221,10 @@ class myCRPPLListener(CRPPLListener) :
                         #command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
                         command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
                         command2 ='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
-
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
-                        for i in range(0,self.if_nest_ctr):
-                            self.output.write("\t")
+                        self.tabChecking()
 
                         self.output.write(command2 + '\n')
 
@@ -287,12 +282,11 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\n'
-
+                        self.tabChecking()
                         self.output.write(command + '\n')
                         command2='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
                         
-                        for i in range(0,self.if_nest_ctr):
-                            self.output.write("\t")
+                        self.tabChecking()
                         self.output.write(command2 + '\n')
 
                 else:
@@ -346,19 +340,23 @@ class myCRPPLListener(CRPPLListener) :
 
 
                     # select the columns to tmp_result
+                    self.tabChecking()
                     command = 'tmp_result = ' + tbl + '[[' + tmp_col[0:-1] + ']]'
                     self.output.write(command + '\n')
 
                     # perform the group by
                     if ctx.GROUPBY() is not None: # has group by
                         command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
+                        self.tabChecking()
                         self.output.write(command + '\n')
                     else:
                         command = 'grouped = ' + tbl
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
                     #perform the aggregations
                     command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                    self.tabChecking()
                     self.output.write(command + '\n')
 
                     # select the columns
@@ -450,18 +448,22 @@ class myCRPPLListener(CRPPLListener) :
 
                         # select the columns to tmp_result
                         command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
                             command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
+                            self.tabChecking()
                             self.output.write(command + '\n')
                         else:
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
                             self.output.write(command + '\n')
 
                         #perform the aggregations
                         command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
                     elif cond_count > 1: # more than 1 condition
@@ -537,25 +539,30 @@ class myCRPPLListener(CRPPLListener) :
                                 ii += 1
 
                         command = 'tmp_result = ' + tbl + '[' + filter_statement + ']'
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
                             command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                            self.tabChecking()
                             self.output.write(command + '\n')
                         else:
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
                             self.output.write(command + '\n')
 
                         #perform the aggregations
                         command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        self.tabChecking()
                         self.output.write(command + '\n')
 
         else:
             print('Error!')
+        
 
     def exitGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
-        pass
+        self.endOfTheLineChecking()
 
     def enterGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
         graph_type = ctx.TYPE().getText()
@@ -563,33 +570,38 @@ class myCRPPLListener(CRPPLListener) :
 
         if graph_type == 'line':
             graph_command = 'print(' + dataframe + '.plot.line(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
             fig_command = "plt.savefig('Report/line.png')"
+            self.tabChecking()
             self.output.write(fig_command)
         elif graph_type == 'bar':
             graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+            self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
             fig_command = "plt.savefig('Report/bar.png')"
+            self.tabChecking()
             self.output.write(fig_command)
         if graph_type == 'pie':
             # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+            self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
+            self.tabChecking()
             fig_command = "plt.savefig('Report/pie.png')"
             self.output.write(fig_command)
         pass
 
     def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
         self.output.write('\n')
-        pass
+        self.endOfTheLineChecking()
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        for i in range(0,self.if_nest_ctr):
-            self.output.write("\t")
+        self.tabChecking()
 
         if ctx.RESERVEDWORD_CONSTANT() is not None:
 
@@ -612,6 +624,7 @@ class myCRPPLListener(CRPPLListener) :
     # Exit a parse tree produced by CRPPLParser#defineconstant.
     def exitDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
         self.output.write('\n')
+        self.endOfTheLineChecking()
 
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
 
@@ -621,11 +634,13 @@ class myCRPPLListener(CRPPLListener) :
 
             #declare command
             command = tblname + '["' + colname + '"] = np.nan'
+            self.tabChecking()
             self.output.write(command + '\n')
 
             #update CSV with new column
             staticDir = 'CRPPL/CSV Files/target/'
             command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.tabChecking()
             self.output.write(command + '\n')
 
         elif ctx.DELETECOLUMN() is not None:
@@ -638,22 +653,23 @@ class myCRPPLListener(CRPPLListener) :
 
             #update CSV with deleted column
             command = tblname + '.drop(\''+ colname + '\',axis=1, inplace=True)'  #command = tblname + '.pop(\''+ colname + '\')'
+            self.tabChecking()
             self.output.write(command + '\n')
 
             staticDir = 'CRPPL/CSV Files/target/'
             command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.tabChecking()
             self.output.write(command + '\n')
 
         else:
             print('Error!')
 
     def exitAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
-        pass
+        self.endOfTheLineChecking()
 
     def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
         
-        for i in range(0,self.if_nest_ctr):
-            self.output.write("\t")
+        self.tabChecking()
 
         if ctx.ASSIGNEMT_OPERATOR() is not None:
 
@@ -668,6 +684,7 @@ class myCRPPLListener(CRPPLListener) :
 
     def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
         self.output.write('\n')
+        self.endOfTheLineChecking()
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
 
@@ -712,7 +729,7 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write(command + '\n')
 
     def exitChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
-        pass
+        self.endOfTheLineChecking()
 
     def enterCreatefunction(self, ctx:CRPPLParser.CreatefunctionContext):
         
@@ -776,9 +793,7 @@ class myCRPPLListener(CRPPLListener) :
             pass
 
     def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
-            for i in range(0,self.if_nest_ctr):
-                self.output.write("\t")
-
+            self.tabChecking()
             if ctx.IF() is not None:
                 self.output.write("if ")
                 self.inside_if=True
@@ -791,6 +806,7 @@ class myCRPPLListener(CRPPLListener) :
     def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
         self.output.write('\n#end if\n')
         self.if_nest_ctr-=1
+        self.endOfTheLineChecking()
 
 
     # Enter a parse tree produced by CRPPLParser#booleanstatement.
@@ -880,8 +896,7 @@ class myCRPPLListener(CRPPLListener) :
 
     def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
         
-        for i in range(0,self.if_nest_ctr):
-            self.output.write("\t")
+        self.tabChecking()
 
         if(self.tab_count > 0):
             self.output.write('\t')
@@ -922,6 +937,18 @@ class myCRPPLListener(CRPPLListener) :
 
     def exitFunctionprototype(self, ctx:CRPPLParser.FunctionprototypeContext):
         pass
+
+    def endOfTheLineChecking(self):
+        if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
+            if(self.else_ctr[self.if_nest_ctr]>0):
+                for i in range(0,self.if_nest_ctr-1):
+                    self.output.write("\t")
+                self.output.write("else:\n")
+                self.else_ctr[self.if_nest_ctr]-=1
+
+    def tabChecking(self):
+        for i in range(0,self.if_nest_ctr):
+            self.output.write("\t")
 
     def findPosition(self, pos_string):
         split_string = pos_string.split(",")
