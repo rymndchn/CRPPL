@@ -18,7 +18,6 @@ class myCRPPLListener(CRPPLListener) :
         self.tab_count = 0
         self.const_dict = dict()
 
-        self.tab_ctr=0
         self.elif_ctr={0:0,1:0}
         self.else_ctr={0:0,1:0}
         self.if_nest_ctr=0
@@ -85,6 +84,7 @@ class myCRPPLListener(CRPPLListener) :
         if ctx.GET() is not None:
             for i in range(0,self.if_nest_ctr):
                 self.output.write("\t")
+
             # get position of GET
             get_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GET().getSymbol())).group(2))
 
@@ -587,7 +587,6 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        #self.output.write("#is constant\n")
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
 
@@ -614,12 +613,6 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('\n')
 
     def enterAltercolumn(self, ctx:CRPPLParser.AltercolumnContext):
-
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
 
         if ctx.NEWCOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
@@ -676,11 +669,6 @@ class myCRPPLListener(CRPPLListener) :
         self.output.write('\n')
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
-        if(self.tab_count > 0):
-            self.output.write('\t')
-            self.tab_count -= 1
-        else:
-            pass
 
         #get how many identifiers and literals there are
         ctr_literal = len(ctx.LITERAL())
@@ -761,7 +749,6 @@ class myCRPPLListener(CRPPLListener) :
             if((end_pos-create_pos) == 1):
                 self.output.write('pass\n')
 
-            #self.tab_count = len(ctx.generalquery()) + len(ctx.importfile()) + len(ctx.altercolumn()) + len(ctx.changevalue()) + len(ctx.expr()) + len(ctx.assignment()) + len(ctx.defineconstant()) + len(ctx.functioncall()) + len(ctx.graphquery()) + len(ctx.conditionalstatement())
             self.if_nest_ctr+=1
         else:
             print('Error!')
@@ -777,7 +764,7 @@ class myCRPPLListener(CRPPLListener) :
                 
             #last identifier is after the return statement.
             if(ret_id_pos > ret_pos):
-                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n')
+                self.output.write(ctx.IDENTIFIER()[indentifier_count-1].getText() + '\n\n')
         else:
             self.output.write('\n')
 
@@ -788,6 +775,8 @@ class myCRPPLListener(CRPPLListener) :
             pass
 
     def enterConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
+            for i in range(0,self.if_nest_ctr):
+                self.output.write("\t")
 
             if ctx.IF() is not None:
                 self.output.write("if ")
@@ -887,6 +876,7 @@ class myCRPPLListener(CRPPLListener) :
                 self.inside_parenthesis=[]
                 self.output.write(":\n")
                 self.inside_if=False
+
     def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
         
         for i in range(0,self.if_nest_ctr):
