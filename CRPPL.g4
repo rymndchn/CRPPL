@@ -44,7 +44,14 @@ functioncall : RESERVEDWORD_DO functionprototype;
 
 functionprototype : IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR (LITERAL | IDENTIFIER))*)? CLOSEPARENTHESIS;
 
-conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
+conditionalstatement: IF (booleanstatement) THEN 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)* 
+(ELSE_IF (booleanstatement) THEN 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
+)* 
+(ELSE 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
+)? END_IF;
 
 booleanstatement: (
   OPENPARENTHESIS (NEGATOR)*(IDENTIFIER|TRUE|FALSE) CLOSEPARENTHESIS | 
