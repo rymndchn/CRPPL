@@ -3,6 +3,7 @@ from antlr4 import *
 from CRPPLParser import CRPPLParser
 from CRPPLListener import CRPPLListener
 import re
+import shutil
 
 class myCRPPLListener(CRPPLListener) :
 
@@ -10,6 +11,8 @@ class myCRPPLListener(CRPPLListener) :
 
         self.output = output
         self.output.write('import numpy as np\n')
+        self.output.write('import shutil\n')
+        self.output.write('import pandas as pd\n')
         self.tab_count = 0
         self.const_dict = dict()
 
@@ -22,13 +25,13 @@ class myCRPPLListener(CRPPLListener) :
         self.boolean_nest_ctr=0
         self.inside_parenthesis=[]
 
+        self.output.write('\n')
+
     # Enter a parse tree produced by CRPPLParser#validexpr.
     def enterValidexpr(self, ctx:CRPPLParser.ValidexprContext):
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
             
-            
-
     # Exit a parse tree produced by CRPPLParser#validexpr.
     def exitValidexpr(self, ctx:CRPPLParser.ValidexprContext):
         
@@ -38,6 +41,42 @@ class myCRPPLListener(CRPPLListener) :
                     self.output.write("\t")
                 self.output.write("else:\n")
                 self.else_ctr[self.if_nest_ctr]-=1
+
+    # Enter a parse tree produced by CRPPLParser#importfile.
+    def enterImportfile(self, ctx:CRPPLParser.ImportfileContext):
+        
+        if len(ctx.IDENTIFIER()) > 1:
+            sourceDir = self.const_dict.get(ctx.IDENTIFIER()[0].getText())[1:-1]
+
+            if len(ctx.LITERAL()) < 1 and len(ctx.IDENTIFIER()[1].getText()) > 0:
+                targetDir = self.const_dict.get(ctx.IDENTIFIER()[1].getText())[1:-1]
+            else:
+                targetDir = ctx.LITERAL()[0].getText()[1:-1] 
+
+        elif len(ctx.LITERAL()) > 0:
+            sourceDir = ctx.LITERAL()[0].getText()[1:-1]
+
+            if len(ctx.IDENTIFIER()) > 1 and len(ctx.IDENTIFIER()[0].getText()) > 0:
+                targetDir = self.const_dict.get(ctx.IDENTIFIER()[0].getText())[1:-1]
+            else:
+                targetDir = ctx.LITERAL()[1].getText()[1:-1]
+            
+        self.output.write('source = r\''+sourceDir+'\'\n')
+        self.output.write('target = r\''+targetDir+'\'\n')
+        self.output.write('shutil.copyfile(source,target)'+ '\n')
+
+        #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText())
+        #alias = ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()
+        loadCsv = 'pd.read_csv(\''+targetDir+'\')\n'
+        self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
+        #print (ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = '+loadCsv)
+        #self.output.write(ctx.IDENTIFIER()[len(ctx.IDENTIFIER())-1].getText()+ ' = \''+targetDir+'\'\n')
+        pass
+
+    # Exit a parse tree produced by CRPPLParser#importfile.
+    def exitImportfile(self, ctx:CRPPLParser.ImportfileContext):
+        self.output.write('\n')
+        pass
 
     def enterGeneralquery(self, ctx:CRPPLParser.GraphqueryContext):
         
@@ -62,8 +101,23 @@ class myCRPPLListener(CRPPLListener) :
             # pointer for literal
             l = 0
 
+            # pointer for operating_functions
+            p = 0
+
             # list for columns
             cols = []
+
+            # list for group by columns
+            gb_cols = []
+
+            # list for group by columns
+            tmp_gb_cols = ''
+
+            # list for agg
+            tmp_agg_cols = ''
+
+            # list for operating functions
+            operfunc = []
 
             # table name
             tbl = ''
@@ -240,7 +294,259 @@ class myCRPPLListener(CRPPLListener) :
 
                 else:
                     print('Coming soon!')
+            elif len(ctx.OPERATING_FUNCTION()) > 0:
+                if ctx.FOR() is None: # no for conditions
+                    operfunc_count = len(ctx.OPERATING_FUNCTION())
+                    sep_count = len(ctx.SEPARATOR())
 
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < on_pos: # if position of identifier is before the for
+                            cols.append(ctx.IDENTIFIER()[i].getText())
+                            if p < operfunc_count:
+                                if int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATING_FUNCTION()[p].getSymbol())).group(2)) < int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)):
+                                    operfunc.append(ctx.OPERATING_FUNCTION()[p].getText())
+                                    p += 1
+                                else:
+                                    operfunc.append('')
+                            i += 1
+
+                    if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+
+                    if ctx.GROUPBY() is not None: # has group by
+                        ident_count = len(ctx.IDENTIFIER())
+                        gb_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GROUPBY().getSymbol())).group(2))
+
+
+                        
+                        while i < ident_count and int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > gb_pos: # the the identifiers after the position of the on
+                            gb_cols.append(ctx.IDENTIFIER()[i].getText())
+                            i +=1
+
+                    # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                    # assemtble the group by columns
+                        for y in gb_cols:
+                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+
+                    # assemble the aggregation per column
+                        ii = 0
+
+                        while ii < len(cols):
+                            if operfunc[ii] == '':
+                                ii += 1
+                            else:
+                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                                ii += 1
+
+
+                    # select the columns to tmp_result
+                    command = 'tmp_result = ' + tbl + '[[' + tmp_col[0:-1] + ']]'
+                    self.output.write(command + '\n')
+
+                    # perform the group by
+                    if ctx.GROUPBY() is not None: # has group by
+                        command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                        self.output.write(command + '\n')
+                    else:
+                        command = 'grouped = ' + tbl
+                        self.output.write(command + '\n')
+
+                    #perform the aggregations
+                    command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                    self.output.write(command + '\n')
+
+                    # select the columns
+
+
+                    # perform the aggregations
+                elif ctx.FOR() is not None: # has for conditions
+                    # get the position of FOR
+                    for_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.FOR().getSymbol())).group(2))
+
+                    # put the columns of the GET into list 'cols'
+                    while int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < for_pos: # if position of identifier is before the for
+                        cols.append(ctx.IDENTIFIER()[i].getText())
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATING_FUNCTION()[p].getSymbol())).group(2)) < int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)):
+                            operfunc.append(ctx.OPERATING_FUNCTION()[p].getText())
+                            p += 1
+                        else:
+                            operfunc.append('')
+                        i += 1
+
+                    # see how many conditions there are, if 1 then simple, if more than 1 then complicated
+                    cond_count = len(ctx.OPERATOR())
+                    if cond_count == 1: #only 1 condition
+                        # get OPERATOR position
+                        cond_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.OPERATOR()[0].getSymbol())).group(2))
+                        # get the left side of the operator
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) < cond_pos: # get the left side of the conditional operator
+                            tmp_cond1 = tmp_cond1 + ctx.IDENTIFIER()[i].getText()
+                            i += 1
+
+                        # get the operator
+                        o = ctx.OPERATOR()[0].getText().upper()
+
+                        if o == 'EQUAL':
+                            tmp_cond2 = tmp_cond2 + '=='
+                        elif o == 'GT':
+                            tmp_cond2 = tmp_cond2 + '>'
+                        elif o == 'GTE':
+                            tmp_cond2 = tmp_cond2 + '>='
+                        elif o == 'LT':
+                            tmp_cond2 = tmp_cond2 + '<'
+                        elif o == 'LTE':
+                            tmp_cond2 = tmp_cond2 + '<='
+                        elif o == 'NOT_EQUAL':
+                            tmp_cond2 = tmp_cond2 + '!='
+                        else:
+                            print('Error! Invalid operator for general query filter!' + o)
+
+                        # get the right side of the operator
+                        if on_pos > int(re.search('(\[@)(\d+)(,.*)',str(ctx.LITERAL()[l].getSymbol())).group(2)) > cond_pos: # get the literal on the right side of the conditional operator
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()[1:-1]
+                            else:
+                                tmp_cond2 = tmp_cond2 + ctx.LITERAL()[l].getText()
+
+
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+
+                        if ctx.GROUPBY() is not None: # has group by
+                            ident_count = len(ctx.IDENTIFIER())
+                            gb_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GROUPBY().getSymbol())).group(2))
+
+                            while i < ident_count and int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > gb_pos: # the the identifiers after the position of the on
+                                gb_cols.append(ctx.IDENTIFIER()[i].getText())
+                                i +=1
+
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        
+
+                        # assemtble the group by columns
+                        for y in gb_cols:
+                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+
+                        # assemble the aggregation per column
+                        ii = 0
+
+                        while ii < len(cols):
+                            if operfunc[ii] == '':
+                                ii += 1
+                            else:
+                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                                ii += 1
+
+                        # select the columns to tmp_result
+                        command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
+                        self.output.write(command + '\n')
+
+                        # perform the group by
+                        if ctx.GROUPBY() is not None: # has group by
+                            command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                            self.output.write(command + '\n')
+                        else:
+                            command = 'grouped = ' + tbl
+                            self.output.write(command + '\n')
+
+                        #perform the aggregations
+                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        self.output.write(command + '\n')
+
+                    elif cond_count > 1: # more than 1 condition
+
+                        cond_ctr = 0
+
+                        while cond_ctr < cond_count:
+                            tmp_cond_list1.append(ctx.IDENTIFIER()[i].getText())
+                            i += 1
+
+                            o = ctx.OPERATOR()[cond_ctr].getText().upper()
+
+                            if o == 'EQUAL':
+                                tmp_cond_list2.append('==')
+                            elif o == 'GT':
+                                tmp_cond_list2.append('>')
+                            elif o == 'GTE':
+                                tmp_cond_list2.append('>=')
+                            elif o == 'LT':
+                                tmp_cond_list2.append('<')
+                            elif o == 'LTE':
+                                tmp_cond_list2.append('<=')
+                            elif o == 'NOT_EQUAL':
+                                tmp_cond_list2.append('!=')
+                            else:
+                                print('Error! Invalid operator for general query filter!' + o)
+
+                            if ctx.LITERAL()[l].getText()[1:-1].isdigit():
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()[1:-1])
+                            else:
+                                tmp_cond_list3.append(ctx.LITERAL()[l].getText()) 
+                            l += 1
+
+                            cond_ctr += 1
+
+                        if int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > on_pos: # the the identifiers after the position of the on
+                            tbl = ctx.IDENTIFIER()[i].getText()
+                            i +=1
+
+                        if ctx.GROUPBY() is not None: # has group by
+                            ident_count = len(ctx.IDENTIFIER())
+                            gb_pos = int(re.search('(\[@)(\d+)(,.*)',str(ctx.GROUPBY().getSymbol())).group(2))
+
+                            while i < ident_count and int(re.search('(\[@)(\d+)(,.*)',str(ctx.IDENTIFIER()[i].getSymbol())).group(2)) > gb_pos: # the the identifiers after the position of the on
+                                gb_cols.append(ctx.IDENTIFIER()[i].getText())
+                                i +=1
+
+                        tmp_cond_ctr = 0
+
+                        while tmp_cond_ctr < cond_ctr:
+                            if tmp_cond_ctr == cond_ctr - 1:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')'
+                            else:
+                                filter_statement = filter_statement + '(' + tbl + '["' + tmp_cond_list1[tmp_cond_ctr] + '"]' + tmp_cond_list2[tmp_cond_ctr] + tmp_cond_list3[tmp_cond_ctr]  + ')&'
+                            tmp_cond_ctr += 1
+
+                        # assemble the column part of the simple query
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
+
+                        # assemtble the group by columns
+                        for y in gb_cols:
+                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+
+                        # assemble the aggregation per column
+                        ii = 0
+
+                        while ii < len(cols):
+                            if operfunc[ii] == '':
+                                ii += 1
+                            else:
+                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                                ii += 1
+
+                        command = 'tmp_result = ' + tbl + '[' + filter_statement + ']'
+                        self.output.write(command + '\n')
+
+                        # perform the group by
+                        if ctx.GROUPBY() is not None: # has group by
+                            command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                            self.output.write(command + '\n')
+                        else:
+                            command = 'grouped = ' + tbl
+                            self.output.write(command + '\n')
+
+                        #perform the aggregations
+                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        self.output.write(command + '\n')
 
         else:
             print('Error!')
@@ -250,7 +556,7 @@ class myCRPPLListener(CRPPLListener) :
 
     # Enter a parse tree produced by CRPPLParser#defineconstant.
     def enterDefineconstant(self, ctx:CRPPLParser.DefineconstantContext):
-        self.output.write("#is constant\n")
+        #self.output.write("#is constant\n")
         for i in range(0,self.if_nest_ctr):
             self.output.write("\t")
 
@@ -258,7 +564,7 @@ class myCRPPLListener(CRPPLListener) :
 
             if(ctx.IDENTIFIER() != None):
                 identifier_val = ctx.IDENTIFIER().getText()
-                actual_val = ctx.LITERAL().getText()[1:-1]
+                actual_val = ctx.LITERAL().getText()
 
                 key_list = self.const_dict.keys()
                 if(identifier_val not in key_list):
@@ -292,13 +598,27 @@ class myCRPPLListener(CRPPLListener) :
             command = tblname + '["' + colname + '"] = np.nan'
             self.output.write(command + '\n')
 
+            #update CSV with new column
+            staticDir = 'CRPPL/CSV Files/target/'
+            command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.output.write(command + '\n')
+
         elif ctx.DELETECOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
             tblname = ctx.IDENTIFIER()[1].getText()
 
             #declare command
-            command = 'del ' + tblname + '["' + colname + '"]'
+            #command = 'del ' + tblname + '["' + colname + '"]'
+            #self.output.write(command + '\n')
+
+            #update CSV with deleted column
+            command = tblname + '.drop(\''+ colname + '\',axis=1, inplace=True)'  #command = tblname + '.pop(\''+ colname + '\')'
             self.output.write(command + '\n')
+
+            staticDir = 'CRPPL/CSV Files/target/'
+            command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
+            self.output.write(command + '\n')
+
         else:
             print('Error!')
 

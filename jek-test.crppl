@@ -1,4 +1,0 @@
-do import_file ('testFileName','testDataSetName')
-varFileName constant 'testFileName'
-varDataSetName constant 'testDataSetName' 
-do import_file (varFileName,varDataSetName)
