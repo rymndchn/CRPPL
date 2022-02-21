@@ -346,7 +346,7 @@ class myCRPPLListener(CRPPLListener) :
 
                     # perform the group by
                     if ctx.GROUPBY() is not None: # has group by
-                        command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                        command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.tabChecking()
                         self.output.write(command + '\n')
                     else:
@@ -453,7 +453,7 @@ class myCRPPLListener(CRPPLListener) :
 
                         # perform the group by
                         if ctx.GROUPBY() is not None: # has group by
-                            command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
+                            command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.tabChecking()
                             self.output.write(command + '\n')
                         else:

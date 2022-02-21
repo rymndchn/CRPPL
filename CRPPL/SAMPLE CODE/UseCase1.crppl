@@ -1,0 +1,11 @@
+varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
+do import_file (varFileName,varDataSetName) as movies
+
+legalAge constant '18'
+
+if (legalAge GTE '18') then
+    get rating, sum of budget, sum of gross on movies group_by rating
+else
+    get rating, sum of budget, sum of gross for rating notequal 'R' on movies group_by rating
+end_if 
