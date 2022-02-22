@@ -33,7 +33,7 @@ importfile: RESERVEDWORD_DO IMPORTFILE OPENPARENTHESIS (LITERAL|IDENTIFIER) SEPA
 defineconstant: IDENTIFIER RESERVEDWORD_CONSTANT LITERAL;
 altercolumn: (NEWCOLUMN|DELETECOLUMN) IDENTIFIER FOR IDENTIFIER;
 
-assignment: IDENTIFIER ASSIGNEMT_OPERATOR (expr|generalquery|TRUE|FALSE);
+assignment: IDENTIFIER ASSIGNEMT_OPERATOR (TRUE|FALSE|expr|generalquery);
 changevalue: CHANGEVALUE OF IDENTIFIER TO (LITERAL|IDENTIFIER) FOR (LITERAL|IDENTIFIER) OPERATOR (LITERAL|IDENTIFIER) ON IDENTIFIER;
 
 graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO SEPARATOR IDENTIFIER CLOSEPARENTHESIS;
@@ -49,8 +49,7 @@ conditionalstatement: IF (booleanstatement) THEN
 (ELSE_IF (booleanstatement) THEN 
 (generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
 )* 
-(ELSE 
-(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
+(elseRule
 )? END_IF;
 
 booleanstatement: (
@@ -58,6 +57,9 @@ booleanstatement: (
   
   OPENPARENTHESIS (NEGATOR)*(LITERAL|IDENTIFIER|TRUE|FALSE| booleanstatement) ((OPERATOR|BOOLEAN_CONNECTOR (NEGATOR)*) (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement))* CLOSEPARENTHESIS 
 );
+
+elseRule: ELSE (
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*);
 
 //LEXER RULES.
 fragment A: ('A'|'a');
