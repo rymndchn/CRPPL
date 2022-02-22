@@ -13,15 +13,18 @@ shutil.copyfile(source,target)
 sales = pd.read_csv('CRPPL/CSV Files/target/sales.csv')
 
 # i am checking line
-tmp_result = sales[[]]
+#entering assignment
+tmp_result = sales[["TotalProfit"]]
 grouped = sales
-__________GROUPED_IS = False
-print(grouped)
+tmp_result = grouped.agg({"TotalProfit":"mean"})
+print(tmp_result)
+sales_mean=grouped.agg({"TotalProfit":"mean"})
+sales_mean = sales_mean.tolist()[0]
 # i am checking line
-#inside grouping isTrue
-#insissdfdfdsTrue
-print(sales.plot.bar())
-plt.xlabel('rating')
-plt.ylabel('gross')
-plt.savefig('Report/bar.pdf',bbox_inches='tight')
+
+#exiting assignment
+# i am checking line
+#entering assignment
+data_count = 100
+#exiting assignment
 # i am checking line
