@@ -77,6 +77,26 @@ public interface CRPPLListener extends ParseTreeListener {
 	 */
 	void exitAltercolumn(CRPPLParser.AltercolumnContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CRPPLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment(CRPPLParser.AssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CRPPLParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment(CRPPLParser.AssignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CRPPLParser#changevalue}.
+	 * @param ctx the parse tree
+	 */
+	void enterChangevalue(CRPPLParser.ChangevalueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CRPPLParser#changevalue}.
+	 * @param ctx the parse tree
+	 */
+	void exitChangevalue(CRPPLParser.ChangevalueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CRPPLParser#graphquery}.
 	 * @param ctx the parse tree
 	 */
