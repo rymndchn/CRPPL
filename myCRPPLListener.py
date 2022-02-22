@@ -164,12 +164,8 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         # assemble the command to do simple query
-
                         self.tabChecking()
-                        command = 'tmp_result =' + tbl + '[[' + tmp_col[0:-1] + ']]'
-                        self.output.write(command + '\n')
-                        self.tabChecking()
-                        command = 'print(tmp_result)'
+                        command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
                         self.output.write(command + '\n')
                     else: 
                         print('Error!')
@@ -228,13 +224,12 @@ class myCRPPLListener(CRPPLListener) :
 
                         #command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
                         command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
-                        command1 = 'tmp_result = tmp_result' + '[[' + tmp_col[0:-1] + ']]'
-                        command2 ='print(tmp_result)'
+                        command2 ='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
                         self.tabChecking()
                         self.output.write(command + '\n')
+
                         self.tabChecking()
-                        self.output.write(command1 + '\n')
-                        self.tabChecking()
+
                         self.output.write(command2 + '\n')
 
                     if cond_count > 1: # more than 1 condition
@@ -293,10 +288,8 @@ class myCRPPLListener(CRPPLListener) :
                         command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\n'
                         self.tabChecking()
                         self.output.write(command + '\n')
-                        command1 = 'tmp_result = tmp_result[[' + tmp_col[0:-1] + ']]'
-                        self.tabChecking()
-                        self.output.write(command1+ '\n')
-                        command2='print(tmp_result)'
+                        command2='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        
                         self.tabChecking()
                         self.output.write(command2 + '\n')
 
@@ -332,22 +325,22 @@ class myCRPPLListener(CRPPLListener) :
                             i +=1
 
                     # assemble the column part of the simple query
-                    for x in cols:
-                        tmp_col = tmp_col + '"' + x + '",'
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
 
                     # assemtble the group by columns
-                    for y in gb_cols:
-                        tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+                        for y in gb_cols:
+                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
 
                     # assemble the aggregation per column
-                    ii = 0
+                        ii = 0
 
-                    while ii < len(cols):
-                        if operfunc[ii] == '':
-                            ii += 1
-                        else:
-                            tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
-                            ii += 1
+                        while ii < len(cols):
+                            if operfunc[ii] == '':
+                                ii += 1
+                            else:
+                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                                ii += 1
 
 
                     # select the columns to tmp_result
@@ -361,23 +354,28 @@ class myCRPPLListener(CRPPLListener) :
                         command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.tabChecking()
                         self.output.write(command + '\n')
+
+                        command = '__________GROUPED_IS = True'
+                        self.tabChecking()
+                        self.output.write(command + '\n')
                     else:
                         self.inside_grouping=True
                         command = 'grouped = ' + tbl
                         self.tabChecking()
                         self.output.write(command + '\n')
 
+                        command = '__________GROUPED_IS = False'
+                        self.tabChecking()
+                        self.output.write(command + '\n')
+
                     #perform the aggregations
                     if (tmp_agg_cols[0:-1]) !="":
-                        command = 'tmp_result = grouped.agg({' + tmp_agg_cols[0:-1] + '})'
+                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
                     else:
-                        command = 'tmp_result = grouped'
-
+                        command = 'print(grouped)'
+                    command = 'print(grouped)'
                     self.tabChecking()
                     self.output.write(command + '\n')
-                    command = 'print(tmp_result)'
-                    self.tabChecking()
-                    self.output.write(command+ '\n')
                     self.saveAggregation(tmp_agg_cols[0:-1])
 
                     # select the columns
@@ -478,9 +476,17 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -575,9 +581,17 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -612,6 +626,7 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write(fig_command)
         elif graph_type == 'bar':
             self.output.write('#inside grouping is'+str(self.inside_grouping)+'\n')
+            self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
             #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = f"print({dataframe}.plot.bar())"
             xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
@@ -630,13 +645,70 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write(fig_command)
         if graph_type == 'pie':
             # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
-            graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+            #graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+
+            self.tabChecking()
+            self.output.write("if (__________GROUPED_IS == True):")
+            self.output.write('\n')
+            self.if_nest_ctr+=1
+
+            percent_command=f"percents = {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy() * 100 / {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy().sum()"
+            graph_command = f"print({dataframe}.plot.pie(y={ctx.LITERAL()[1].getText()}, labeldistance=None))"
+            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+
+            self.tabChecking()
+            self.output.write(percent_command)
+            self.output.write('\n')
+
             self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
+
             self.tabChecking()
-            fig_command = "plt.savefig('Report/pie.png')"
+            self.output.write(legend_command)
+            self.output.write('\n')
+
+            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+            self.tabChecking()
             self.output.write(fig_command)
+            self.output.write('\n')
+
+            self.if_nest_ctr-=1
+            self.tabChecking()
+            self.output.write("else:")
+            self.output.write('\n')
+            self.if_nest_ctr+=1
+
+            percent_command=f"percents = {dataframe}.to_numpy() * 100 / {dataframe}.to_numpy().sum()"
+            graph_command = f"print({dataframe}.plot.pie( labeldistance=None))"
+            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+            y_label_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
+
+            self.tabChecking()
+            self.output.write(percent_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(graph_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(legend_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(y_label_command)
+            self.output.write('\n')
+
+            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+            self.tabChecking()
+            self.output.write(fig_command)
+            self.output.write('\n')
+
+            self.if_nest_ctr-=1
+            self.tabChecking()
+            self.output.write("#end of secret if")
+            self.output.write('\n')
         pass
 
     def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
@@ -1002,7 +1074,13 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write("\t")
     def saveAggregation(self,aggregationCode):
         if (self.inside_assigning_query==True):
-            if(self.inside_grouping==True and (aggregationCode =="")):
+            if(self.inside_grouping==True):
+                self.tabChecking()
+                self.output.write(self.identifier_name+'=grouped'+'.agg({' + aggregationCode + '})'+'\n')
+                self.inside_assigning_query=False
+                self.inside_grouping=False
+                self.identifier_name=""
+            else:
                 self.tabChecking()
                 self.output.write(self.identifier_name+'=tmp_result\n')
                 self.inside_assigning_query=False
