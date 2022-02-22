@@ -630,10 +630,14 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
             #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = f"print({dataframe}.plot.bar())"
+            ytick_command = f"plt.ticklabel_format(axis='y', style='plain')"
             xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
             ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
             self.tabChecking()
             self.output.write(graph_command)
+            self.output.write('\n')
+            self.tabChecking()
+            self.output.write(ytick_command)
             self.output.write('\n')
             self.tabChecking()
             self.output.write(xlabel_command)
