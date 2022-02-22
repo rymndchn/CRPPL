@@ -1,0 +1,51 @@
+varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
+do import_file (varFileName,varDataSetName) as sales
+
+data_count is 5
+counter is 0
+
+create_function unitCostItemType(counter,data_count,sales)
+
+	if(counter lt data_count) then
+		counter is counter + 1
+		do unitCostItemType(counter,data_count,sales)
+	end_if
+
+    if(counter equal 1) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Baby Food' on sales group_by Item_Type
+	else_if(counter equal 2) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Beverages' on sales group_by Item_Type
+	else_if(counter equal 3) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Cereal' on sales group_by Item_Type
+	else_if(counter equal 4) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Fruits' on sales group_by Item_Type
+	else_if(counter equal 5) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Clothes' on sales group_by Item_Type
+	end_if
+
+end_function
+
+
+counter is 0
+count_max is 5
+create_function add_num(counter,count_max,sales)
+	if(counter lt count_max) then
+		counter is counter + 1
+		do add_num(counter,count_max,sales)
+	end_if
+
+    if(counter equal 1) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Baby Food' on sales group_by Item_Type
+	else_if(counter equal 2) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Beverages' on sales group_by Item_Type
+	else_if(counter equal 3) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Cereal' on sales group_by Item_Type
+	else_if(counter equal 4) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Fruits' on sales group_by Item_Type
+	else_if(counter equal 5) then
+		get Order_ID, sum of UnitCost for Item_Type equal 'Clothes' on sales group_by Item_Type
+	end_if
+end_function
+
+do add_num(counter,count_max,sales)

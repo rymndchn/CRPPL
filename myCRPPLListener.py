@@ -833,7 +833,7 @@ class myCRPPLListener(CRPPLListener) :
         self.endOfTheLineChecking()
 
     def enterAssignment(self, ctx:CRPPLParser.AssignmentContext):
-        self.output.write('#entering assignment\n')
+        #self.output.write('#entering assignment\n')
         
 
         if ctx.ASSIGNEMT_OPERATOR() is not None:
@@ -854,7 +854,7 @@ class myCRPPLListener(CRPPLListener) :
 
     def exitAssignment(self, ctx:CRPPLParser.AssignmentContext):
         self.output.write('\n')
-        self.output.write('#exiting assignment\n')
+        #self.output.write('#exiting assignment\n')
         self.endOfTheLineChecking()
 
     def enterChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
@@ -1007,7 +1007,7 @@ class myCRPPLListener(CRPPLListener) :
 
 
     def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
-        self.output.write('\n#end if\n')
+        #self.output.write('\n#end if\n')
         self.if_nest_ctr-=1
         self.endOfTheLineChecking()
 
