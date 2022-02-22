@@ -2,6 +2,11 @@ varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
 varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
 do import_file (varFileName,varDataSetName) as sales
 
+<<<<<<< HEAD
 get mean of Units_Sold on sales
 
 do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, sales)
+=======
+sales_mean is get mean of TotalProfit on sales
+data_count is 100
+>>>>>>> 5441f51307d29afb68940649a57e9481f9ce895c

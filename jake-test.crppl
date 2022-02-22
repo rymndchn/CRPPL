@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
     varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
     varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
@@ -5,3 +6,11 @@
 
     new_column test_col for movies
     get test_col on movies
+=======
+varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
+do import_file (varFileName,varDataSetName) as movies
+ 
+new_column test_col for movies
+get test_col for movies
+>>>>>>> 5441f51307d29afb68940649a57e9481f9ce895c

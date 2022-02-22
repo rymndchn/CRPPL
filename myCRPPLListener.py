@@ -29,6 +29,7 @@ class myCRPPLListener(CRPPLListener) :
         self.inside_assigning_query=False
         self.identifier_name=""
         self.inside_grouping=False
+        self.has_single_operating_function = False
 
         self.output.write('\n')
 
@@ -146,6 +147,10 @@ class myCRPPLListener(CRPPLListener) :
 
             # check if there OPERATING FUNCTIONS
             if len(ctx.OPERATING_FUNCTION()) == 0: # no operators
+
+                if(self.findPosition(str(ctx.IDENTIFIER()[0].getSymbol())) < self.findPosition(str(ctx.ON().getSymbol()))):
+                    self.has_single_operating_function = True
+
                 #check if there is FOR
                 if ctx.FOR() is None: # no for conditions
                     # put the columns into the list 'cols'
@@ -303,6 +308,10 @@ class myCRPPLListener(CRPPLListener) :
                 else:
                     print('Coming soon!')
             elif len(ctx.OPERATING_FUNCTION()) > 0:
+
+                if(len(ctx.OPERATING_FUNCTION()) == 1 and self.findPosition(str(ctx.OPERATING_FUNCTION()[0].getSymbol())) < self.findPosition(str(ctx.IDENTIFIER()[i].getSymbol()))):
+                    self.has_single_operating_function = True
+
                 if ctx.FOR() is None: # no for conditions
                     operfunc_count = len(ctx.OPERATING_FUNCTION())
                     sep_count = len(ctx.SEPARATOR())
@@ -1081,6 +1090,11 @@ class myCRPPLListener(CRPPLListener) :
             if(self.inside_grouping==True):
                 self.tabChecking()
                 self.output.write(self.identifier_name+'=grouped'+'.agg({' + aggregationCode + '})'+'\n')
+                
+                #checking for scalar assignments
+                if(self.has_single_operating_function):
+                    self.output.write(self.identifier_name+' = '+self.identifier_name+'.tolist()[0]\n')
+                    self.has_single_operating_function = False
                 self.inside_assigning_query=False
                 self.inside_grouping=False
                 self.identifier_name=""
