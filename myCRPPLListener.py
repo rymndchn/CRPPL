@@ -21,6 +21,7 @@ class myCRPPLListener(CRPPLListener) :
         self.elif_ctr={0:0,1:0}
         self.else_ctr={0:0,1:0}
         self.if_nest_ctr=0
+        self.num_lines_before_else={0:0,1:0}
 
         self.inside_if=False
         self.boolean_nest_ctr=0
@@ -379,9 +380,19 @@ class myCRPPLListener(CRPPLListener) :
                         command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.tabChecking()
                         self.output.write(command + '\n')
+
+                        #for pie chart
+                        command = '__________GROUPED_IS = True'
+                        self.tabChecking()
+                        self.output.write(command + '\n')
                     else:
                         self.inside_grouping=True
                         command = 'grouped = ' + tbl
+                        self.tabChecking()
+                        self.output.write(command + '\n')
+
+                        #for pie chart
+                        command = '__________GROUPED_IS = False'
                         self.tabChecking()
                         self.output.write(command + '\n')
 
@@ -496,9 +507,19 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            #for pie chart
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            #for pie chart
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -596,9 +617,19 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            #for pie chart
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            #for pie chart
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -892,6 +923,7 @@ class myCRPPLListener(CRPPLListener) :
         if ctx.CREATEFUNCTION() is not None:
 
             create_pos = self.findPosition(str(ctx.CREATEFUNCTION().getSymbol()))
+
             end_pos = self.findPosition(str(ctx.ENDFUNCTION().getSymbol()))
             
             self.output.write('def ')
@@ -953,8 +985,27 @@ class myCRPPLListener(CRPPLListener) :
                 self.if_nest_ctr+=1
                 if ctx.ELSE_IF is not None:
                     self.elif_ctr[self.if_nest_ctr]=len(ctx.ELSE_IF())
-            if ctx.ELSE() is not None:
-                self.else_ctr[self.if_nest_ctr]=1
+            # if ctx.ELSE() is not None:
+            #     self.else_ctr[self.if_nest_ctr]=1
+            #     else_pos=self.findPosition(str(ctx.ELSE().getSymbol())) 
+
+            #     if ctx.altercolumn() is not None:
+            #         #self.output.write('#fdfsfd '+str(len(ctx.altercolumn()))+'\n')
+            #         for i in ctx.altercolumn():
+            #             if ctx.children.index (i)<ctx.children.index(ctx.ELSE()):
+            #                 self.num_lines_before_else[self.if_nest_ctr]+=1
+            #     if ctx.importfile() is not None:
+            #         #self.output.write('#fdfsfd '+str(len(ctx.altercolumn()))+'\n')
+            #         for i in ctx.importfile():
+            #             if ctx.children.index (i)<ctx.children.index(ctx.ELSE()):
+            #                 self.num_lines_before_else[self.if_nest_ctr]+=1    
+            #     if ctx.assignment() is not None:
+            #         #self.output.write('#fdfsfd '+str(len(ctx.altercolumn()))+'\n')
+            #         for i in ctx.assignment():
+            #             if ctx.children.index (i)<ctx.children.index(ctx.ELSE()):
+            #                 self.num_lines_before_else[self.if_nest_ctr]+=1            
+
+
 
     def exitConditionalstatement(self, ctx:CRPPLParser.ConditionalstatementContext):
         self.output.write('\n#end if\n')
@@ -1046,7 +1097,23 @@ class myCRPPLListener(CRPPLListener) :
                 self.inside_parenthesis=[]
                 self.output.write(":\n")
                 self.inside_if=False
+    # Enter a parse tree produced by CRPPLParser#elseRule.
+    def enterElseRule(self, ctx:CRPPLParser.ElseRuleContext):
+        for i in range(0,self.if_nest_ctr-1):
+            self.output.write("\t")
+        self.output.write("# enter else rule\n")
+        for i in range(0,self.if_nest_ctr-1):
+            self.output.write("\t")
+        self.output.write("else:\n")
+        pass
 
+    # Exit a parse tree produced by CRPPLParser#elseRule.
+    def exitElseRule(self, ctx:CRPPLParser.ElseRuleContext):
+        for i in range(0,self.if_nest_ctr-1):
+            self.output.write("\t")
+        self.output.write("# exit else rule\n")
+        pass
+    
     def enterFunctioncall(self, ctx:CRPPLParser.FunctioncallContext):
         
         self.tabChecking()
@@ -1092,13 +1159,14 @@ class myCRPPLListener(CRPPLListener) :
         pass
 
     def endOfTheLineChecking(self):
-        self.output.write("# i am checking line\n")
-        if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
-            if(self.else_ctr[self.if_nest_ctr]>0):
-                for i in range(0,self.if_nest_ctr-1):
-                    self.output.write("\t")
-                self.output.write("else:\n")
-                self.else_ctr[self.if_nest_ctr]-=1
+        pass
+        # self.output.write("# i am checking line\n")
+        # if ( (self.if_nest_ctr in self.else_ctr ) and self.elif_ctr[self.if_nest_ctr]==0):
+        #     if(self.else_ctr[self.if_nest_ctr]>0):
+        #         for i in range(0,self.if_nest_ctr-1):
+        #             self.output.write("\t")
+        #         self.output.write("else:\n")
+        #         self.else_ctr[self.if_nest_ctr]-=1
 
     def tabChecking(self):
         for i in range(0,self.if_nest_ctr):
