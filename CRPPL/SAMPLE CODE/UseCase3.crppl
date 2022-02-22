@@ -2,14 +2,16 @@ varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
 varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
 do import_file (varFileName,varDataSetName) as sales
 
-sales_mean is get mean of TotalProfit on sales
+profit_mean is get mean of TotalProfit on sales
 data_count is 100
 counter is 0
 
-create_function find_upper_profits(sales_mean,data_count,counter,sales)
-	current_profit is get TotalProfit for DataId equal counter on sales
-	if(current_profit gt sales_mean) then
-		get Country for for DataId equal counter on df
+create_function find_upper_profits(profit_mean,data_count,counter,sales)
+	current_profit is get TotalProfit for DataId equal '0' on sales
+	if(current_profit gt profit_mean) then
+		get Country for DataId equal '0' on sales
 	end_if
 	counter is counter + 1
 end_function
+
+do find_upper_profits(profit_mean,data_count,counter,sales)
