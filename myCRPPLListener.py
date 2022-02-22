@@ -325,21 +325,22 @@ class myCRPPLListener(CRPPLListener) :
                             i +=1
 
                     # assemble the column part of the simple query
-                    for x in cols:
-                        tmp_col = tmp_col + '"' + x + '",'
+                        for x in cols:
+                            tmp_col = tmp_col + '"' + x + '",'
 
                     # assemtble the group by columns
-                    for y in gb_cols:
-                        tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+                        for y in gb_cols:
+                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
 
                     # assemble the aggregation per column
-                    ii = 0
-                    while ii < len(cols):
-                        if operfunc[ii] == '':
-                            ii += 1
-                        else:
-                            tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
-                            ii += 1
+                        ii = 0
+
+                        while ii < len(cols):
+                            if operfunc[ii] == '':
+                                ii += 1
+                            else:
+                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                                ii += 1
 
 
                     # select the columns to tmp_result
@@ -359,13 +360,12 @@ class myCRPPLListener(CRPPLListener) :
                         self.tabChecking()
                         self.output.write(command + '\n')
 
-                    print("tmp_agg_cols: ", tmp_agg_cols)
                     #perform the aggregations
                     if (tmp_agg_cols[0:-1]) !="":
                         command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
                     else:
                         command = 'print(grouped)'
-
+                    command = 'print(grouped)'
                     self.tabChecking()
                     self.output.write(command + '\n')
                     self.saveAggregation(tmp_agg_cols[0:-1])
