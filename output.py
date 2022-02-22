@@ -3,51 +3,56 @@ import matplotlib.pyplot as plt
 import shutil
 import pandas as pd
 
-source = r'CRPPL/CSV Files/source/1000 - Emp Leaves2.csv'
-target = r'CRPPL/CSV Files/target/emps.csv'
+varFileName = 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+# i am checking line
+varDataSetName = 'CRPPL/CSV Files/target/sales.csv'
+# i am checking line
+source = r'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+target = r'CRPPL/CSV Files/target/sales.csv'
 shutil.copyfile(source,target)
-emp = pd.read_csv('CRPPL/CSV Files/target/emps.csv')
+sales = pd.read_csv('CRPPL/CSV Files/target/sales.csv')
 
 # i am checking line
 #entering assignment
+tmp_result = sales[["TotalProfit"]]
+grouped = sales
+tmp_result = grouped.agg({"TotalProfit":"mean"})
+print(tmp_result)
+profit_mean=grouped.agg({"TotalProfit":"mean"})
+profit_mean = profit_mean.tolist()[0]
+# i am checking line
 
 #exiting assignment
 # i am checking line
-emp["emp_count"] = "null"
-emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
-# i am checking line
-emp.loc[emp.emp_count=='null',"emp_count"]=1
-emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
-# i am checking line
-if ( all == True ) :
 #entering assignment
-	tmp_result = emp[["Company_Name","emp_count"]]
-	grouped = tmp_result.groupby(["Company_Name"])
-	tmp_result = grouped.agg({"emp_count":"sum"})
+data_count = 100
+#exiting assignment
+# i am checking line
+#entering assignment
+counter = 0
+#exiting assignment
+# i am checking line
+def find_upper_profits(profit_mean, data_count, counter, sales):
+#entering assignment
+	tmp_result = sales[sales["DataId"]==0]
+	tmp_result = tmp_result[["TotalProfit"]]
 	print(tmp_result)
-	leaveCtr=grouped.agg({"emp_count":"sum"})
-# i am checking line
-else:
-
-#exiting assignment
-# i am checking line
-#entering assignment
-	tmp_result = emp[emp["Leave"]!=0]
-	grouped = tmp_result.groupby(["Company_Name"])
-	tmp_result = grouped.agg({"emp_count":"sum"})
-	print(tmp_result)
-	leaveCtr=grouped.agg({"emp_count":"sum"})
+	current_profit = tmp_result.values.tolist()[0][0]
 # i am checking line
 
 #exiting assignment
+# i am checking line
+	if ( current_profit > profit_mean ) :
+		tmp_result = sales[sales["DataId"]==0]
+		tmp_result = tmp_result[["Country"]]
+		print(tmp_result)
 # i am checking line
 
 #end if
 # i am checking line
-#inside grouping isFalse
-#insissdfdfdsFalse
-print(leaveCtr.plot.bar())
-plt.xlabel('Company_Name')
-plt.ylabel('sum')
-plt.savefig('Report/bar.pdf',bbox_inches='tight')
+#entering assignment
+	counter = counter+1
+#exiting assignment
 # i am checking line
+
+find_upper_profits(profit_mean, data_count, counter, sales)

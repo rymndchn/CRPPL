@@ -176,6 +176,7 @@ class myCRPPLListener(CRPPLListener) :
                         self.tabChecking()
                         command = 'print(tmp_result)'
                         self.output.write(command + '\n')
+
                     else: 
                         print('Error!')
                 elif ctx.FOR() is not None: #has for conditions
@@ -307,6 +308,14 @@ class myCRPPLListener(CRPPLListener) :
 
                 else:
                     print('Coming soon!')
+
+                print('pasok',self.inside_assigning_query)
+                #checking for scalar assignments
+                if(self.inside_assigning_query):
+                    self.tabChecking()
+                    self.output.write(self.identifier_name+ ' = tmp_result.values.tolist()[0][0]\n')
+                    self.inside_assigning_query = False
+
             elif len(ctx.OPERATING_FUNCTION()) > 0:
 
                 if(len(ctx.OPERATING_FUNCTION()) == 1 and self.findPosition(str(ctx.OPERATING_FUNCTION()[0].getSymbol())) < self.findPosition(str(ctx.IDENTIFIER()[i].getSymbol()))):
