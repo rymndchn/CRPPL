@@ -4,3 +4,12 @@ do import_file (varFileName,varDataSetName) as sales
 
 sales_mean is get mean of TotalProfit on sales
 data_count is 100
+counter is 0
+
+create_function find_upper_profits(sales_mean,data_count,counter,sales)
+	current_profit is get TotalProfit for DataId equal counter on sales
+	if(counter gt sales_mean) then
+		get Country for for DataId equal counter on df
+	end_if
+	counter is counter + 1
+end_function
