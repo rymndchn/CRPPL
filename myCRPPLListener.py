@@ -310,7 +310,6 @@ class myCRPPLListener(CRPPLListener) :
                 else:
                     print('Coming soon!')
 
-                print('pasok',self.inside_assigning_query)
                 #checking for scalar assignments
                 if(self.inside_assigning_query):
                     self.tabChecking()
@@ -1045,6 +1044,11 @@ class myCRPPLListener(CRPPLListener) :
                     operator_text="False"
                     operator_pos = self.findPosition(str(i.getSymbol()))
                     self.inside_parenthesis.append([operator_text,operator_pos]) 
+            if ctx.NUM_EXPR() is not None:
+                  for i in ctx.NUM_EXPR():
+                    num_exp=str(i.getText())
+                    num_exp_pos = self.findPosition(str(i.getSymbol()))
+                    self.inside_parenthesis.append([num_exp,num_exp_pos])
             if ctx.BOOLEAN_CONNECTOR() is not None:
                 for i in ctx.BOOLEAN_CONNECTOR():
                     operator_text="and"
