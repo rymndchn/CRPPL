@@ -486,10 +486,13 @@ class myCRPPLListener(CRPPLListener) :
 
                         #perform the aggregations
                         if (tmp_agg_cols[0:-1]) !="":
-                            command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                            command = 'tmp_result = grouped.agg({' + tmp_agg_cols[0:-1] + '})'
                         else:
-                            command = 'print(grouped)'
+                            command = 'tmp_result = grouped'
                         self.tabChecking()
+                        self.output.write(command + '\n')
+                        self.tabChecking()
+                        command = 'print(tmp_result)'
                         self.output.write(command + '\n')
                         self.saveAggregation(tmp_agg_cols[0:-1])
 
@@ -583,10 +586,13 @@ class myCRPPLListener(CRPPLListener) :
 
                         #perform the aggregations
                         if (tmp_agg_cols[0:-1]) !="":
-                            command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                            command = 'tmp_result = grouped.agg({' + tmp_agg_cols[0:-1] + '})'
                         else:
-                            command = 'print(grouped)'
+                            command = 'tmp_result = grouped'
                         self.tabChecking()
+                        self.output.write(command + '\n')
+                        self.tabChecking()
+                        command = 'print(tmp_result)'
                         self.output.write(command + '\n')
                         self.saveAggregation(tmp_agg_cols[0:-1])
 
