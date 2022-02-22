@@ -620,7 +620,7 @@ class myCRPPLListener(CRPPLListener) :
                             self.output.write(command + '\n')
 
                             #for pie chart
-                            command = '__________GROUPED_IS = True'
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
