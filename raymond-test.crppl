@@ -1,7 +1,7 @@
-varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
-varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
-do import_file (varFileName,varDataSetName) as movies
+varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
+do import_file (varFileName,varDataSetName) as sales
 
-notXResult is get rating, sum of budget, sum of gross for rating not_equal 'X' on movies group_by rating
+get mean of UnitsSold on sales
 
-do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, notXResult)
+do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, sales)
