@@ -2,12 +2,15 @@ do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves2.csv','CRPPL/CSV Files
 
 all is True
 
-new_column emp_count for emp
-change_value of emp_count to '1' for emp_count equal 'null' on emp
+
 
 if (all equal true) then
+    new_column emp_count for emp
+    change_value of emp_count to '1' for emp_count equal 'null' on emp
     leaveCtr is get Company_Name, sum of emp_count on emp group_by Company_Name
 else
+    new_column emp_count for emp
+    change_value of emp_count to '1' for emp_count equal 'null' on emp
     leaveCtr is get Company_Name, sum of emp_count for Leave not_equal '0' on emp group_by Company_Name
 end_if
 
