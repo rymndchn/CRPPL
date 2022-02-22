@@ -9,4 +9,16 @@ do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, sales)
 =======
 sales_mean is get mean of TotalProfit on sales
 data_count is 100
+<<<<<<< HEAD
 >>>>>>> 5441f51307d29afb68940649a57e9481f9ce895c
+=======
+counter is 0
+
+create_function find_upper_profits(sales_mean,data_count,counter,sales)
+	current_profit is get TotalProfit for DataId equal counter on sales
+	if(current_profit gt sales_mean) then
+		get Country for for DataId equal counter on df
+	end_if
+	counter is counter + 1
+end_function
+>>>>>>> c1ab92ed0f529fa65ed72b9e9a7518e8c1053cbe
