@@ -2,8 +2,16 @@ varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
 varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
 do import_file (varFileName,varDataSetName) as sales
 
+
+get mean of Units_Sold on sales
+
+do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, sales)
+=======
 sales_mean is get mean of TotalProfit on sales
 data_count is 100
+
+
+=======
 counter is 0
 
 create_function find_upper_profits(sales_mean,data_count,counter,sales)
@@ -13,3 +21,4 @@ create_function find_upper_profits(sales_mean,data_count,counter,sales)
 	end_if
 	counter is counter + 1
 end_function
+
