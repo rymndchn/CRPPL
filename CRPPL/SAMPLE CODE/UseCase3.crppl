@@ -8,7 +8,7 @@ counter is 0
 
 create_function find_upper_profits(sales_mean,data_count,counter,sales)
 	current_profit is get TotalProfit for DataId equal counter on sales
-	if(counter gt sales_mean) then
+	if(current_profit gt sales_mean) then
 		get Country for for DataId equal counter on df
 	end_if
 	counter is counter + 1
