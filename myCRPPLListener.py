@@ -630,10 +630,14 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
             #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = f"print({dataframe}.plot.bar())"
+            ytick_command = f"plt.ticklabel_format(axis='y', style='plain')"
             xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
             ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
             self.tabChecking()
             self.output.write(graph_command)
+            self.output.write('\n')
+            self.tabChecking()
+            self.output.write(ytick_command)
             self.output.write('\n')
             self.tabChecking()
             self.output.write(xlabel_command)
@@ -750,7 +754,7 @@ class myCRPPLListener(CRPPLListener) :
             tblname = ctx.IDENTIFIER()[1].getText()
 
             #declare command
-            command = tblname + '["' + colname + '"] = np.nan'
+            command = tblname + '["' + colname + '"] = "null"'
             self.tabChecking()
             self.output.write(command + '\n')
 
@@ -760,18 +764,23 @@ class myCRPPLListener(CRPPLListener) :
             self.tabChecking()
             self.output.write(command + '\n')
 
+            
+
+
+
         elif ctx.DELETECOLUMN() is not None:
             colname = ctx.IDENTIFIER()[0].getText()
             tblname = ctx.IDENTIFIER()[1].getText()
 
             #declare command
-            #command = 'del ' + tblname + '["' + colname + '"]'
-            #self.output.write(command + '\n')
-
-            #update CSV with deleted column
-            command = tblname + '.drop(\''+ colname + '\',axis=1, inplace=True)'  #command = tblname + '.pop(\''+ colname + '\')'
+            command = 'del ' + tblname + '["' + colname + '"]'
             self.tabChecking()
             self.output.write(command + '\n')
+
+            #update CSV with deleted column
+            #command = tblname + '.drop(\''+ colname + '\',axis=1, inplace=True)'  #command = tblname + '.pop(\''+ colname + '\')'
+            #self.tabChecking()
+            #self.output.write(command + '\n')
 
             staticDir = 'CRPPL/CSV Files/target/'
             command = tblname + '.to_csv(\''+ staticDir + tblname + '.csv\', index=False)'
@@ -848,7 +857,19 @@ class myCRPPLListener(CRPPLListener) :
         collective.sort()
 
         #generate command
-        command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1]
+        if collective[1][1][1:-1].isdigit():
+            command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1][1:-1]
+            self.tabChecking()
+            self.output.write(command + '\n')
+        else:
+            command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1]
+            self.tabChecking()
+            self.output.write(command + '\n')
+
+        staticDir = 'CRPPL/CSV Files/target/'
+
+        command = collective[4][1] + '.to_csv(\''+ staticDir + collective[4][1] + '.csv\', index=False)'
+        self.tabChecking()
         self.output.write(command + '\n')
 
     def exitChangevalue(self, ctx:CRPPLParser.ChangevalueContext):
