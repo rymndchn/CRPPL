@@ -10,6 +10,8 @@ validexpr: generalquery
          | importfile
          | defineconstant
          | altercolumn
+         | assignment
+         | expr
          | changevalue
          | graphquery
          | createfunction
@@ -19,34 +21,42 @@ validexpr: generalquery
 
 //ARITHMETIC EXPRESSION.
 expr:   '(' expr ')'
-         | left=expr op=('*'|'/') right=expr
-         | left=expr op=('+'|'-') right=expr
+         | left=expr op=(MULT | DIV) right=expr
+         | left=expr op=(ADD | SUB) right=expr
          | value=NUM_EXPR
+         | IDENTIFIER
          ;
 
 //PARSER RULES.
 generalquery: GET (OPERATING_FUNCTION OF)? IDENTIFIER (SEPARATOR (OPERATING_FUNCTION OF)? IDENTIFIER)* (FOR IDENTIFIER OPERATOR LITERAL (SEPARATOR IDENTIFIER OPERATOR LITERAL)*)? ON IDENTIFIER (GROUPBY IDENTIFIER (SEPARATOR IDENTIFIER)*)?;
-importfile: RESERVEDWORD_DO IMPORTFILE OPENPARENTHESIS (LITERAL|IDENTIFIER) SEPARATOR (LITERAL|IDENTIFIER) CLOSEPARENTHESIS;
+importfile: RESERVEDWORD_DO IMPORTFILE OPENPARENTHESIS (LITERAL|IDENTIFIER) SEPARATOR (LITERAL|IDENTIFIER) CLOSEPARENTHESIS AS IDENTIFIER;
 defineconstant: IDENTIFIER RESERVEDWORD_CONSTANT LITERAL;
 altercolumn: (NEWCOLUMN|DELETECOLUMN) IDENTIFIER FOR IDENTIFIER;
 
-assignment: IDENTIFIER ASSIGNEMT_OPERATOR expr;
+assignment: IDENTIFIER ASSIGNEMT_OPERATOR (expr|generalquery);
 changevalue: CHANGEVALUE OF IDENTIFIER TO (LITERAL|IDENTIFIER) FOR (LITERAL|IDENTIFIER) OPERATOR (LITERAL|IDENTIFIER) ON IDENTIFIER;
 
-graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO SEPARATOR (LITERAL|IDENTIFIER);
+graphquery: RESERVEDWORD_DO GRAPH OPENPARENTHESIS (TYPE)? SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELONE SEPARATOR LITERAL ASSIGNEMT_OPERATOR LABELTWO SEPARATOR IDENTIFIER CLOSEPARENTHESIS;
 
-createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | changevalue | defineconstant | functioncall | graphquery | conditionalstatement)*?) (RETURN | (RETURN IDENTIFIER))? ENDFUNCTION;
+createfunction: CREATEFUNCTION IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR IDENTIFIER)*)? CLOSEPARENTHESIS ((generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*?) (RETURN | (RETURN IDENTIFIER))? ENDFUNCTION;
 
 functioncall : RESERVEDWORD_DO functionprototype;
 
-functionprototype : IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR (LITERAL|IDENTIFIER))*)? CLOSEPARENTHESIS;
+functionprototype : IDENTIFIER OPENPARENTHESIS (IDENTIFIER (SEPARATOR (LITERAL | IDENTIFIER))*)? CLOSEPARENTHESIS;
 
-conditionalstatement: IF (booleanstatement) THEN (validexpr)(validexpr)* (ELSE_IF (booleanstatement) THEN (validexpr)(validexpr)*)* (ELSE (validexpr)(validexpr)*)? END_IF;
+conditionalstatement: IF (booleanstatement) THEN 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)* 
+(ELSE_IF (booleanstatement) THEN 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
+)* 
+(ELSE 
+(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)(generalquery | importfile | altercolumn | changevalue | expr | assignment | defineconstant | functioncall | graphquery | conditionalstatement)*
+)? END_IF;
 
 booleanstatement: (
-  OPENPARENTHESIS (IDENTIFIER|TRUE|FALSE) CLOSEPARENTHESIS | 
+  OPENPARENTHESIS (NEGATOR)*(IDENTIFIER|TRUE|FALSE) CLOSEPARENTHESIS | 
   
-  OPENPARENTHESIS (LITERAL|IDENTIFIER|TRUE|FALSE| booleanstatement) (OPERATOR (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement))* CLOSEPARENTHESIS
+  OPENPARENTHESIS (NEGATOR)*(LITERAL|IDENTIFIER|TRUE|FALSE| booleanstatement) ((OPERATOR|BOOLEAN_CONNECTOR (NEGATOR)*) (LITERAL|IDENTIFIER|TRUE|FALSE|booleanstatement))* CLOSEPARENTHESIS 
 );
 
 //LEXER RULES.
@@ -83,7 +93,13 @@ fragment NUMBERS: [0-9];
 fragment UNDERSCORE: '_';
 fragment ALPHANUMERIC: [a-zA-Z0-9]*;
 
+
+
 //Arithmetic operation queries.
+ADD: '+';
+SUB: '-';
+MULT: '*';
+DIV: '/';
 NUM_EXPR : [0-9]+ ('.' [0-9]+)?;
 NUM : [0-9];
 
@@ -118,6 +134,7 @@ TO: T O;
 IMPORTFILE: I M P O R T UNDERSCORE F I L E;
 ASSIGNEMT_OPERATOR: I S;
 RESERVEDWORD_DO: D O;
+AS: A S;
 
 //DEFINING CONSTANT RESERVED WORDS LEXEMES
 RESERVEDWORD_CONSTANT: C O N S T A N T;
@@ -150,8 +167,14 @@ fragment GREATERTHANEQUAL: G T E;
 fragment LESSTHAN: L T;
 fragment LESSTHANEQUAL: L T E;
 fragment NOTEQUAL: N O T UNDERSCORE E Q U A L;
+
+//BOOLEAN CONNECTOR LEXEMES
 fragment AND: A N D;
 fragment OR: O R;
+fragment XOR: X O R;
+
+//NEGATOR LEXEMES
+fragment NOT: N O T;
 
 //SEPARATOR LEXEMES
 fragment COMMA: ',';
@@ -160,8 +183,12 @@ CLOSEPARENTHESIS: ')';
 
 RESERVEDWORD: ( TRUE | FALSE);
 
+
+OPERATOR: ( EQUALS | GREATERTHAN | GREATERTHANEQUAL | LESSTHAN | LESSTHANEQUAL | NOTEQUAL );
+BOOLEAN_CONNECTOR: ( AND | OR | XOR);
+NEGATOR: NOT;
 OPERATING_FUNCTION: (SUM | MEAN | MIN | MAX);
-OPERATOR: ( EQUALS | GREATERTHAN | GREATERTHANEQUAL | LESSTHAN | LESSTHANEQUAL | NOTEQUAL | AND | OR);
+
 
 SEPARATOR: (COMMA);
 

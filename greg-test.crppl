@@ -3,21 +3,32 @@ new_column additional_col2 for df
 delete_column additional_col2 for df
 change_value of additional_col1 to 'Thomas' for Name equal 'Tom' on df
 
-create_function do_graph_in()
-	get sum of revenue for year = '2021', month = '11' on df
+create_function do_graph_in(df)
+	get Name, Age for Age lt '20' on df
+	num is 3 + 1
+	get Name, Age for Age lt '15' on df
+
+	
 end_function
 
 create_function do_graph_inside(revenue)
 	graph_name constant 'x'
-	get sum of revenue for year = '2021', month = '11' on df
+	get Name, Age for Age lt '20' on df
 	return graph_name
 end_function
 
-num constant '0'
-create_function add_num(num)
-	do add_num(num)
-	if (num lt '25') then
-		do add_num(num)
-	end_if 
-	return num
+counter is 0
+count_max is 3
+create_function add_num(counter,count_max,df)
+	get Name, Age for Age lt '15' on df
+	if(counter lt count_max) then
+		get Name, Age for Age lt '20' on df
+	else
+		counter is counter + 1
+		do add_num(counter,count_max,df)
+	end_if
 end_function
+
+do add_num(counter,count_max,df)
+
+do do_graph_in(df)

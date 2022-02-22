@@ -1,3 +1,6 @@
-do graph(pie, 'expenses',  'amount','testDataSetName')
-do graph(bar, 'year', 'gross','testDataSetName')
-do graph(line, 'month', 'sold','testDataSetName')
+if ('25' and true) then
+do graph(line,'Name' is X_AXIS, 'Age' is Y_AXIS, df)
+else
+do graph(bar, 'Name' is X_AXIS, 'Age' is Y_AXIS, df)
+do graph(pie, 'Name' is LABEL, 'Age' is VALUE, df)
+end_if

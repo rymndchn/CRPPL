@@ -1,5 +1,33 @@
-if ((date equal '25') and date equal ('25' and date)) then
+if (not(true equal '25') and not true equal ('25' and true)) then
 
-	get sum of 'revenue' for 'year' = '2021', 'month' = '11'
+	new_column additional_col1 for df
+	new_column additional_col1 for df
+	
+ELSE_IF ((true equal '25') and true equal ('25' and true)) then 
 
+	if ((true equal '25') and true equal ('25' and true)) then
+
+		new_column additional_col1 for df
+	ELSE_IF (not(true equal '25') and true equal ('25' and true)) then 
+		new_column additional_col1 for df
+	ELSE_IF ((true equal '25') and true equal ('25' and true)) then 
+		if (not (not (true equal '25')) and true equal ('25' and true)) then
+
+			new_column additional_col1 for df
+		end_if
+	else 
+
+		new_column additional_col1 for df
+	end_if
+
+else 
+
+	new_column additional_col1 for df
+	if ((true equal '25') and true equal ('25' and true)) then
+
+		new_column additional_col1 for df
+	else 
+		new_column additional_col1 for df
+	end_if
 end_if 
+
