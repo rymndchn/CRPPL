@@ -1008,7 +1008,13 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write("\t")
     def saveAggregation(self,aggregationCode):
         if (self.inside_assigning_query==True):
-            if(self.inside_grouping==True and (aggregationCode =="")):
+            if(self.inside_grouping==True):
+                self.tabChecking()
+                self.output.write(self.identifier_name+'=grouped'+'.agg({' + aggregationCode + '})'+'\n')
+                self.inside_assigning_query=False
+                self.inside_grouping=False
+                self.identifier_name=""
+            else:
                 self.tabChecking()
                 self.output.write(self.identifier_name+'=tmp_result\n')
                 self.inside_assigning_query=False

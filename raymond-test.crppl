@@ -1,2 +1,7 @@
-do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
-get Description, Leave for Description equal 'mark', Leave equal '0' on emp
+varFileName constant 'CRPPL/CSV Files/source/1000 - Movie Reviews.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/movies.csv'
+do import_file (varFileName,varDataSetName) as movies
+
+notXResult is get rating, sum of budget, sum of gross for rating not_equal 'X' on movies group_by rating
+
+do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, notXResult)

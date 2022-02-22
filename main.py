@@ -7,6 +7,8 @@ from myCRPPLListener import myCRPPLListener
 
 import pandas as pd
 
+pd.set_option('display.float_format', lambda x: '%.3f' % x)
+
 def main (argv):
 
     report_folder_path = os.getcwd() + "\\Report"
