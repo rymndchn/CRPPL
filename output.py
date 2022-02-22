@@ -13,10 +13,10 @@ shutil.copyfile(source,target)
 sales = pd.read_csv('CRPPL/CSV Files/target/sales.csv')
 
 # i am checking line
-tmp_result = sales[[]]
+tmp_result = sales[["UnitsSold"]]
 grouped = sales
-__________GROUPED_IS = False
-print(grouped)
+tmp_result = grouped.agg({"UnitsSold":"mean"})
+print(tmp_result)
 # i am checking line
 #inside grouping isTrue
 #insissdfdfdsTrue
