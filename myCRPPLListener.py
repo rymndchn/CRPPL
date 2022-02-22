@@ -354,9 +354,17 @@ class myCRPPLListener(CRPPLListener) :
                         command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                         self.tabChecking()
                         self.output.write(command + '\n')
+
+                        command = '__________GROUPED_IS = True'
+                        self.tabChecking()
+                        self.output.write(command + '\n')
                     else:
                         self.inside_grouping=True
                         command = 'grouped = ' + tbl
+                        self.tabChecking()
+                        self.output.write(command + '\n')
+
+                        command = '__________GROUPED_IS = False'
                         self.tabChecking()
                         self.output.write(command + '\n')
 
@@ -468,9 +476,17 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby([' + tmp_gb_cols[0:-1] + '])'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -565,9 +581,17 @@ class myCRPPLListener(CRPPLListener) :
                             command = 'grouped = tmp_result.groupby(' + tmp_gb_cols[0:-1] + ')'
                             self.tabChecking()
                             self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = True'
+                            self.tabChecking()
+                            self.output.write(command + '\n')
                         else:
                             self.inside_grouping=True
                             command = 'grouped = ' + tbl
+                            self.tabChecking()
+                            self.output.write(command + '\n')
+
+                            command = '__________GROUPED_IS = False'
                             self.tabChecking()
                             self.output.write(command + '\n')
 
@@ -602,6 +626,7 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write(fig_command)
         elif graph_type == 'bar':
             self.output.write('#inside grouping is'+str(self.inside_grouping)+'\n')
+            self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
             #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
             graph_command = f"print({dataframe}.plot.bar())"
             xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
@@ -620,13 +645,70 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write(fig_command)
         if graph_type == 'pie':
             # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
-            graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+            #graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+
+            self.tabChecking()
+            self.output.write("if (__________GROUPED_IS == True):")
+            self.output.write('\n')
+            self.if_nest_ctr+=1
+
+            percent_command=f"percents = {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy() * 100 / {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy().sum()"
+            graph_command = f"print({dataframe}.plot.pie(y={ctx.LITERAL()[1].getText()}, labeldistance=None))"
+            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+
+            self.tabChecking()
+            self.output.write(percent_command)
+            self.output.write('\n')
+
             self.tabChecking()
             self.output.write(graph_command)
             self.output.write('\n')
+
             self.tabChecking()
-            fig_command = "plt.savefig('Report/pie.png')"
+            self.output.write(legend_command)
+            self.output.write('\n')
+
+            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+            self.tabChecking()
             self.output.write(fig_command)
+            self.output.write('\n')
+
+            self.if_nest_ctr-=1
+            self.tabChecking()
+            self.output.write("else:")
+            self.output.write('\n')
+            self.if_nest_ctr+=1
+
+            percent_command=f"percents = {dataframe}.to_numpy() * 100 / {dataframe}.to_numpy().sum()"
+            graph_command = f"print({dataframe}.plot.pie( labeldistance=None))"
+            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+            y_label_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
+
+            self.tabChecking()
+            self.output.write(percent_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(graph_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(legend_command)
+            self.output.write('\n')
+
+            self.tabChecking()
+            self.output.write(y_label_command)
+            self.output.write('\n')
+
+            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+            self.tabChecking()
+            self.output.write(fig_command)
+            self.output.write('\n')
+
+            self.if_nest_ctr-=1
+            self.tabChecking()
+            self.output.write("#end of secret if")
+            self.output.write('\n')
         pass
 
     def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
