@@ -3,25 +3,57 @@ import matplotlib.pyplot as plt
 import shutil
 import pandas as pd
 
-varFileName = 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
-# i am checking line
-varDataSetName = 'CRPPL/CSV Files/target/sales.csv'
-# i am checking line
-source = r'CRPPL/CSV Files/source/1000 - Sales Records.csv'
-target = r'CRPPL/CSV Files/target/sales.csv'
+source = r'CRPPL/CSV Files/source/1000 - Emp Leaves2.csv'
+target = r'CRPPL/CSV Files/target/emps.csv'
 shutil.copyfile(source,target)
-sales = pd.read_csv('CRPPL/CSV Files/target/sales.csv')
+emp = pd.read_csv('CRPPL/CSV Files/target/emps.csv')
 
 # i am checking line
-tmp_result = sales[["UnitsSold"]]
-grouped = sales
-tmp_result = grouped.agg({"UnitsSold":"mean"})
-print(tmp_result)
+#entering assignment
+
+#exiting assignment
 # i am checking line
-#inside grouping isTrue
-#insissdfdfdsTrue
-print(sales.plot.bar())
-plt.xlabel('rating')
-plt.ylabel('gross')
+if ( all = 'True' ) :
+	emp["emp_count"] = "null"
+	emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
+# i am checking line
+else:
+	emp.loc[emp.emp_count==None,"emp_count"]='1'
+	emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
+# i am checking line
+#entering assignment
+	tmp_result = emp[["Company_Name","emp_count"]]
+	grouped = tmp_result.groupby(["Company_Name"])
+	tmp_result = grouped.agg({"emp_count":"sum"})
+	print(tmp_result)
+	leaveCtr=grouped.agg({"emp_count":"sum"})
+# i am checking line
+
+#exiting assignment
+# i am checking line
+	emp["emp_count"] = "null"
+	emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
+# i am checking line
+	emp.loc[emp.emp_count==None,"emp_count"]='1'
+	emp.to_csv('CRPPL/CSV Files/target/emp.csv', index=False)
+# i am checking line
+#entering assignment
+	tmp_result = emp[emp["Leave"]!=0]
+	grouped = tmp_result.groupby(["Company_Name"])
+	tmp_result = grouped.agg({"emp_count":"sum"})
+	print(tmp_result)
+	leaveCtr=grouped.agg({"emp_count":"sum"})
+# i am checking line
+
+#exiting assignment
+# i am checking line
+
+#end if
+# i am checking line
+#inside grouping isFalse
+#insissdfdfdsFalse
+print(leaveCtr.plot.bar())
+plt.xlabel('Company_Name')
+plt.ylabel('sum')
 plt.savefig('Report/bar.pdf',bbox_inches='tight')
 # i am checking line
