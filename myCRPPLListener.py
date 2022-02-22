@@ -853,9 +853,14 @@ class myCRPPLListener(CRPPLListener) :
         collective.sort()
 
         #generate command
-        command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1]
-        self.tabChecking()
-        self.output.write(command + '\n')
+        if collective[1][1][1:-1].isdigit():
+            command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1][1:-1]
+            self.tabChecking()
+            self.output.write(command + '\n')
+        else:
+            command = collective[4][1] + '.loc[' + collective[4][1] + '.' + collective[2][1] + '==' + collective[3][1] + ',"' + collective[0][1] + '"]=' + collective[1][1]
+            self.tabChecking()
+            self.output.write(command + '\n')
 
         staticDir = 'CRPPL/CSV Files/target/'
 
