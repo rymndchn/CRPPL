@@ -3,14 +3,25 @@ import matplotlib.pyplot as plt
 import shutil
 import pandas as pd
 
-source = r'CRPPL/CSV Files/source/1000 - Emp Leaves.csv'
-target = r'CRPPL/CSV Files/target/emps.csv'
+varFileName = 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+# i am checking line
+varDataSetName = 'CRPPL/CSV Files/target/sales.csv'
+# i am checking line
+source = r'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+target = r'CRPPL/CSV Files/target/sales.csv'
 shutil.copyfile(source,target)
-emp = pd.read_csv('CRPPL/CSV Files/target/emps.csv')
+sales = pd.read_csv('CRPPL/CSV Files/target/sales.csv')
 
 # i am checking line
-tmp_result = emp[(emp["Description"]=='mark')&(emp["Leave"]==0)]
-
-tmp_result = tmp_result[["Description","Leave"]]
-print(tmp_result)
+tmp_result = sales[[]]
+grouped = sales
+__________GROUPED_IS = False
+print(grouped)
+# i am checking line
+#inside grouping isTrue
+#insissdfdfdsTrue
+print(sales.plot.bar())
+plt.xlabel('rating')
+plt.ylabel('gross')
+plt.savefig('Report/bar.pdf',bbox_inches='tight')
 # i am checking line

@@ -1,2 +1,7 @@
-do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
-get Description, Leave for Description equal 'mark', Leave equal '0' on emp
+varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
+do import_file (varFileName,varDataSetName) as sales
+
+get mean of UnitsSold on sales
+
+do graph(bar, 'rating' is X_AXIS, 'gross' is Y_AXIS, sales)
