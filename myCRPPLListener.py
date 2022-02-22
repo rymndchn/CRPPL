@@ -164,8 +164,12 @@ class myCRPPLListener(CRPPLListener) :
                             tmp_col = tmp_col + '"' + x + '",'
 
                         # assemble the command to do simple query
+
                         self.tabChecking()
-                        command = 'print(' + tbl + '[[' + tmp_col[0:-1] + ']])'
+                        command = 'tmp_result =' + tbl + '[[' + tmp_col[0:-1] + ']]'
+                        self.output.write(command + '\n')
+                        self.tabChecking()
+                        command = 'print(tmp_result)'
                         self.output.write(command + '\n')
                     else: 
                         print('Error!')
@@ -224,12 +228,13 @@ class myCRPPLListener(CRPPLListener) :
 
                         #command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' + '\nprint(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
                         command = 'tmp_result = ' + tbl + '[' + tbl + '["' + tmp_cond1 + '"]' + tmp_cond2 + ']' 
-                        command2 ='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
+                        command1 = 'tmp_result = tmp_result' + '[[' + tmp_col[0:-1] + ']]'
+                        command2 ='print(tmp_result)'
                         self.tabChecking()
                         self.output.write(command + '\n')
-
                         self.tabChecking()
-
+                        self.output.write(command1 + '\n')
+                        self.tabChecking()
                         self.output.write(command2 + '\n')
 
                     if cond_count > 1: # more than 1 condition
@@ -288,8 +293,10 @@ class myCRPPLListener(CRPPLListener) :
                         command = 'tmp_result = ' + tbl + '[' + filter_statement + ']' + '\n'
                         self.tabChecking()
                         self.output.write(command + '\n')
-                        command2='print(tmp_result' + '[[' + tmp_col[0:-1] + ']])'
-                        
+                        command1 = 'tmp_result = tmp_result[[' + tmp_col[0:-1] + ']]'
+                        self.tabChecking()
+                        self.output.write(command1+ '\n')
+                        command2='print(tmp_result)'
                         self.tabChecking()
                         self.output.write(command2 + '\n')
 
@@ -325,22 +332,22 @@ class myCRPPLListener(CRPPLListener) :
                             i +=1
 
                     # assemble the column part of the simple query
-                        for x in cols:
-                            tmp_col = tmp_col + '"' + x + '",'
+                    for x in cols:
+                        tmp_col = tmp_col + '"' + x + '",'
 
                     # assemtble the group by columns
-                        for y in gb_cols:
-                            tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
+                    for y in gb_cols:
+                        tmp_gb_cols = tmp_gb_cols + '"' + y + '",'
 
                     # assemble the aggregation per column
-                        ii = 0
+                    ii = 0
 
-                        while ii < len(cols):
-                            if operfunc[ii] == '':
-                                ii += 1
-                            else:
-                                tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
-                                ii += 1
+                    while ii < len(cols):
+                        if operfunc[ii] == '':
+                            ii += 1
+                        else:
+                            tmp_agg_cols = tmp_agg_cols + '"' + cols[ii] + '":"' + operfunc[ii] + '",'
+                            ii += 1
 
 
                     # select the columns to tmp_result
@@ -362,12 +369,15 @@ class myCRPPLListener(CRPPLListener) :
 
                     #perform the aggregations
                     if (tmp_agg_cols[0:-1]) !="":
-                        command = 'print(grouped.agg({' + tmp_agg_cols[0:-1] + '}))'
+                        command = 'tmp_result = grouped.agg({' + tmp_agg_cols[0:-1] + '})'
                     else:
-                        command = 'print(grouped)'
-                    command = 'print(grouped)'
+                        command = 'tmp_result = grouped'
+
                     self.tabChecking()
                     self.output.write(command + '\n')
+                    command = 'print(tmp_result)'
+                    self.tabChecking()
+                    self.output.write(command+ '\n')
                     self.saveAggregation(tmp_agg_cols[0:-1])
 
                     # select the columns
@@ -992,13 +1002,7 @@ class myCRPPLListener(CRPPLListener) :
             self.output.write("\t")
     def saveAggregation(self,aggregationCode):
         if (self.inside_assigning_query==True):
-            if(self.inside_grouping==True and (aggregationCode !="")):
-                self.tabChecking()
-                self.output.write(self.identifier_name+'=grouped'+'.agg({' + aggregationCode + '})'+'\n')
-                self.inside_assigning_query=False
-                self.inside_grouping=False
-                self.identifier_name=""
-            else:
+            if(self.inside_grouping==True and (aggregationCode =="")):
                 self.tabChecking()
                 self.output.write(self.identifier_name+'=tmp_result\n')
                 self.inside_assigning_query=False

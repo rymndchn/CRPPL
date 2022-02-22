@@ -1,16 +1,2 @@
-
-if (true equal '25') then
-
-	get Name, min of Age for Name equal 'Tom', Age lt '30' on df group_by Name
-ELSE_IF (not(true equal '25') and true equal ('25' and true)) then 
-		get Name, min of Age for Name equal 'Tom', Age lt '30' on df group_by Name
-ELSE_IF (true equal '25') then 
-		if (not (not (true equal '25')) and true equal ('25' and true)) then
-
-			get Name, min of Age for Name equal 'Tom', Age lt '30' on df group_by Name
-		end_if
-else 
-
-		get Name, min of Age for Name equal 'Tom', Age lt '30' on df group_by Name
-end_if
-get Name, min of Age for Name equal 'Tom', Age lt '30' on df group_by Name
+do import_file ('CRPPL/CSV Files/source/1000 - Emp Leaves.csv','CRPPL/CSV Files/target/emps.csv') as emp
+get Description, Leave for Description equal 'mark', Leave equal '0' on emp
