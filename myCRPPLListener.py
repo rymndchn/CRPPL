@@ -894,6 +894,16 @@ class myCRPPLListener(CRPPLListener) :
                 elif (ctx.generalquery()!=None):
                     self.inside_assigning_query=True
                     self.identifier_name=ctx.IDENTIFIER().getText()
+                elif (ctx.TRUE()!=None):
+                    self.tabChecking()
+                    self.output.write(ctx.IDENTIFIER().getText())
+                    self.output.write(' = ')
+                    self.output.write(ctx.TRUE().getText())
+                elif (ctx.FALSE()!=None):
+                    self.tabChecking()
+                    self.output.write(ctx.IDENTIFIER().getText())
+                    self.output.write(' = ')
+                    self.output.write(ctx.FALSE().getText())
             else:
                 print('Error!')
         else:
