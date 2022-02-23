@@ -3,11 +3,12 @@ varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
 do import_file (varFileName,varDataSetName) as sales
 
 data_count is 5
-counter is 1
+counter is True
+final_count is 2
 
-create_function unitSoldItemType(counter,data_count,sales)
+create_function unitSoldItemType(counter,data_count,final_count,sales)
 
-    if(counter equal 1) then
+	if(counter equal 1) then
 		get Order_ID, sum of UnitsSold for Item_Type equal 'Baby Food' on sales group_by Item_Type
 	else_if(counter equal 2) then
 		get Order_ID, sum of UnitsSold for Item_Type equal 'Beverages' on sales group_by Item_Type
@@ -18,15 +19,15 @@ create_function unitSoldItemType(counter,data_count,sales)
 	else_if(counter equal 5) then
 		get Order_ID, sum of UnitsSold for Item_Type equal 'Clothes' on sales group_by Item_Type
 	end_if
-
+	
 	if(counter lt data_count) then
 		counter is counter + 1
-		do unitSoldItemType(counter,data_count,sales)
+		do unitSoldItemType(counter,data_count,final_count,sales)
 	end_if
-
+	
 end_function
 
-do unitSoldItemType(counter,data_count,sales)
+do unitSoldItemType(counter,data_count,final_count,sales)
 
 unitCostPerType is get Item_Type, sum of UnitsSold on sales group_by Item_Type
 do graph(pie, 'Item_Type' is LABEL, 'UnitsSold' is VALUE, unitCostPerType)

@@ -1125,7 +1125,7 @@ class myCRPPLListener(CRPPLListener) :
                         "gt": ">",
                         "lt": "<",
                         "gte": ">=",
-                        "lte": ">=",
+                        "lte": "<=",
                         "not_equal":"!=",
                         "xor":"^"
                     }
