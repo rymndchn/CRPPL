@@ -1108,7 +1108,13 @@ class myCRPPLListener(CRPPLListener) :
                     self.inside_parenthesis.append([num_exp,num_exp_pos])
             if ctx.BOOLEAN_CONNECTOR() is not None:
                 for i in ctx.BOOLEAN_CONNECTOR():
-                    operator_text="and"
+                    operator_text=str(i.getText())
+                    if (operator_text.lower()=='and'):
+                        operator_text="and"
+                    if (operator_text.lower()=='or'):
+                        operator_text="or"
+                    if (operator_text.lower()=='xor'):
+                        operator_text="^"
                     operator_pos = self.findPosition(str(i.getSymbol()))
                     self.inside_parenthesis.append([operator_text,operator_pos]) 
             if ctx.OPERATOR() is not None:
