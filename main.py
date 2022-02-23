@@ -40,7 +40,7 @@ def main (argv):
 
     output.close()
 
-    exec(program_store)
+    exec(program_store,globals())
     
 if __name__ == '__main__':
     main(sys.argv)
