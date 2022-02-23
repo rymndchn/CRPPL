@@ -654,105 +654,152 @@ class myCRPPLListener(CRPPLListener) :
 
     def enterGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
         graph_type = ctx.TYPE().getText()
+        labelone_type = ctx.LABELONE().getText()
+        labeltwo_type = ctx.LABELTWO().getText()
         dataframe = ctx.IDENTIFIER().getText()
 
         if graph_type == 'line':
-            graph_command = 'print(' + dataframe + '.plot.line(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
-            self.tabChecking()
-            self.output.write(graph_command)
-            self.output.write('\n')
-            fig_command = "plt.savefig('Report/line.png')"
-            self.tabChecking()
-            self.output.write(fig_command)
+            if labelone_type == 'X_AXIS' and labeltwo_type == 'Y_AXIS':
+                graph_command = f"print({dataframe}.plot.line())"
+                ytick_command = f"plt.ticklabel_format(axis='y', style='plain')"
+                xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
+                ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
+                self.tabChecking()
+                self.output.write(graph_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(graph_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(ytick_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(xlabel_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(ylabel_command)
+                self.output.write('\n')
+                fig_command = "plt.savefig('Report/line.pdf',bbox_inches='tight')"
+                self.tabChecking()
+                self.output.write(fig_command)
+            elif labelone_type == 'X_AXIS' and labeltwo_type != 'Y_AXIS':
+                error_command = f"print('{labeltwo_type} is the wrong line label')"
+                self.output.write(error_command)
+            elif labelone_type != 'X_AXIS' and labeltwo_type == 'Y_AXIS':
+                error_command = f"print('{labelone_type} is the wrong line label')"
+                self.output.write(error_command)
+            else:
+                error_command = f"print('{labelone_type} and {labeltwo_type} are the wrong line label')"
+                self.output.write(error_command)
         elif graph_type == 'bar':
-            self.output.write('#inside grouping is'+str(self.inside_grouping)+'\n')
-            self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
-            #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
-            graph_command = f"print({dataframe}.plot.bar())"
-            ytick_command = f"plt.ticklabel_format(axis='y', style='plain')"
-            xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
-            ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
-            self.tabChecking()
-            self.output.write(graph_command)
-            self.output.write('\n')
-            self.tabChecking()
-            self.output.write(ytick_command)
-            self.output.write('\n')
-            self.tabChecking()
-            self.output.write(xlabel_command)
-            self.output.write('\n')
-            self.tabChecking()
-            self.output.write(ylabel_command)
-            self.output.write('\n')
-            fig_command = "plt.savefig('Report/bar.pdf',bbox_inches='tight')"
-            self.tabChecking()
-            self.output.write(fig_command)
+            if labelone_type == 'X_AXIS' and labeltwo_type == 'Y_AXIS':
+                self.output.write('#inside grouping is'+str(self.inside_grouping)+'\n')
+                self.output.write('#insissdfdfds'+str(self.inside_grouping)+'\n')
+                #graph_command = 'print(' + dataframe + '.plot.bar(x='+ ctx.LITERAL()[0].getText() + ', y=' + ctx.LITERAL()[1].getText() + '))'
+                graph_command = f"print({dataframe}.plot.bar())"
+                ytick_command = f"plt.ticklabel_format(axis='y', style='plain')"
+                xlabel_command=f"plt.xlabel({ctx.LITERAL()[0].getText()})"
+                ylabel_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
+                self.tabChecking()
+                self.output.write(graph_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(ytick_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(xlabel_command)
+                self.output.write('\n')
+                self.tabChecking()
+                self.output.write(ylabel_command)
+                self.output.write('\n')
+                fig_command = "plt.savefig('Report/bar.pdf',bbox_inches='tight')"
+                self.tabChecking()
+                self.output.write(fig_command)
+            elif labelone_type == 'X_AXIS' and labeltwo_type != 'Y_AXIS':
+                error_command = f"print('{labeltwo_type} is the wrong bar label')"
+                self.output.write(error_command)
+            elif labelone_type != 'X_AXIS' and labeltwo_type == 'Y_AXIS':
+                error_command = f"print('{labelone_type} is the wrong bar label')"
+                self.output.write(error_command)
+            else:
+                error_command = f"print('{labelone_type} and {labeltwo_type} are the wrong bar label')"
+                self.output.write(error_command)
         if graph_type == 'pie':
-            # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
-            #graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
+            if labelone_type == 'LABEL' and labeltwo_type == 'VALUE':
+                # graph_command = 'print(' + dataframe + '.plot.scatter(y=' + ctx.LITERAL()[1].getText() + '))'
+                #graph_command = "print(" + dataframe + ".groupby([" + ctx.LITERAL()[0].getText() + "]).sum().plot(kind='pie'" + ', y=' + ctx.LITERAL()[1].getText() + ", autopct='%1.0f%%'))"
 
-            self.tabChecking()
-            self.output.write("if (__________GROUPED_IS == True):")
-            self.output.write('\n')
-            self.if_nest_ctr+=1
+                self.tabChecking()
+                self.output.write("if (__________GROUPED_IS == True):")
+                self.output.write('\n')
+                self.if_nest_ctr+=1
 
-            percent_command=f"percents = {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy() * 100 / {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy().sum()"
-            graph_command = f"print({dataframe}.plot.pie(y={ctx.LITERAL()[1].getText()}, labeldistance=None))"
-            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+                percent_command=f"percents = {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy() * 100 / {dataframe}[{ctx.LITERAL()[1].getText()}].to_numpy().sum()"
+                graph_command = f"print({dataframe}.plot.pie(y={ctx.LITERAL()[1].getText()}, labeldistance=None))"
+                legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
 
-            self.tabChecking()
-            self.output.write(percent_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(percent_command)
+                self.output.write('\n')
 
-            self.tabChecking()
-            self.output.write(graph_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(graph_command)
+                self.output.write('\n')
 
-            self.tabChecking()
-            self.output.write(legend_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(legend_command)
+                self.output.write('\n')
 
-            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
-            self.tabChecking()
-            self.output.write(fig_command)
-            self.output.write('\n')
+                fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+                self.tabChecking()
+                self.output.write(fig_command)
+                self.output.write('\n')
 
-            self.if_nest_ctr-=1
-            self.tabChecking()
-            self.output.write("else:")
-            self.output.write('\n')
-            self.if_nest_ctr+=1
+                self.if_nest_ctr-=1
+                self.tabChecking()
+                self.output.write("else:")
+                self.output.write('\n')
+                self.if_nest_ctr+=1
 
-            percent_command=f"percents = {dataframe}.to_numpy() * 100 / {dataframe}.to_numpy().sum()"
-            graph_command = f"print({dataframe}.plot.pie( labeldistance=None))"
-            legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
-            y_label_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
+                percent_command=f"percents = {dataframe}.to_numpy() * 100 / {dataframe}.to_numpy().sum()"
+                graph_command = f"print({dataframe}.plot.pie( labeldistance=None))"
+                legend_command=f"plt.legend( bbox_to_anchor=(1.35,1.1), loc='upper right', labels=['%s, %1.1f %%' % (l, s) for l, s in zip({dataframe}.index,percents)])"
+                y_label_command=f"plt.ylabel({ctx.LITERAL()[1].getText()})"
 
-            self.tabChecking()
-            self.output.write(percent_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(percent_command)
+                self.output.write('\n')
 
-            self.tabChecking()
-            self.output.write(graph_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(graph_command)
+                self.output.write('\n')
 
-            self.tabChecking()
-            self.output.write(legend_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(legend_command)
+                self.output.write('\n')
 
-            self.tabChecking()
-            self.output.write(y_label_command)
-            self.output.write('\n')
+                self.tabChecking()
+                self.output.write(y_label_command)
+                self.output.write('\n')
 
-            fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
-            self.tabChecking()
-            self.output.write(fig_command)
-            self.output.write('\n')
+                fig_command = "plt.savefig('Report/pie.pdf',bbox_inches='tight')"
+                self.tabChecking()
+                self.output.write(fig_command)
+                self.output.write('\n')
 
-            self.if_nest_ctr-=1
-            self.tabChecking()
-            self.output.write("#end of secret if")
-            self.output.write('\n')
+                self.if_nest_ctr-=1
+                self.tabChecking()
+                self.output.write("#end of secret if")
+                self.output.write('\n')
+            elif labelone_type == 'LABEL' and labeltwo_type != 'VALUE':
+                error_command = f"print('{labeltwo_type} is the wrong pie label')"
+                self.output.write(error_command)
+            elif labelone_type != 'LABEL' and labeltwo_type == 'VALUE':
+                error_command = f"print('{labelone_type} is the wrong pie label')"
+                self.output.write(error_command)
+            else:
+                error_command = f"print('{labelone_type} and {labeltwo_type} are the wrong pie label')"
+                self.output.write(error_command)
         pass
 
     def exitGraphquery(self, ctx:CRPPLParser.GraphqueryContext):
