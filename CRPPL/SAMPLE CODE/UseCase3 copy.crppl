@@ -1,0 +1,28 @@
+varFileName constant 'CRPPL/CSV Files/source/1000 - Sales Records.csv'
+varDataSetName constant 'CRPPL/CSV Files/target/sales.csv'
+do import_file (varFileName,varDataSetName) as sales
+
+data_count is 13
+counter is 0
+
+create_function get_country(counter,data_count,sales)
+	if(counter equal 0) then
+		get Order_id, sum of UnitCost for Item_Type equal 'Cosmetics' on sales group_by Item_Type 
+	else_if(counter equal 1) then
+		get Country for DataId equal '1' on sales
+	else_if(counter equal 2) then
+		get Country for DataId equal '2' on sales
+	else_if(counter equal 3) then
+		get Country for DataId equal '3' on sales
+	else_if(counter equal 4) then
+		get Country for DataId equal '4' on sales
+	end_if
+
+	if(counter lt data_count) then
+		counter is counter + 1
+		do get_country(counter,data_count,sales)
+	end_if
+end_function
+
+grpData is get Country, sum of UnitsSold on sales group_by Country
+do graph(pie, 'Country' is LABEL, 'UnitsSold' is VALUE, grpData)
